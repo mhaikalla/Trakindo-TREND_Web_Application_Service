@@ -1,0 +1,73 @@
+﻿@model Com.Trakindo.TSICS.Data.Model.MasterArea
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<main class="body position-relative d-flex flex-column">
+    <div data-active_page="masterArea--all-post" class="content-wrap flex-fill">
+        <section class="position-relative mt-5">
+            <div class="container-fluid container-admin ml-0">
+                <div class="row">
+                    <div class="col-lg-12 position-relative">
+                        <h3 class="font-secondary"> <span class="text-secondary">Master Area </span><span class="text-dark">Detail</span></h3>
+                        <section class="card bg-white shadow-sm border-0 mb-5">
+                            <nav class="card-navbar navbar navbar-dark bg-secondary text-white">
+                                <div class="left d-flex align-items-center">
+                                    <div class="h4 font-secondary mb-0">Master Area</div>
+                                </div>
+                                <div class="right">
+                                    <button data-toggle="collapse" data-target="#collapse-target-2" type="button" class="btn btn-sm bg-transparent rounded-pill text-white btn-remove"><i class="fa fa-chevron-right"></i></button>
+                                </div>
+                            </nav>
+                            <div id="collapse-target-2" class="collapse show">
+                                <div class="card-body">
+                                    <div class="form-group mb-4">
+                                        <label>Area Name : @Html.DisplayFor(model => model.Name)</label>
+                                    </div>
+                                    <div class="form-group mb-4">
+                                        <label>Status : </label>
+                                        @if (Model.Status == 1)
+                                        {
+                                            <span>Active</span>
+                                        }
+                                        else
+                                        {
+                                            <span>Inactive</span>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section style="bottom: 0;" class="position-sticky bg-light py-3 sticky-submit-form z-index-10">
+            <div class="container-fluid container-admin ml-0">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="cust-fab d-inline-block d-md-none left">
+                            <input id="fab-check" type="checkbox" name="" class="fab-check">
+                            <label for="fab-check" class="btn btn-warning text-white rounded-circle btn-fab-trigger"><i class="fa fa-plus"></i></label>
+                            <div class="fab-group">
+                                <button type="submit" name="Submit" value="Submit" class="fab-item btn rounded-pill btn-light border-warning shadow-sm">Submit</button>
+                                <button type="button" class="fab-item btn rounded-pill btn-light border-warning shadow-sm">Cancel</button>
+                            </div>
+                        </div>
+                        <div class="d-none d-md-flex justify-content-between">
+                            <div>
+                                @Html.ActionLink("Back to List", "Index", null, new { Class = "btn rounded-0 border-warning bg-light my-1" })
+                            </div>
+                            <div>
+                                @Html.ActionLink("Edit", "Edit", new { id = Model.MasterAreaId }, new { Class = "btn rounded-0 btn-warning my-1 ml-2" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</main>

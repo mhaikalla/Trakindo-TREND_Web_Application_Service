@@ -1,0 +1,203 @@
+@model Com.Trakindo.TSICS.Data.Model.User
+
+@{
+    ViewBag.Title = "Register";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script type="text/javascript">
+    function cekEmploye() {
+        $.post('cekEmployee', { employeeId: $('#EmployeeId').val() }, function (data) {
+            $('#labelXupj').html(data);
+        });
+    }
+</script>
+<main style="background-image: url(~/assets/images/repository/login-bg-1.jpg);" class="body position-relative d-flex w-100 justify-content-center align-items-center bg-cover">
+    <div data-active_page="register" class="content-wrap flex-fill">
+        <div class="content-wrap flex-fill register h-100 my-5">
+            <div class="container">
+                @*<form action="login.html" method="GET" class="rounded-lg row no-gutters overflow-hidden">*@
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                    <div class="card col-12 col-lg-9 bg-white-75 mx-auto">
+                        <div class="card-header bg-transparent border-0">
+                            <div class="row">
+                                <div class="col-lg-6 d-flex align-items-center">
+                                    <div class="h3 font-secondary card-title mb-0"> <span class="text-muted">TREND </span><span>- REGISTER ACCOUNT</span></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group row no-gutters">
+                                <div class="col-md-3 d-flex justify-content-between align-items-center">Salary Number<span class="d-none d-md-inline mx-1">:</span></div>
+                                <div class="col-md-9">
+                                    <div class="input-group border rounded-lg bg-white">
+                                        @Html.EditorFor(model => model.EmployeeId, new { htmlAttributes = new { @required = "", @class = "form-control" } })
+                                        @*@Html.EditorFor(model => model.EmployeeId, new { htmlAttributes = new { @class = "form-control" } })
+                                            @Html.ValidationMessageFor(model => model.EmployeeId, "", new { @class = "text-danger" })*@
+
+                                        @*<div class="input-group-append">
+                                                <label class="btn border-left-0 input-group-text bg-transparent border-0"><i class="fa fa-check"></i></label>
+                                            </div>*@
+                                        <div class="col-sm-4 mb15">
+                                            <input type="button" value="Check" onclick="cekEmploye()" class="btn d-block btn-warning w-100" />
+                                        </div>
+                                    </div>
+                                    @Html.ValidationMessageFor(model => model.EmployeeId, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group row no-gutters">
+                                <div class="col-md-3 d-flex justify-content-between align-items-center"><span class="d-none d-md-inline mx-1"></span></div>
+                                <div class="col-md-9">
+                                    <label id="labelXupj">
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="form-group row no-gutters">
+                                <div class="col-md-3 d-flex justify-content-between align-items-center">Mobile Phone<span class="d-none d-md-inline mx-1">:</span></div>
+                                <div class="col-md-9">
+                                    @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control border" } })
+                                </div>
+                                @*@Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-danger" })*@
+                            </div>
+                            <div class="form-group row no-gutters">
+                                <div class="col-md-3 d-flex justify-content-between align-items-center">Location Area<span class="d-none d-md-inline mx-1">:</span></div>
+                                <div class="col-md-9">
+                                    @Html.DropDownListFor(model => model.MasterAreaId, new SelectList(ViewBag.ListMasterArea, "MasterAreaId", "Name"), "Select Area", new { @class = "selectpicker", placeholder = "Select Role", data_style = "border bg-white", data_width = "100%", data_live_search = "true", data_container = "body" })
+                                </div>
+                            </div>
+                            <div class="form-group row no-gutters">
+                                <div class="col-md-3 d-flex justify-content-between align-items-center">Branch Location<span class="d-none d-md-inline mx-1">:</span></div>
+                                <div class="col-md-9">
+                                    <select name="@Html.NameFor(model => model.MasterBranchId)" id="MasterBranchId" class="form-control" placeholder="Select Branch" data_style="border bg-white" data_width="100%" data_live_search="true" data_container="body">
+                                        <option value="0">No Choose</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group row no-gutters">
+                                <div class="col-md-3 d-flex justify-content-between align-items-center">Role<span class="d-none d-md-inline mx-1">:</span></div>
+                                <div class="col-md-7">
+                                    <div class="row no-gutters mb-4 mb-md-0">
+                                        <div class="col-10">
+                                            <select class="form-control" data-container="body" data-live-search="true" data-style="border bg-white" data-val="true" data-val-number="The field RoleId must be a number." data-val-required="The RoleId field is required." data-width="100%" id="UserRoleName" name="RoleId" placeholder="Select Role">
+                                                <option value="1">Level 1</option>
+                                                <option value="2">Level 2</option>
+                                                <option value="4">TC HO</option>
+                                            </select>
+                                            @Html.ValidationMessageFor(model => model.RoleId, "", new { @class = "text-danger" })
+                                        </div>
+                                        <div class="col-2 hide">
+                                            <button type="button" class="btn rounded-pill"><i class="fas fa-question-circle"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row no-gutters">
+                                <div class="col-md-3 d-flex justify-content-between align-items-center">Role Spesifikasi<span class="d-none d-md-inline mx-1">:</span></div>
+                                <div class="col-md-9">
+                                    @*@Html.EditorFor(model => model.RoleDescription, new { htmlAttributes = new { @class = "form-control border", data_ajax_autosuggest = "Url.Action("FindSuggestion", "api/MEP")", data_list = "#unit-sn", type = "text" , id="_usn", name="SerialNumber"  } })*@
+                                    <input data-ajax-autosuggest="@Url.Action("FindSuggestionRole", "api/Account")" data-list="#unit-sn" type="text" class="form-control bg-light" id="_usn" name="RoleDescription">
+                                    <datalist id="unit-sn"></datalist>
+                                </div>
+                                @*@Html.ValidationMessageFor(model => model.RoleDescription, "", new { @class = "text-danger" })*@
+                            </div>
+                            <div class="form-group row no-gutters">
+                                <div class="col-md-3 d-flex justify-content-between align-items-center">Technical Job Experience Duration<span class="d-none d-md-inline mx-1">:</span></div>
+                                <div class="col-md-9">
+                                    @Html.EditorFor(model => model.TechnicalJobExperienceDuration, new { htmlAttributes = new { @class = "form-control border" } })
+                                </div>
+                                @*@Html.ValidationMessageFor(model => model.TechnicalJobExperienceDuration, "", new { @class = "text-danger" })*@
+                            </div>
+                            <div class="form-group row no-gutters">
+                                <div class="col-md-3 d-flex justify-content-between align-items-center">Technical Job Title<span class="d-none d-md-inline mx-1">:</span></div>
+                                <div class="col-md-9">
+                                    @Html.EditorFor(model => model.TechnicalJobTitle, new { htmlAttributes = new { @class = "form-control border" } })
+                                </div>
+                                @*@Html.ValidationMessageFor(model => model.TechnicalJobTitle, "", new { @class = "text-danger" })*@
+                            </div>
+                            <div class="col-md-2 float-right">
+                                <button type="submit" class="btn d-block btn-warning w-100">Register</button>
+                            </div>
+                        </div>
+                    </div>}
+
+                @*</form>*@
+            </div>
+        </div>
+        </div>
+</main>
+@section ScriptBottom {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('body').bind('beforeunload', function () {
+                $("#MasterAreaId option[value='']").prop("selected", true);
+                $("#MasterBranchId option[value='0']").prop("selected", true);
+                $("#UserRoleName option[value='1']").prop("selected", true);
+            });
+           $("#MasterBranchId").change(function () {
+                var SelectedArea = $("#MasterAreaId").val();
+                var SelectedBranch = $("#MasterBranchId").val();
+                if (!SelectedBranch.trim()) {
+                    console.log(SelectedBranch);
+                    $("#UserRoleName").empty();
+                    $("#UserRoleName").append('<option value="1">Level 1</option>');
+                    $("#UserRoleName").append('<option value="2">Level 2</option>');
+
+                    $("#UserRoleName").append('<option value="3">TC Area</option>');
+                }
+                else {
+                    console.log(SelectedBranch);
+                    $("#UserRoleName").empty();
+                    $("#UserRoleName").append('<option value="1">Level 1</option>');
+                    $("#UserRoleName").append('<option value="2">Level 2</option>');
+                }
+                $("#UserRoleName").select2('destroy');
+            });
+
+            $("#MasterAreaId").change(function () {
+                var SelectedArea = $("#MasterAreaId").val();
+                var SelectedBranch = $("#MasterBranchId").val();
+
+                if (!SelectedArea.trim()) {
+                    console.log(SelectedArea);
+                    $("#UserRoleName").empty();
+                    $("#UserRoleName").append('<option value="1">Level 1</option>');
+                    $("#UserRoleName").append('<option value="2">Level 2</option>');
+                    $("#UserRoleName").append('<option value="4">TC HO</option>');
+                }
+                else {
+                    console.log(SelectedArea);
+                    $("#UserRoleName").empty();
+                    $("#UserRoleName").append('<option value="1">Level 1</option>');
+                    $("#UserRoleName").append('<option value="2">Level 2</option>');
+                    $("#UserRoleName").append('<option value="3">TC Area</option>');
+                }
+
+                $("#MasterBranchId").empty();
+                $("#MasterBranchId").append('<option value="0">No Choose</option>');
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("GetBranch")',
+                    dataType: 'json',
+                    data: { id: $("#MasterAreaId").val() },
+                    success: function (mems) {
+                        // states contains the JSON formatted list
+                        // of states passed from the controller
+                        $.each(mems, function (i, member) {
+                            $("#MasterBranchId").append('<option value="' + member.Value + '">' + member.Text + '</option>');
+                        });
+                    },
+                    error: function (ex) {
+                    }
+                });
+
+
+                return false;
+           })
+        });
+    </script>
+}

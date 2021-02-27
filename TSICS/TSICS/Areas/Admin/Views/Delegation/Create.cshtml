@@ -1,0 +1,222 @@
+﻿@model Com.Trakindo.TSICS.Data.Model.Delegation
+@{
+    ViewBag.Title = "Delegate";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+<link href="~/Content/bootstrap-datepicker.min.css" rel="stylesheet" type="text/css" />
+
+
+<main class="body position-relative d-flex flex-column">
+    <div data-active_page="delegation--log" class="content-wrap flex-fill">
+        @using (Html.BeginForm(null, null, FormMethod.Post, new { enctype = "multipart/form-data", novalidate = "", Class = "needs-validation" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="card col-12 col-lg-10 bg-white-75 mx-auto my-5">
+                <div class="card-header bg-transparent border-0">
+                    <div class="row">
+                        <div class="col-lg-6 d-flex align-items-center">
+                            <div class="h3 font-secondary card-title mb-0"> <span class="text-muted">CREATE </span><span> NEW DELEGATION</span></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+
+                    <div class="form-group text-muted mb-4">
+                        <label>User Want to Delegate</label>
+                        <select name="@Html.NameFor(Model => Model.FromUser)" required data-style="border bg-white" data-width="100%" data-title="Choose Users" class="selectpicker" id="choosefromUser" data-live-search="true">
+                            @foreach (var user in ViewBag.Userlist)
+                            {
+                            <option value="@user.UserId">@user.Name</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="text-center" id="loader" style="display:none;">
+                        <div class="spinner-border" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </div>
+                    <div id ="show-detail-btn1" class="d-flex align-items-center" style="display:none;">
+                        <div class="flex-grow-1">
+                            <hr class="my-2">
+                        </div>
+                        <button data-toggle="collapse" data-target="#show-full-1" type="button" class="btn border-0 bg-transparent btn-sm text-muted"><span>SHOW DETAIL</span><i class="fa fa-chevron-down ml-2"></i></button>
+                    </div>
+                    <div id="show-full-1" class="collapse">
+                        <div class="row py-4 justify-content-center">
+                            <img id="PhotoProfile" style="border-width: 3px !important; width: 60px; height: 60px;" src="@ViewBag.Domain/assets/images/repository/avatar-default.jpg" onerror="this.onerror=null;this.src='@ViewBag.Domain/assets/images/repository/avatar-default.jpg';" alt="" class="object-fit-cover rounded-circle">
+                        </div>
+                        <div class="row">
+                            <div class="col-xl-4 mb-0 mb-xl-2 d-flex justify-content-between">Employee ID<span class="d-none d-xl-inline mx-1">:</span></div>
+                            <div id="EmployeeId" class="col-xl-8 mb-3 mb-lg-2 text-dark"></div>
+                            <div class="col-xl-4 mb-0 mb-xl-2 d-flex justify-content-between">Position<span class="d-none d-xl-inline mx-1">:</span></div>
+                            <div id="Position" class="col-xl-8 mb-3 mb-lg-2 text-dark"></div>
+                            <div class="col-xl-4 mb-0 mb-xl-2 d-flex justify-content-between">Area Name<span class="d-none d-xl-inline mx-1">:</span></div>
+                            <div id="AreaName" class="col-xl-8 mb-3 mb-lg-2 text-dark"></div>
+                            <div class="col-xl-4 mb-0 mb-xl-2 d-flex justify-content-between">Branch Name<span class="d-none d-xl-inline mx-1">:</span></div>
+                            <div id="BranchName" class="col-xl-8 mb-3 mb-lg-2 text-dark"></div>
+                            <div class="col-xl-4 mb-0 mb-xl-2 d-flex justify-content-between">Role Level<span class="d-none d-xl-inline mx-1">:</span></div>
+                            <div id="Role" class="col-xl-8 mb-3 mb-lg-2 text-dark"></div>
+                            <div class="col-xl-4 mb-0 mb-xl-2 d-flex justify-content-between">Role Description<span class="d-none d-xl-inline mx-1">:</span></div>
+                            <div id="RoleDescription" class="col-xl-8 mb-3 mb-lg-2 text-dark"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group text-muted mt-4">
+                        <label>Users to be Delegated</label>
+                        <select id="choosetoUser" name="@Html.NameFor(Model => Model.ToUser)" required data-style="border bg-white" data-width="100%" data-title="Choose Users" class="selectpicker" data-live-search="true">
+                            @foreach (var user in ViewBag.Userlist)
+                            {
+                                <option value="@user.UserId">@user.Name</option>
+                            }
+                        </select>
+
+                    </div>
+                    <div class="text-center" id="loader2" style="display:none;">
+                        <div class="spinner-border" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <div class="flex-grow-1">
+                            <hr class="my-2">
+                        </div>
+                        <button data-toggle="collapse" data-target="#show-full-2" id="show-full-btn2" type="button" class="btn border-0 bg-transparent btn-sm text-muted"><span>SHOW DETAIL</span><i class="fa fa-chevron-down ml-2"></i></button>
+                    </div>
+                    <div id="show-full-2" class="collapse">
+                        <div class="row py-4 justify-content-center">
+                            <img id="PhotoProfile-2" style="border-width: 3px !important; width: 60px; height: 60px;" src="@ViewBag.Domain/assets/images/repository/avatar-default.jpg" onerror="this.onerror=null;this.src='@ViewBag.Domain/assets/images/repository/avatar-default.jpg';" alt="" class="object-fit-cover rounded-circle">
+                        </div>
+                        <div class="row">
+                            <div class="col-xl-4 mb-0 mb-xl-2 d-flex justify-content-between">Employee ID<span class="d-none d-xl-inline mx-1">:</span></div>
+                            <div id="EmployeeId-2" class="col-xl-8 mb-3 mb-lg-2 text-dark"></div>
+                            <div class="col-xl-4 mb-0 mb-xl-2 d-flex justify-content-between">Position<span class="d-none d-xl-inline mx-1">:</span></div>
+                            <div id="Position-2" class="col-xl-8 mb-3 mb-lg-2 text-dark"></div>
+                            <div class="col-xl-4 mb-0 mb-xl-2 d-flex justify-content-between">Area Name<span class="d-none d-xl-inline mx-1">:</span></div>
+                            <div id="AreaName-2" class="col-xl-8 mb-3 mb-lg-2 text-dark"></div>
+                            <div class="col-xl-4 mb-0 mb-xl-2 d-flex justify-content-between">Branch Name<span class="d-none d-xl-inline mx-1">:</span></div>
+                            <div id="BranchName-2" class="col-xl-8 mb-3 mb-lg-2 text-dark"></div>
+                            <div class="col-xl-4 mb-0 mb-xl-2 d-flex justify-content-between">Role Level<span class="d-none d-xl-inline mx-1">:</span></div>
+                            <div id="Role-2" class="col-xl-8 mb-3 mb-lg-2 text-dark"></div>
+                            <div class="col-xl-4 mb-0 mb-xl-2 d-flex justify-content-between">Role Description<span class="d-none d-xl-inline mx-1">:</span></div>
+                            <div id="RoleDescription-2" class="col-xl-8 mb-3 mb-lg-2 text-dark"></div>
+                        </div>
+                    </div>
+                    <div class="form-group text-muted mt-4">
+                        <label>Choose Start Date Until End Date </label>
+                        <div class="input-group border rounded-lg bg-white">
+                            <div class="input-group input-daterange" id="DatePicker">
+                                <input type="text" name="@Html.NameFor(Model => Model.StartDate)" value="@DateTime.Today.ToString("dddd, dd MMMM yyyy")" aria-label="Start Date" required class="form-control">
+
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">Until</span>
+                                </div>
+                                <input type="text" name="@Html.NameFor(Model => Model.EndDate)" aria-label="End Date" required class="form-control">
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2 float-right">
+                        <button type="submit" class="btn d-block btn-warning w-100">Delegate</button>
+                    </div>
+
+                    <div class="col-md-2 float-left">
+                        <a href="@Url.Action("Index", "Delegation")" class="fab-item btn btn-light border-warning shadow-sm">Cancel</a>
+                    </div>
+
+                </div>
+            </div>
+        }
+
+    </div>
+</main>
+
+
+<script src="~/assets/js/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/bootstrap-datepicker.min.js"></script>
+<script type="text/javascript">
+    var date = new Date();
+    date.setDate(date.getDate() - 0);
+
+    $('#DatePicker').datepicker({
+        todayHighlight: true,
+        todayBtn: "linked",
+        clearBtn: true,
+        daysOfWeekHighlighted: "0",
+        daysOfWeekDisabled: "0,6",
+        startDate: date,
+        format: "DD, dd MM yyyy"
+    });
+
+    $('#choosefromUser').change(function () {
+        var selectItem = $('#choosefromUser > option:selected').val();
+        console.log(selectItem);
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("GetDetailUser", "Delegation")',
+                    dataType: 'json',
+                    data: { UserId: selectItem },
+                    beforeSend: function () {
+                        $('#loader').fadeIn(100);
+                    },
+                    success: function (data) {
+                        $('#loader').fadeOut(100);
+                        $('#EmployeeId').html(data["EmployeeId"]);
+                        $('#Position').html(data["Position"]);
+                        $('#AreaName').html(data["AreaName"]);
+                        $('#BranchName').html(data["BranchName"]);
+                        $('#Role').html(data["MobilePassword"]);
+                        $('#RoleDescription').html(data["RoleDescription"]);
+                        if (data["RoleId"] > 1) {
+                            $('#PhotoProfile').attr("class", "object-fit-cover rounded-circle border border-warning");
+                        }
+                        else {
+                            $('#PhotoProfile').attr("class", "object-fit-cover rounded-circle border border-success");
+                        }
+                        $('#PhotoProfile').attr("src", "@ViewBag.Domain/Upload/UserProfile/"+ data["PhotoProfile"]);
+                        $('#show-detail-btn1').fadeIn(100);
+                    },
+                    error: function (data) {
+                        alert('Failed to retrieve data.' + data);
+                    }
+        })
+        });
+         $('#choosetoUser').change(function () {
+        var selectItem = $('#choosetoUser > option:selected').val();
+        console.log(selectItem);
+        $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("GetDetailUser", "Delegation")',
+                    dataType: 'json',
+                    data: { UserId: selectItem },
+                    beforeSend: function () {
+                        $('#loader2').fadeIn(100);
+                    },
+                    success: function (data) {
+                        $('#loader2').fadeOut(100);
+                        $('#EmployeeId-2').html(data["EmployeeId"]);
+                        $('#Position-2').html(data["Position"]);
+                        $('#AreaName-2').html(data["AreaName"]);
+                        $('#BranchName-2').html(data["BranchName"]);
+                        $('#Role-2').html(data["MobilePassword"]);
+                        $('#RoleDescription-2').html(data["RoleDescription"]);
+                        $('#PhotoProfile-2').attr("src", "@ViewBag.Domain/Upload/UserProfile/" + data["PhotoProfile"]);
+
+                        if (data["RoleId"] > 1) {
+                            $('#PhotoProfile-2').attr("class", "object-fit-cover rounded-circle border border-warning");
+                        }
+                        else {
+                            $('#PhotoProfile-2').attr("class", "object-fit-cover rounded-circle border border-success");
+                        }
+                        $('#show-detail-btn2').fadeIn(100);
+                    },
+                    error: function (data) {
+                        alert('Failed to retrieve data.' + data);
+                    }
+        });
+
+
+    });
+
+</script>
+

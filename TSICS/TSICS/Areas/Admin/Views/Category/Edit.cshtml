@@ -1,0 +1,142 @@
+﻿@model Com.Trakindo.TSICS.Data.Model.ArticleCategory
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+    List<SelectListItem> listStatus = new List<SelectListItem>();
+    List<SelectListItem> listParent = new List<SelectListItem>();
+    listStatus.Add(new SelectListItem { Text = "Active", Value = "1" });
+    listStatus.Add(new SelectListItem { Text = "Inactive", Value = "0" });
+    int item = 0;
+}
+
+<main class="body position-relative d-flex flex-column">
+    <div data-active_page="masterCategory--all-category" class="content-wrap flex-fill">
+        @using (Html.BeginForm("Edit", "Category", FormMethod.Post, new { enctype = "multipart/form-data", novalidate = "", Class = "needs-validation" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.ArticleCategoryId)
+
+            <div class="card col-12 col-lg-11 bg-white-75 mx-auto my-5">
+                <div class="card-header bg-transparent border-0">
+                    <div class="row">
+                        <div class="col-lg-6 d-flex align-items-center">
+                            <div class="h3 font-secondary card-title mb-0"> <span class="text-muted">EDIT</span> <span>CATEGORY</span></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="form-group text-lg-center">
+                        <h4 class="text-muted text-center my-3">Category Icon</h4>
+                        <div class="row justify-content-center">
+                            <div class="card border-0">
+                                <div class="position-relative">
+                                    <picture class="d-block atc-prev-wrap text-center ">
+                                        @if (Model.Icon == null)
+                                        {
+                                            <img style="border-width: 3px !important; object-fit:fill;" src="@Url.Content("~/assets/images/repository/avatar-default.jpg")" onerror="this.onerror=null;this.src='@Url.Content("~/Upload/image-not-found.png")';" alt="" class="mr-3">
+                                        }
+                                        else
+                                        {
+                                            <img style="border-width: 3px !important; object-fit:fill;" src="@Url.Content("~/Upload/Article/Icons/" + Model.Icon)" onerror="this.onerror=null;this.src='@Url.Content("~/Upload/image-not-found.png")';" alt="" class="mr-3">
+                                        }
+
+                                    </picture>
+                                    <div class="my-md-4">
+                                        <input type="file" name="Icon" accept=".jpg,.jpeg,.bmp,.png">
+                                       
+                                    </div>
+                                    @if (Model.Icon != null)
+                                    {
+                                        <a href="@Url.Action("DeleteIcon", "Category", new { id = Model.ArticleCategoryId })" class="fab-item btn btn-light border-warning shadow-sm"><i class="fa fa-times mr-4 fa-1x"></i>Remove</a>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                    </div>
+                    <div class="form-group row no-gutters" style="display:none;">
+                        <div class="col-md-3 d-flex justify-content-between align-items-center">Created Date</div>
+                        <div class="col-md-9">
+                            <input class="form-control border text-box single-line" id="CreatedAt" name="CreatedAt" type="text" value="@ViewBag.Category.CreatedAt">
+                        </div>
+                    </div>
+
+                    <div class="form-group row no-gutters">
+                        <div class="col-md-3 d-flex justify-content-between align-items-center">Parent Category Name</div>
+                        @if (ViewBag.ParentData != null)
+                        {
+                        <div class="col-md-9">
+                            @*@Html.DropDownListFor(model => model.Parent, listParent, null, new { @class = "form-control", placeholder = "Select Parent Category", data_style = "border bg-white", data_width = "100%", data_container = "body" })*@
+                            <select class="form-control" data-container="body" data-style="border bg-white" data-val="true" data-val-number="The field Parent must be a number." data-val-required="The Parent field is required." data-width="100%" id="Parent" name="Parent" placeholder="Select Parent Category">
+                                @foreach (var data in ViewBag.ParentData)
+                                {
+                                    if (data.ArticleCategoryId == Model.Parent)
+                                    {
+                                        <option value="@data.ArticleCategoryId" selected>@data.Name</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@data.ArticleCategoryId">@data.Name</option>
+                                    }
+                                }
+
+                            </select>
+                            </div>
+                        }
+                        else
+                        {
+                        <div class="col-md-9">MAIN CATEGORY</div>
+                        }
+                        </div>
+                    <div class="form-group row no-gutters">
+                        <div class="col-md-3 d-flex justify-content-between align-items-center">Name</div>
+                        <div class="col-md-9">
+                            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control border", value = ViewBag.Category.Name } })
+                        </div>
+                    </div>
+
+                    <div class="form-group row no-gutters">
+                        <div class="col-md-3 d-flex justify-content-between align-items-center">Order Position</div>
+                            <div class="col-md-9">
+                                <select class="form-control" data-container="body" data-style="border bg-white" data-val="true" data-val-number="The field Parent must be a number." data-val-required="The Parent field is required." data-width="100%" id="position" name="Position" placeholder="Select Position">
+                                        <option value="0" selected disabled hidden>Choose Position</option>
+                                        @for(item = 1; item <= ViewBag.OrderPosition; item++)
+                                        {
+                                            if (item == Model.Position)
+                                            {
+                                                <option value="@item" selected>@item</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@item">@item</option>
+                                            }
+                                        }
+                                </select>
+                                <em class="small form-text text-muted">The Position Will Replace with other Category position if has same position</em>
+                            </div>
+                    </div>
+
+                    <div class="form-group row no-gutters">
+                        <div class="col-md-3 d-flex justify-content-between align-items-center">Status</div>
+                        <div class="col-md-9">
+                            @Html.DropDownListFor(model => model.Status, listStatus, null, new { @class = "form-control", placeholder = "Select Category", data_style = "border bg-white", data_width = "100%", data_container = "body" })
+                        </div>
+                    </div>
+                    <div class="form-group my-5">
+                        <div class="col-md-offset-2 float-left">
+                            <a href="@Url.Action("Index", "Category")" class="fab-item btn btn-light border-warning shadow-sm">Cancel</a>
+                        </div>
+                        <div class="col-md-offset-2 float-right">
+                            <input type="submit" value="Save Changes" class="btn btn-warning" />
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        }
+    </div>
+</main>
+

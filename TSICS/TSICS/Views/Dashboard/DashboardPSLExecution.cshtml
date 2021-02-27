@@ -1,0 +1,699 @@
+﻿@using Com.Trakindo.TSICS.Data.Model
+@{
+    ViewBag.Title = "Product Health";
+    Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
+    var getDataFC = (GetFormCollectionPSLExecution)ViewBag.ModelGetFormCollectionPSLExecution;
+    var urlGet = "?Inventory=" + getDataFC.Inventory + "&Rental=" + getDataFC.Rental + "&HID=" + getDataFC.HID + "&Others=" + getDataFC.Others + "&Areas=" + getDataFC.Area + "&SalesOffice=" + getDataFC.SalesOffice + "&PSLStatus=" + getDataFC.PSLStatus + "&PSLNo=" + getDataFC.PSLNo + "&AgeIndicator=" + getDataFC.AgeIndicator + "&SerialNumber=" + getDataFC.SerialNumber + "&Model=" + getDataFC.Model + "&Priority=" + getDataFC.Priority + "&SRNo=" + getDataFC.SRNo + "&QuotNo=" + getDataFC.QuotationNo + "&SONo=" + getDataFC.SONo + "&SOStatus=" + getDataFC.SOStatus + "&checklistPSLStatus=" + getDataFC.ChecklistPSLStatus + "&checklistSOStatus=" + getDataFC.ChecklistSOStatus;
+}
+
+<main class="body position-relative d-flex flex-column">
+    <div data-active_page="admin--dashboard--psl-execution" class="content-wrap flex-fill">
+        <section class="position-relative mt-5">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12 position-relative">
+                        <section class="mb-3">
+                            <div class="d-sm-flex justify-content-between align-items-center mb-3">
+                                <h2 class="h4-size">PSL Execution</h2> 
+                                <div class="small text-muted"><i class="far fa-clock mr-2"></i><span>Edited 1w ago</span></div>
+                            </div>
+                        </section>
+                        <form id="form--dashboard--psl-execution" method="POST">
+                            <section>
+                                <div class="row">
+                                    <div class="col-md-12"> 
+                                        <div class="card bg-white shadow-sm border-0 mb-3">
+                                            <nav class="card-navbar navbar navbar-dark bg-warning text-white">
+                                                <div class="left d-flex align-items-center">
+                                                    <div class="h4 font-secondary mb-0">Filters</div>
+                                                </div>
+                                                <div class="right">
+                                                    <button data-toggle="collapse" data-target="#collapse-target-1" type="button" class="btn btn-sm bg-transparent rounded-pill text-white btn-toggle-arrow"><i class="fa fa-chevron-right"></i></button>
+                                                </div>
+                                            </nav>
+                                            <fieldset id="collapse-target-1" class="collapse show">
+                                                <div class="card-body">
+                                                    <div class="row mb-3">
+                                                        <div class="col-md-12">
+                                                            <div class="form-group form-inline">
+                                                                @if (getDataFC.Inventory == "on")
+                                                                {
+                                                                    <label class="custom-checkbox form-check mr-4">
+                                                                        <input id="cbinventory" type="checkbox" checked name="inventory" class="form-check-input activating-others">
+                                                                        <div class="form-check-label custom-label"><i class="icon fa fa-check"></i><span class="text">Inventory</span></div>
+                                                                    </label>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <label class="custom-checkbox form-check mr-4">
+                                                                        <input id="cbinventory" type="checkbox" name="inventory" class="form-check-input activating-others">
+                                                                        <div class="form-check-label custom-label"><i class="icon fa fa-check"></i><span class="text">Inventory</span></div>
+                                                                    </label>
+                                                                }
+
+                                                                @if (getDataFC.Rental == "on")
+                                                                {
+                                                                    <label class="custom-checkbox form-check mr-4">
+                                                                        <input id="cbrental" type="checkbox" checked name="rental" class="form-check-input activating-others">
+                                                                        <div class="form-check-label custom-label"><i class="icon fa fa-check"></i><span class="text">Rental</span></div>
+                                                                    </label>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <label class="custom-checkbox form-check mr-4">
+                                                                        <input id="cbrental" type="checkbox" name="rental" class="form-check-input activating-others">
+                                                                        <div class="form-check-label custom-label"><i class="icon fa fa-check"></i><span class="text">Rental</span></div>
+                                                                    </label>
+                                                                }
+
+                                                                @if (getDataFC.HID == "on")
+                                                                {
+                                                                    <label class="custom-checkbox form-check mr-4">
+                                                                        <input id="cbhid" type="checkbox" checked name="hid" class="form-check-input activating-others">
+                                                                        <div class="form-check-label custom-label"><i class="icon fa fa-check"></i><span class="text">HID</span></div>
+                                                                    </label>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <label class="custom-checkbox form-check mr-4">
+                                                                        <input id="cbhid" type="checkbox" name="hid" class="form-check-input activating-others">
+                                                                        <div class="form-check-label custom-label"><i class="icon fa fa-check"></i><span class="text">HID</span></div>
+                                                                    </label>
+                                                                }
+
+                                                                @if (getDataFC.Others == "on")
+                                                                {
+                                                                    <label class="custom-checkbox form-check mr-4">
+                                                                        <input id="cbothers" type="checkbox" checked name="others" data-enable-if=".activating-others" class="form-check-input">
+                                                                        <div class="form-check-label custom-label"><i class="icon fa fa-check"></i><span class="text">Others</span></div>
+                                                                    </label>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <label class="custom-checkbox form-check mr-4">
+                                                                        <input id="cbothers" type="checkbox" name="others" data-enable-if=".activating-others" class="form-check-input">
+                                                                        <div class="form-check-label custom-label"><i class="icon fa fa-check"></i><span class="text">Others</span></div>
+                                                                    </label>
+                                                                }
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    @*<label>Choose Column to be shown</label>*@
+                                                    <div class="row mb-3">
+                                                        <div class="col-md-3">
+                                                            <div class="form-group mr-3">
+                                                                <label class="custom-checkbox form-check">
+                                                                    <input id="cb1" type="checkbox" data-checkbox-toggle-disable="{'target': '#select-filter-1'}" class="form-check-input">
+                                                                    <div class="form-check-label custom-label"><i class="icon fa fa-check"></i><span class="text">Area</span></div>
+                                                                </label>
+                                                                <div class="input-group">
+                                                                    <select data-title="Choose fields" data-style="border bg-white rounded-0" data-width="100%" data-size="5" name="Area[]" multiple disabled id="select-filter-1" >
+                                                                        <option value="0">Choose fields</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <div class="form-group mr-3">
+                                                                <label class="custom-checkbox form-check">
+                                                                    <input id="cb2" type="checkbox" data-checkbox-toggle-disable="{'target': '#select-filter-2'}" class="form-check-input">
+                                                                    <div class="form-check-label custom-label"><i class="icon fa fa-check"></i><span class="text">Model</span></div>
+                                                                </label>
+                                                                <div class="input-group">
+                                                                    <select data-title="Choose fields" data-style="border bg-white rounded-0" data-width="100%" data-size="5" name="model[]" multiple disabled id="select-filter-2">
+                                                                        <option value="0">Choose fields</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <div class="form-group mr-3">
+                                                                <label class="custom-checkbox form-check">
+                                                                    <input id="cb3" type="checkbox" data-checkbox-toggle-disable="{'target': '#select-filter-3'}" class="form-check-input">
+                                                                    <div class="form-check-label custom-label"><i class="icon fa fa-check"></i><span class="text">PSL ID</span></div>
+                                                                </label>
+                                                                <div class="input-group">
+                                                                    <select data-title="Choose fields" data-style="border bg-white rounded-0" data-width="100%" data-size="5" name="pslNo[]" multiple disabled id="select-filter-3" >
+                                                                        <option value="0">Choose fields</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    @*<label>Choose primary values and data filter to be shown</label>*@
+                                                    <div class="row mb-3">
+                                                        <div class="col-md-3">
+                                                           
+                                                            <div class="form-group mr-3">
+                                                                <label class="custom-checkbox form-check">
+                                                                    <input id="cb4" type="checkbox" data-checkbox-toggle-disable="{'target': '#select-filter-4'}" class="form-check-input">
+                                                                    <div class="form-check-label custom-label"><i class="icon fa fa-check"></i><span class="text">PSL Status</span></div>
+                                                                </label>
+                                                                <div class="input-group">
+                                                                    <select data-title="Choose fields" data-style="border bg-white rounded-0" data-width="100%" data-size="5" name="pslStatus[]" multiple disabled id="select-filter-4">
+                                                                        <option value="0">Choose fields</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <div class="form-group mr-3">
+                                                                <label class="custom-checkbox form-check">
+                                                                    <input id="cb5" type="checkbox" data-checkbox-toggle-disable="{'target': '#select-filter-5'}" class="form-check-input">
+                                                                    <div class="form-check-label custom-label"><i class="icon fa fa-check"></i><span class="text">SO Status</span></div>
+                                                                </label>
+                                                                <div class="input-group">
+                                                                    <select data-title="Choose fie  lds" data-style="border bg-white rounded-0" data-width="100%" data-size="5" name="soStatus[]" multiple disabled id="select-filter-5">
+                                                                        <option value="0">Choose fields</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mb-3">
+                                                        <div class="col-md-12">
+                                                            <label>Choose optional values to be shown</label>
+                                                            <div class="form-group form-inline">
+                                                                @if (getDataFC.SRNo == "on")
+                                                                {
+                                                                    <label class="custom-checkbox form-check mr-4">
+                                                                        <input type="checkbox" checked name="SRNo" class="form-check-input">
+                                                                        <div class="form-check-label custom-label"><i class="icon fa fa-check"></i><span class="text">SR No</span></div>
+                                                                    </label>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <label class="custom-checkbox form-check mr-4">
+                                                                        <input type="checkbox" name="SRNo" class="form-check-input">
+                                                                        <div class="form-check-label custom-label"><i class="icon fa fa-check"></i><span class="text">SR No</span></div>
+                                                                    </label>
+                                                                }
+
+                                                                @if (getDataFC.QuotationNo == "on")
+                                                                {
+                                                                    <label class="custom-checkbox form-check mr-4">
+                                                                        <input type="checkbox" checked name="QuotNo" class="form-check-input">
+                                                                        <div class="form-check-label custom-label"><i class="icon fa fa-check"></i><span class="text">Quotation No</span></div>
+                                                                    </label>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <label class="custom-checkbox form-check mr-4">
+                                                                        <input type="checkbox" name="QuotNo" class="form-check-input">
+                                                                        <div class="form-check-label custom-label"><i class="icon fa fa-check"></i><span class="text">Quotation No</span></div>
+                                                                    </label>
+                                                                }
+
+                                                                @if (getDataFC.SONo == "on")
+                                                                {
+                                                                    <label class="custom-checkbox form-check mr-4">
+                                                                        <input type="checkbox" checked name="SONo" class="form-check-input">
+                                                                        <div class="form-check-label custom-label"><i class="icon fa fa-check"></i><span class="text">SO No</span></div>
+                                                                    </label>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <label class="custom-checkbox form-check mr-4">
+                                                                        <input type="checkbox" name="SONo" class="form-check-input">
+                                                                        <div class="form-check-label custom-label"><i class="icon fa fa-check"></i><span class="text">SO No</span></div>
+                                                                    </label>
+                                                                }
+
+                                                                @if (getDataFC.ChecklistPSLStatus == "on")
+                                                                {
+                                                                    <label class="custom-checkbox form-check mr-4">
+                                                                        <input type="checkbox" checked name="checklistPSLStatus" class="form-check-input">
+                                                                        <div class="form-check-label custom-label"><i class="icon fa fa-check"></i><span class="text">PSL Status</span></div>
+                                                                    </label>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <label class="custom-checkbox form-check mr-4">
+                                                                        <input type="checkbox" name="checklistPSLStatus" class="form-check-input">
+                                                                        <div class="form-check-label custom-label"><i class="icon fa fa-check"></i><span class="text">PSL Status</span></div>
+                                                                    </label>
+                                                                }
+
+                                                                @if (getDataFC.ChecklistSOStatus == "on")
+                                                                {
+                                                                    <label class="custom-checkbox form-check mr-4">
+                                                                        <input type="checkbox" checked name="checklistSOStatus" class="form-check-input">
+                                                                        <div class="form-check-label custom-label"><i class="icon fa fa-check"></i><span class="text">SO Status</span></div>
+                                                                    </label>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <label class="custom-checkbox form-check mr-4">
+                                                                        <input type="checkbox" name="checklistSOStatus" class="form-check-input">
+                                                                        <div class="form-check-label custom-label"><i class="icon fa fa-check"></i><span class="text">SO Status</span></div>
+                                                                    </label>
+                                                                }
+
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        @if (getDataFC.Area != "" || getDataFC.Model != "" || getDataFC.PSLNo != "" || getDataFC.PSLStatus != "" || getDataFC.SOStatus != "")
+                                                        {
+                                                            <p>Filter :</p>
+                                                        }
+                                                        <div class="col-md-12">
+                                                            @if (getDataFC.Area != "")
+                                                            {
+                                                                <div class="form-group mr-3">
+                                                                    <p>Area : @getDataFC.Area</p>
+                                                                </div>
+                                                            }
+                                                            @if (getDataFC.Model != "")
+                                                            {
+                                                                <div class="form-group mr-3">
+                                                                    <p>Model : @getDataFC.Model</p>
+                                                                </div>
+                                                            }
+                                                            @if (getDataFC.PSLStatus != "")
+                                                            {
+                                                                <div class="form-group mr-3">
+                                                                    <p>PSL Status : @getDataFC.PSLStatus</p>
+                                                                </div>
+                                                            }
+                                                            @if (getDataFC.PSLNo != "")
+                                                            {
+                                                                <div class="form-group mr-3">
+                                                                    <p>PSL No : @getDataFC.PSLNo</p>
+                                                                </div>
+                                                            }
+                                                            @if (getDataFC.SOStatus != "")
+                                                            {
+                                                                <div class="form-group mr-3">
+                                                                    <p>SO Status : @getDataFC.SOStatus</p>
+                                                                </div>
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="text-center">
+                                                                <button type="submit" class="btn btn-warning btn-show-result px-4 py-2">Show Result</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </fieldset>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                            <section>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="card bg-white shadow-sm border-0 mb-3">
+                                            <div class="card-body">
+                                                <div class="border p-3">
+                                                    <div id="table--psl-execution" data-dt-api="@Url.Action("TableDashboardPSLExecution","Dashboard")@urlGet" class="table-responsive">
+                                                        <table class="table table-dt small table-align-top">
+                                                            <thead>
+                                                                <tr class="text-center">
+                                                                    <th><span class="text-nowrap">Serial No</span></th>
+                                                                    <th><span class="text-nowrap">Model</span></th>
+                                                                    <th><span class="text-nowrap">Area</span></th>
+                                                                    <th><span class="text-nowrap">Sales Office</span></th>
+                                                                    <th><span class="text-nowrap">Customer</span></th>
+                                                                    <th><span class="text-nowrap">Status</span></th>
+                                                                </tr>
+                                                            </thead>
+                                                        </table>
+                                                        <script>
+                                    var htmlDescList = function (resp) {
+                                      var html = '<dl class="row no-gutters m-0" style="width: 180px;">'
+
+                                    resp.forEach((el, i) => {
+                                        html += (el.divider && i > 0) ? '<dt class="col-6"><hr class="my-2"/></dt><dd class="col-6"><hr class="my-2"/></dd>' : ''
+                                        html += '<dt class="col-6">' + el.title + '</dt>'
+                                        html += '<dd class="col-6"> : ' + el.value + '</dd>'
+                                    })
+
+                                      html += '</dl>'
+
+                                      return html
+                                    }
+                                    var column_dt_table = [
+                                      {
+                                        data    : 'serial_no',
+                                        render  : function (data,type,row) {
+                                          var html = ''
+                                          html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                          return html
+                                        }
+                                        },
+                                        {
+                                            data: 'model',
+                                            render: function (data, type, row) {
+                                                var html = ''
+                                                html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                                return html
+                                            }
+                                        },
+                                      {
+                                        data    : 'area',
+                                        render  : function (data,type,row) {
+                                          var html = ''
+                                          html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                          return html
+                                        }
+                                      },
+                                      {
+                                        data    : 'sales_office',
+                                        render  : function (data,type,row) {
+                                          var html = ''
+                                          html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                          return html
+                                        }
+                                      },
+                                      {
+                                        data    : 'customer',
+                                        render  : function (data,type,row) {
+                                          var html = ''
+                                          html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                          return html
+                                        }
+                                      },
+                                      {
+                                        data    : 'ls44043',
+                                        render  : function (data,type,row) {
+                                          var html = ''
+                                          html = htmlDescList(data.val_arr)
+                                          return html
+                                        }
+                                      },
+                                    ]
+                                                        </script>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</main>
+@section ScriptBottom {
+    <script type="text/javascript">
+    $(document).ready(function () {
+        var inventory = "";
+        var rental = "";
+        var hid = "";
+        var others = "";
+        $("#cbinventory").on('click', function () {
+            var that = $(this);
+            if (that.prop("checked") == true) {
+                inventory = "on";
+            } else {
+                inventory = "";
+            }
+        });
+        $("#cbrental").on('click', function () {
+            var that = $(this);
+            if (that.prop("checked") == true) {
+                rental = "on";
+            } else {
+                rental = "";
+            }
+        });
+        $("#cbhid").on('click', function () {
+            var that = $(this);
+            if (that.prop("checked") == true) {
+                hid = "on";
+            } else {
+                hid = "";
+            }
+        });
+        $("#cbothers").on('click', function () {
+            var that = $(this);
+            if (that.prop("checked") == true) {
+                others = "on";
+            } else {
+                others = "";
+            }
+        });
+        $("#select-filter-1").selectpicker();
+        $("#cb1").on('click',function () {
+            var that = $(this);
+            if (that.prop("checked") == true) {
+                var selectFilter1 = $("#select-filter-1").val();
+                if ($("#select-filter-2").val().length > 0 || $("#select-filter-3").val().length > 0 || $("#select-filter-4").val().length > 0 || $("#select-filter-5").val().length > 0 || inventory == "on" || rental == "on" || hid == "on" || others == "on") {
+                    $("#select-filter-1").empty();
+                    $.ajax({
+                        type: 'POST',
+                        url: '@Url.Action("GetAreaForPSLExecution")',
+                        data: { model: $("#select-filter-2").val(), pslid: $("#select-filter-3").val(), pslstatus: $("#select-filter-4").val(), sostatus: $("#select-filter-5").val(), inventory: inventory, rental: rental, hid: hid, others: others},
+                        success: function (mems) {
+                            $.each(mems, function (i, member) {
+                                $("#select-filter-1").append('<option value="' + member.Value + '">' + member.Text + '</option>');
+                            });
+
+                            $("#select-filter-1").selectpicker('refresh');
+                        },
+                        error: function (ex) {
+
+                        }
+                    });
+                } else {
+                     $("#select-filter-1").empty();
+                    $.ajax({
+                        type: 'POST',
+                        url: '@Url.Action("GetAreaForPSLExecution")',
+                        data: { model: $("#select-filter-2").val(), pslid: $("#select-filter-3").val(), pslstatus: $("#select-filter-4").val(), sostatus: $("#select-filter-5").val(), inventory: inventory, rental: rental, hid: hid, others: others},
+                        success: function (mems) {
+                            $.each(mems, function (i, member) {
+                                $("#select-filter-1").append('<option value="' + member.Value + '">' + member.Text + '</option>');
+                            });
+
+                            $("#select-filter-1").selectpicker('refresh');
+                        },
+                        error: function (ex) {
+
+                        }
+                    });
+                }
+            }
+
+            $("#select-filter-1").selectpicker('refresh');
+        })
+
+        //Model
+        $("#select-filter-2").selectpicker();
+        $("#cb2").on('click',function () {
+            var that = $(this);
+            if (that.prop("checked") == true) {
+                var selectFilter2 = $("#select-filter-2").val();
+                if ($("#select-filter-1").val().length > 0 || $("#select-filter-3").val().length > 0 || $("#select-filter-4").val().length > 0 || $("#select-filter-5").val().length > 0 || inventory == "on" || rental == "on" || hid == "on" || others == "on") {
+                    $("#select-filter-2").empty();
+                    $.ajax({
+                        type: 'POST',
+                        url: '@Url.Action("GetModelForPSLExecution")',
+                        data: { area: $("#select-filter-1").val(), pslid: $("#select-filter-3").val(), pslstatus: $("#select-filter-4").val(), sostatus: $("#select-filter-5").val(), inventory: inventory, rental: rental, hid: hid, others: others},
+                        success: function (mems) {
+                            $.each(mems, function (i, member) {
+                                $("#select-filter-2").append('<option value="' + member.Value + '">' + member.Text + '</option>');
+                            });
+
+                            $("#select-filter-2").selectpicker('refresh');
+                        },
+                        error: function (ex) {
+
+                        }
+                    });
+                } else {
+                     $("#select-filter-2").empty();
+                    $.ajax({
+                        type: 'POST',
+                        url: '@Url.Action("GetModelForPSLExecution")',
+                        data: { model: $("#select-filter-1").val(), pslid: $("#select-filter-3").val(), pslstatus: $("#select-filter-4").val(), sostatus: $("#select-filter-5").val(), inventory: inventory, rental: rental, hid: hid, others: others},
+                        success: function (mems) {
+                            $.each(mems, function (i, member) {
+                                $("#select-filter-2").append('<option value="' + member.Value + '">' + member.Text + '</option>');
+                            });
+
+                            $("#select-filter-2").selectpicker('refresh');
+                        },
+                        error: function (ex) {
+
+                        }
+                    });
+                }
+            }
+
+            $("#select-filter-2").selectpicker('refresh');
+        })
+
+        //PSLId
+        $("#select-filter-3").selectpicker();
+        $("#cb3").on('click',function () {
+            var that = $(this);
+            if (that.prop("checked") == true) {
+                var selectFilter3 = $("#select-filter-3").val();
+                if ($("#select-filter-1").val().length > 0 || $("#select-filter-2").val().length > 0 || $("#select-filter-4").val().length > 0 || $("#select-filter-5").val().length > 0 || inventory == "on" || rental == "on" || hid == "on" || others == "on") {
+                    $("#select-filter-3").empty();
+                    $.ajax({
+                        type: 'POST',
+                        url: '@Url.Action("GetPSLNoForPSLExecution")',
+                        data: { area: $("#select-filter-1").val(), model: $("#select-filter-2").val(), pslstatus: $("#select-filter-4").val(), sostatus: $("#select-filter-5").val(), inventory: inventory, rental: rental, hid: hid, others: others},
+                        success: function (mems) {
+                            $.each(mems, function (i, member) {
+                                $("#select-filter-3").append('<option value="' + member.Value + '">' + member.Text + '</option>');
+                            });
+
+                            $("#select-filter-3").selectpicker('refresh');
+                        },
+                        error: function (ex) {
+
+                        }
+                    });
+                } else {
+                     $("#select-filter-3").empty();
+                    $.ajax({
+                        type: 'POST',
+                        url: '@Url.Action("GetPSLNoForPSLExecution")',
+                        data: { model: $("#select-filter-1").val(), model: $("#select-filter-2").val(), pslstatus: $("#select-filter-4").val(), sostatus: $("#select-filter-5").val(), inventory: inventory, rental: rental, hid: hid, others: others},
+                        success: function (mems) {
+                            $.each(mems, function (i, member) {
+                                $("#select-filter-3").append('<option value="' + member.Value + '">' + member.Text + '</option>');
+                            });
+
+                            $("#select-filter-3").selectpicker('refresh');
+                        },
+                        error: function (ex) {
+
+                        }
+                    });
+                }
+            }
+
+            $("#select-filter-3").selectpicker('refresh');
+        })
+
+        //PSLStatus
+        $("#select-filter-4").selectpicker();
+        $("#cb4").on('click',function () {
+            var that = $(this);
+            if (that.prop("checked") == true) {
+                var selectFilter4 = $("#select-filter-4").val();
+                if ($("#select-filter-1").val().length > 0 || $("#select-filter-2").val().length > 0 || $("#select-filter-3").val().length > 0 || $("#select-filter-5").val().length > 0 || inventory == "on" || rental == "on" || hid == "on" || others == "on") {
+                    $("#select-filter-4").empty();
+                    $.ajax({
+                        type: 'POST',
+                        url: '@Url.Action("GetPSLStatusForPSLExecution")',
+                        data: { area: $("#select-filter-1").val(), model: $("#select-filter-2").val(), pslid: $("#select-filter-3").val(), sostatus: $("#select-filter-5").val(), inventory: inventory, rental: rental, hid: hid, others: others},
+                        success: function (mems) {
+                            $.each(mems, function (i, member) {
+                                $("#select-filter-4").append('<option value="' + member.Value + '">' + member.Text + '</option>');
+                            });
+
+                            $("#select-filter-4").selectpicker('refresh');
+                        },
+                        error: function (ex) {
+
+                        }
+                    });
+                } else {
+                     $("#select-filter-4").empty();
+                    $.ajax({
+                        type: 'POST',
+                        url: '@Url.Action("GetPSLStatusForPSLExecution")',
+                        data: { model: $("#select-filter-1").val(), model: $("#select-filter-2").val(), pslid: $("#select-filter-3").val(), sostatus: $("#select-filter-5").val(), inventory: inventory, rental: rental, hid: hid, others: others},
+                        success: function (mems) {
+                            $.each(mems, function (i, member) {
+                                $("#select-filter-4").append('<option value="' + member.Value + '">' + member.Text + '</option>');
+                            });
+
+                            $("#select-filter-4").selectpicker('refresh');
+                        },
+                        error: function (ex) {
+
+                        }
+                    });
+                }
+            }
+
+            $("#select-filter-4").selectpicker('refresh');
+        })
+
+        //SOStatus
+        $("#select-filter-5").selectpicker();
+        $("#cb5").on('click',function () {
+            var that = $(this);
+            if (that.prop("checked") == true) {
+                var selectFilter5 = $("#select-filter-5").val();
+                if ($("#select-filter-1").val().length > 0 || $("#select-filter-2").val().length > 0 || $("#select-filter-3").val().length > 0 || $("#select-filter-4").val().length > 0 || inventory == "on" || rental == "on" || hid == "on" || others == "on") {
+                    $("#select-filter-5").empty();
+                    $.ajax({
+                        type: 'POST',
+                        url: '@Url.Action("GetSoStatusForPSLExecution")',
+                        data: { area: $("#select-filter-1").val(), model: $("#select-filter-2").val(), pslid: $("#select-filter-3").val(), pslstatus: $("#select-filter-4").val(), inventory: inventory, rental: rental, hid: hid, others: others},
+                        success: function (mems) {
+                            $.each(mems, function (i, member) {
+                                $("#select-filter-5").append('<option value="' + member.Value + '">' + member.Text + '</option>');
+                            });
+
+                            $("#select-filter-5").selectpicker('refresh');
+                        },
+                        error: function (ex) {
+
+                        }
+                    });
+                } else {
+                     $("#select-filter-5").empty();
+                    $.ajax({
+                        type: 'POST',
+                        url: '@Url.Action("GetSoStatusForPSLExecution")',
+                        data: { model: $("#select-filter-1").val(), model: $("#select-filter-2").val(), pslid: $("#select-filter-3").val(), pslstatus: $("#select-filter-4").val(), inventory: inventory, rental: rental, hid: hid, others: others},
+                        success: function (mems) {
+                            $.each(mems, function (i, member) {
+                                $("#select-filter-5").append('<option value="' + member.Value + '">' + member.Text + '</option>');
+                            });
+
+                            $("#select-filter-5").selectpicker('refresh');
+                        },
+                        error: function (ex) {
+
+                        }
+                    });
+                }
+            }
+
+            $("#select-filter-5").selectpicker('refresh');
+        })
+
+        $("#cbinventory").on('click', function () {
+            var that = $(this);
+            if (that.prop("checked") == true) {
+                $("#cbothers").attr("disabled", true);
+            } else {
+                $("#cbothers").removeAttr("disabled");
+            }
+        });
+        $("#cbrental").on('click', function () {
+            var that = $(this);
+            if (that.prop("checked") == true) {
+                $("#cbothers").attr("disabled", true);
+            } else {
+                $("#cbothers").removeAttr("disabled");
+            }
+        });
+        $("#cbhid").on('click', function () {
+            var that = $(this);
+            if (that.prop("checked") == true) {
+                $("#cbothers").attr("disabled", true);
+            } else {
+                $("#cbothers").removeAttr("disabled");
+            }
+        });
+    });
+    </script>
+}

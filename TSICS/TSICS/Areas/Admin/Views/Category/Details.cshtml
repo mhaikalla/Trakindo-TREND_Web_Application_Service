@@ -1,0 +1,93 @@
+﻿@model Com.Trakindo.TSICS.Data.Model.ArticleCategory
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<main class="body position-relative d-flex flex-column">
+    <div data-active_page="masterCategory--all-category" class="content-wrap flex-fill">
+        <section class="position-relative mt-5">
+            <div class="container-fluid">
+                <div class="row no-gutters mb-5">
+                    <div class="col-lg-12 position-relative">
+                        <section class="card bg-white shadow-sm border-0 rounded-0">
+                            <div class="card-header bg-transparent border-0 ">
+                                <div class="row">
+                                    <div class="col-lg-6 d-flex align-items-center">
+                                        <div class="h3 font-secondary card-title mb-0">
+                                            <span>DETAIL</span> <span class="text-muted">CATEGORY</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 d-flex align-items-center">
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="text-center py-2">
+                                    <div class="card border-0 my-4">
+                                        <div class="position-relative">
+                                            <picture class="d-block atc-prev-wrap">
+                                                @if (Model.Icon == null)
+                                                {
+                                                    <img style="border-width: 3px !important; object-fit:fill;" src="@Url.Content("~/assets/images/repository/avatar-default.jpg")" onerror="this.onerror=null;this.src='@Url.Content("~/Upload/image-not-found.png")';" alt="" class="mr-3">
+                                                }
+                                                else
+                                                {
+                                                    <img style="border-width: 3px !important; object-fit:fill;" src="@Url.Content("~/Upload/Article/Icons/" + Model.Icon)" onerror="this.onerror=null;this.src='@Url.Content("~/Upload/image-not-found.png")';" alt="" class="mr-3">
+                                                }
+                                            </picture>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="row no-gutters text-muted mb-5 mb-xl-0">
+                                            <div class="col-xl-4 mb-0 mb-xl-2 d-flex justify-content-between">Name<span class="d-none d-xl-inline mx-1">:</span></div>
+                                            <div class="col-xl-8 mb-3 mb-lg-2 text-dark">@Model.Name</div>
+                                            <div class="col-xl-4 mb-0 mb-xl-2 d-flex justify-content-between">Parent Category<span class="d-none d-xl-inline mx-1">:</span></div>
+                                            <div class="col-xl-8 mb-3 mb-lg-2 text-dark">@ViewBag.ParentName</div>
+                                            <div class="col-xl-4 mb-0 mb-xl-2 d-flex justify-content-between">created Date<span class="d-none d-xl-inline mx-1">:</span></div>
+                                            <div class="col-xl-8 mb-3 mb-lg-2 text-dark">@Model.CreatedAt.ToString("dddd, dd MMMM yyyy - HH:mm")</div>
+                                            <div class="col-xl-4 mb-0 mb-xl-2 d-flex justify-content-between">Status<span class="d-none d-xl-inline mx-1">:</span></div>
+                                            @if (Model.Status == 1)
+                                            {
+                                                <div class="col-xl-8 mb-3 mb-lg-2 text-dark">Active</div>
+                                            }
+                                            else if (Model.Status == 2)
+                                            {
+                                                <div class="col-xl-8 mb-3 mb-lg-2 text-dark">Inactive</div>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </section>
+                      
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section style="bottom: 0;" class="position-sticky bg-light py-3 sticky-submit-form z-index-10">
+            <div class="container-fluid container-admin ml-0">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="d-none d-md-flex justify-content-between">
+                            <div>
+                                <a class="btn rounded-0 border-warning bg-light my-1" href="@Url.Action("index", "Category")" role="button">Back to List</a>
+                            </div>
+                            <div>
+                                <a class="btn rounded-0 border-warning bg-warning my-1" href="@Url.Action("Edit", "Category", new { id=Model.ArticleCategoryId })" role="button">Edit</a>
+                                <a class="btn rounded-0 border-warning bg-danger my-1" href="@Url.Action("Delete", "Category", new { id=Model.ArticleCategoryId})" role="button">Delete</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</main>
+

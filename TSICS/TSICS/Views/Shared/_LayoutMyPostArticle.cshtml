@@ -1,0 +1,80 @@
+﻿@using Com.Trakindo.TSICS.Data.Model
+@using TSICS.Helper
+
+<style>
+    #sidebar {
+        position: sticky;
+        height: calc(100vh - 4rem);
+        margin-bottom : 30px;
+    }
+</style>
+
+<aside id="sidebar" style="top: 7rem;" class="sidebar col-lg-3 d-none d-lg-flex flex-column align-self-start position-sticky">
+    <div class="sidebar-wrap flex-fill">
+        <section class="sidebar-nav mb-4">
+            <div class="card bg-transparent border-0">
+                <div class="card-header bg-transparent border-dark px-0">
+                    <h4 class="font-secondary card-title mb-0">TYPES OF LIBRARIES</h4>
+                </div>
+                <div class="card-body bg-transparent p-0">
+                    <ul class="nav d-flex flex-column">
+                        <li class="nav-item">
+                            <a data-active_nav="Article" href="@Url.Action("Index", "Library")" class="nav-link d-flex justify-content-between align-items-center text-muted px-0">
+                                <span>Articles</span>
+                            </a>
+                        </li>
+                        <li class="nav-item"><a data-active_nav="Literature" href="@Url.Action("Index", "Literation")" class="nav-link d-flex justify-content-between align-items-center text-muted px-0"><span>Literature</span></a></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        <section class="sidebar-nav mb-4">
+            <div class="card bg-transparent border-0">
+                <div class="card-header bg-transparent border-dark px-0">
+                    <h4 class="font-secondary card-title mb-0">YOUR ARTICLE</h4>
+                </div>
+                <div class="card-body bg-transparent p-0 mt-3">
+                    <div class="accordion">
+                        <div class="card bg-transparent border-0">
+                            <div class="card-header border-0 bg-transparent p-0">
+                                <li class="nav-item list-unstyled"> <a data-active_nav="Article--Create" href="@Url.Action("Create", "Library")" class="nav-link d-flex justify-content-between align-items-center text-muted px-0 ">Create Article</a></li>
+                                <li class="nav-item list-unstyled"> <a data-active_nav="Article--List" href="@Url.Action("List", "Library")" class="nav-link d-flex justify-content-between align-items-center text-muted px-0">My Post</a></li>
+                                <li class="nav-item list-unstyled">
+                                    <a data-active_nav="Article--Draft" href="@Url.Action("Draft", "Library")" class="nav-link d-flex justify-content-between align-items-center text-muted px-0">Draft Article</a>
+                                </li>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="sidebar-recent mt-3 mb-4">
+            <div class="card bg-transparent border-0">
+                <div class="card-header bg-transparent border-dark px-0">
+                    @if (ViewBag.UseFullLink != null)
+                    {
+                        <h4 class="font-secondary card-title mb-0">USEFULL LINK</h4>
+                    }
+                    else
+                    {
+                        <h4 class="font-secondary card-title mb-0">NO USEFULL LINK RECENTLY</h4>
+                    }
+                </div>
+                @if (ViewBag.UseFullLink != null)
+                {
+                    <div class="card-body bg-transparent p-0" style="overflow:auto; height:300px;">
+                        <div class="list-group list-group-flush">
+                            @foreach (Article usefull in ViewBag.UseFullLink)
+                            {
+                                <a href="@usefull.Description" target="_blank" class="list-group-item list-group-item-action bg-transparent text-warning d-flex justify-content-between align-items-center px-0 py-sm-2" target="_blank">
+                                    <span><div class="text-dark" style="font-size:12.5px">@usefull.Title</div></span>
+                                </a>
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+        </section>
+
+    </div>
+</aside>

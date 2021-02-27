@@ -1,0 +1,19 @@
+﻿@{
+    ViewBag.Title = "GetPSLIdPipPriority";
+    Layout = "~/Views/Shared/_LayoutBlank.cshtml";
+
+}
+<ul id="sidebar-nav" class="nav d-flex flex-column accordion-nav">
+    @foreach (var item in ViewBag.ListPSLIdPipPriority)
+    {
+        <li class="nav-item">
+            <div class="nav-link d-flex justify-content-between">
+                <div class="d-flex align-items-center">
+                    <a href="#child-@item" class="btn-toggle-nav_child collapsed">&nbsp;&nbsp;@item</a>
+                    <a href="#">&nbsp;&nbsp;</a>
+                </div>
+            </div>
+            <div id="child-@item" class="is-child show"></div>
+        </li>
+    }
+</ul>

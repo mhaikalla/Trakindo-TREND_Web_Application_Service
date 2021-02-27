@@ -1,0 +1,662 @@
+﻿@model Com.Trakindo.TSICS.Data.Model.Ticket
+@using Com.Trakindo.TSICS.Data.Model
+@using System.Web.Mvc;
+@{
+    ViewBag.Title = "Detail";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+
+    String colorGraph1 = "", colorGraph2 = "", colorGraph3 = "", Message = "", AlertColor = "",RoleColor="", colorSubmiter ="", colorResponder="";
+   
+    if (ViewBag.Submiter != null)
+    {
+        if (ViewBag.Submiter.RoleId > 1 && ViewBag.Submiter.Username != "Guest")
+        {
+            colorSubmiter = "border border-warning";
+        }
+        else if (ViewBag.Submiter.RoleId == 1 && ViewBag.Submiter.Username != "Guest")
+        {
+            colorSubmiter = "border border-success";
+        }
+    }
+    if (ViewBag.Responder != null)
+    {
+        if (Model.TicketCategoryId != 9)
+        {
+            if (ViewBag.Responder.RoleId > 1 && ViewBag.Responder.Username != "Guest")
+            {
+                colorResponder = "border border-warning";
+            }
+            else if (ViewBag.Responder.RoleId == 1 && ViewBag.Responder.Username != "Guest")
+            {
+                colorResponder = "border border-success";
+            }
+        }
+    }
+
+    if (Model.DueDateAnswer.Value.Date < DateTime.Today)
+    {
+        colorGraph1 = "danger";
+        colorGraph2 = "danger";
+        colorGraph3 = "danger";
+        AlertColor = "danger";
+        Message = "Your Time Limit Has Ran Out";
+
+    }
+    else if (Model.DueDateAnswer.Value.Date == DateTime.Today)
+    {
+        colorGraph1 = "warning";
+        colorGraph2 = "warning";
+        colorGraph3 = "warning";
+        AlertColor = "danger";
+        Message = "This is your last day to reply";
+    }
+    else if (Model.DueDateAnswer.Value.Date > DateTime.Today)
+    {
+        if (DateTime.Today.Subtract(Model.DueDateAnswer.Value).Days == -1)
+        {
+            colorGraph1 = "success";
+            colorGraph2 = "success";
+            colorGraph3 = "secondary";
+            AlertColor = "danger";
+            Message = "You Have 1 Day left to Reply";
+        }
+        else
+        {
+            colorGraph1 = "success";
+            colorGraph2 = "secondary";
+            colorGraph3 = "secondary";
+            AlertColor = "secondary";
+            Message = Model.DueDateAnswer.Value.Subtract(DateTime.Today).Days.ToString() + " days remaining";
+
+        }
+    }
+
+}
+
+
+<main class="body position-relative d-flex flex-column">
+    <div data-active_page="admin--help-desk" class="content-wrap flex-fill">
+        <section class="position-relative mt-5">
+            <div class="container-fluid">
+                <div class="row no-gutters mb-5">
+                    <div class="col-lg-12 position-relative">
+                        <section class="position-relative mt-1">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-lg-12 position-relative">
+                                        <section class="card bg-white shadow-sm border-0 mb-5">
+                                            <div class="card-header bg-transparent border-0">
+                                                <div class="row">
+                                                    <div class="col-lg-6 d-flex align-items-center">
+                                                        <div class="h3 font-secondary card-title mb-0">
+                                                            <span>HELP DESK</span> <span class="text-muted">DETAIL</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6 mt-3 mt-lg-0">
+                                                        <div class="status text-lg-right">
+                                                            <div class="text-muted">Feedback Status <strong class="text-dark"></strong></div>
+                                                            @if (Model.Status == 2)
+                                                            {
+                                                                if (Model.NextCommenter.Equals(0))
+                                                                {
+                                                                    <div class="text-danger"><em>waiting your feedback</em><span class="badge badge-@AlertColor text-white ml-2" id="alertReply">@Message</span></div>
+                                                                }
+                                                                else
+                                                                {
+
+                                                                    if (Convert.ToInt32(Session["useridbackend"]) == Model.NextCommenter)
+                                                                    {
+                                                                        <div class="text-danger"><em>waiting your feedback</em><span class="badge badge-@AlertColor text-white ml-2" id="alertReply">@Message</span></div>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <div class="text-dark"><em>PSA</em></div>
+                                                                    }
+                                                                }
+                                                                <div style="max-width: 250px" class="progress-wrap d-flex ml-auto mt-2 w-100">
+                                                                    <div style="height: 4px;" class="progress flex-fill rounded-0 mx-1">
+                                                                        <div style="width: 100%;" class="progress-bar bg-@colorGraph1"></div>
+                                                                    </div>
+                                                                    <div style="height: 4px;" class="progress flex-fill rounded-0 mx-1">
+                                                                        <div style="width: 100%;" class="progress-bar bg-@colorGraph2"></div>
+                                                                    </div>
+                                                                    <div style="height: 4px;" class="progress flex-fill rounded-0 mx-1">
+                                                                        <div style="width: 100%;" class="progress-bar bg-@colorGraph3"></div>
+                                                                    </div>
+                                                                </div>
+                                                            }
+                                                            else if (Model.Status == 3)
+                                                            {
+                                                                <div class="text-danger"><em>Closed</em></div>
+                                                                <div class="">Turn Around Time : </div>
+                                                                if (ViewBag.ResolutionData.CreatedAt != null)
+                                                                {
+                                                                    TimeSpan DayDiff = ViewBag.ResolutionData.CreatedAt.Subtract(Convert.ToDateTime(Model.CreatedAt.Value));
+
+                                                                    if (DayDiff.Days > 0)
+                                                                    {
+                                                                        <td>@(DayDiff.Days > 1 ? DayDiff.Days + " Days" : DayDiff.Days + " Day"), @(DayDiff.Days > 1 ? DayDiff.Hours + " Hours" : DayDiff.Hours + " Hour")</td>
+                                                                                }
+                                                                                else if (DayDiff.Days == 0)
+                                                                                {
+                                                                                    if (DayDiff.Hours > 0)
+                                                                                    {
+                                                                            <td>@(DayDiff.TotalHours > 1 ? DayDiff.Hours + " Hours" : DayDiff.Hours + " Hour" ), @(DayDiff.Days > 1 ? DayDiff.Minutes + " Minutes" : DayDiff.Minutes + " Minute")</td>
+                                                                                    }
+                                                                                    else if (DayDiff.Hours == 0)
+                                                                                    {
+                                                                            <td>@(DayDiff.Minutes > 1 ? DayDiff.Minutes + " Minutes" : DayDiff.Minutes + " Minute" )</td>
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                    <td>Still Ongoing</td>
+                                                                            }
+
+
+                                                            }
+                                                            else if (Model.Status == 6)
+                                                            {
+                                                                <div class="text-danger"><em>Solved</em></div>
+                                                            }
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-lg-6">
+                                                        <div class="row no-gutters text-muted mb-5 mb-xl-0">
+                                                            <div class="col-xl-4 mb-0 mb-lg-2 d-flex justify-content-between">TR Type<span class="d-none d-xl-inline mx-1">:</span></div>
+                                                            <div class="col-xl-8 mb-3 mb-lg-2">
+                                                                <strong>Help Desk</strong>
+                                                            </div>
+                                                            <div class="col-xl-4 mb-0 mb-lg-2 d-flex justify-content-between">TR Number<span class="d-none d-xl-inline mx-1">:</span></div>
+                                                            <div class="col-xl-8 mb-3 mb-lg-2">
+                                                                <strong>@Model.TicketNo</strong>
+                                                            </div>
+                                                            <div class="text-muted mb-2">
+                                                                <div>TITLE</div>
+                                                                <div class="text-dark">@Model.Title</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <div class="row no-gutters text-muted mb-xl-0">
+                                                            <div class="col-xl-4 mb-0 mb-xl-2 d-flex justify-content-between">Created At<span class="d-none d-xl-inline mx-1">:</span></div>
+                                                            <div class="col-xl-8 mb-3 mb-lg-2 text-dark">@(!String.IsNullOrEmpty(Model.CreatedAt.Value.ToString("dd MMMM yyyy")) ? Model.CreatedAt.Value.ToString("dd MMMM yyyy") : "-")</div>
+                                                            <div class="col-xl-4 mb-0 mb-xl-2 d-flex justify-content-between">Submiter<span class="d-none d-xl-inline mx-1">:</span></div>
+                                                            <div class="col-xl-8 mb-3 mb-lg-2 text-dark ">@ViewBag.Submiter.Name</div>
+                                                            <div class="col-xl-4 mb-0 mb-xl-2 d-flex justify-content-between">Role Submiter<span class="d-none d-xl-inline mx-1">:</span></div>
+                                                            <div class="col-xl-8 mb-3 mb-lg-2 text-dark">@ViewBag.RoleName</div>
+                                                            @if (ViewBag.Area != null)
+                                                            {
+                                                                <div class="col-xl-4 mb-0 mb-xl-2 d-flex justify-content-between">Area Location<span class="d-none d-xl-inline mx-1">:</span></div>
+                                                                <div class="col-xl-8 mb-3 mb-lg-2 text-dark">@ViewBag.Area</div>
+                                                            }
+                                                            else if (ViewBag.Branch != null)
+                                                            {
+                                                                <div class="col-xl-4 mb-0 mb-xl-2 d-flex justify-content-between">Branch Location<span class="d-none d-xl-inline mx-1">:</span></div>
+                                                                <div class="col-xl-8 mb-3 mb-lg-2 text-dark">@ViewBag.Branch</div>
+                                                            }
+                                                            else if (ViewBag.Area == null && ViewBag.Branch == null)
+                                                            {
+                                                                <div class="col-xl-4 mb-0 mb-xl-2 d-flex justify-content-between">Location<span class="d-none d-xl-inline mx-1">:</span></div>
+                                                                <div class="col-xl-8 mb-3 mb-lg-2 text-dark">HEAD OFFICE</div>
+                                                            }
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="card border-0 mt-3">
+
+                                                    <div class="d-flex align-items-center">
+                                                        <div class="flex-grow-1">
+                                                            <hr class="my-1">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="card-body px-0 px-lg-3">
+                                                        <div class="detail">
+                                                            <div class="row no-gutters mb-4">
+                                                                <div class="text-muted mb-4">
+                                                                    <div>DESCRIPTION</div>
+                                                                    @if (String.IsNullOrWhiteSpace(Model.Description))
+                                                                    {
+                                                                        <td>-</td>
+                                                                    }
+                                                                    else
+                                                                    {                                                                        
+                                                                       <td>@Html.Raw(Convert.ToString(Model.Description))</td>
+                                                                      
+                                                                    }
+                                                                </div>
+                                                            </div>
+                                                            @if (((IEnumerable<dynamic>)ViewBag.Attachments).Count() > 0)
+                                                            {
+                                                                int attachmentIndex = 1;
+                                                                <div class="row no-gutters mb-4">
+                                                                    <div class="text-muted">
+                                                                        <div>ATTACHMENT</div>
+                                                                        <div id="attachment-item-output" class="row">
+                                                                            @foreach (TicketAttachmentsAPI attachment in ViewBag.Attachments)
+                                                                            {
+                                                                                <div class="attachment-item col-6 col-sm-auto my-2">
+                                                                                    <div class="card border-0">
+                                                                                        <label class="position-relative">
+
+                                                                                            <picture class="d-block atc-prev-wrap text-center">
+                                                                                                @{
+                                                                                                    string[] imgExt = { ".jpg", ".png", ".jpeg", ".gif", ".bmp", ".tif", ".tiff" };
+                                                                                                    if (!imgExt.Contains(attachment.Type))
+                                                                                                    {
+                                                                                                        <picture class="d-block atc-prev-wrap text-center">
+                                                                                                            @if (attachment.Type.Substring(1).Contains("doc"))
+                                                                                                            {
+                                                                                                                <i style="height: 110px; font-size: 3rem; line-height: 110px; width: 110px; border: solid 1px #ddd;" class="fa fa-file-word text-muted mb-2"></i>
+                                                                                                            }
+                                                                                                            else if (attachment.Type.Substring(1).Contains("xlx") || attachment.Type.Substring(1).Contains("xls"))
+                                                                                                            {
+                                                                                                                <i style="height: 110px; font-size: 3rem; line-height: 110px; width: 110px; border: solid 1px #ddd;" class="fa fa-file-excel text-muted mb-2"></i>
+                                                                                                            }
+                                                                                                            else if (attachment.Type.Substring(1).Contains("pdf"))
+                                                                                                            {
+                                                                                                                <i style="height: 110px; font-size: 3rem; line-height: 110px; width: 110px; border: solid 1px #ddd;" class="fa fa-file-pdf text-muted mb-2"></i>
+                                                                                                            }
+                                                                                                            else if (attachment.Type.Substring(1).Contains("ppt"))
+                                                                                                            {
+                                                                                                                <i style="height: 110px; font-size: 3rem; line-height: 110px; width: 110px; border: solid 1px #ddd;" class="fa fa-file-powerpoint text-muted mb-2"></i>
+                                                                                                            }
+                                                                                                            else if (attachment.Type.Substring(1).Contains("rar") || attachment.Type.Substring(1).Contains("zip"))
+                                                                                                            {
+                                                                                                                <i style="height: 110px; font-size: 3rem; line-height: 110px; width: 110px; border: solid 1px #ddd;" class="fa fa-file-archive text-muted mb-2"></i>
+                                                                                                            }
+                                                                                                            else
+                                                                                                            {
+                                                                                                                <i style="height: 110px; font-size: 3rem; line-height: 110px; width: 110px; border: solid 1px #ddd;" class="fa fa-file text-muted mb-2"></i>
+                                                                                                            }
+                                                                                                        </picture>
+                                                                                                    }
+                                                                                                    else
+                                                                                                    {
+                                                                                                        @*<img src="@ticketAttachment.Name" alt="" style="width: 110px; height: 110px;" class="card-img-top object-fit-cover attachment-preview rounded-0 img-thumbnail mb-2" id="current-image-@currentAttachmentsIndex">*@
+                                                                                                        <picture class="d-block atc-prev-wrap text-center">
+                                                                                                            <img src="@attachment.Name" alt="Image Not Found" style="width: 120px; height: 120px;" class="card-img-top object-fit-cover attachment-preview mb-2 img-zoomable">
+                                                                                                        </picture>
+                                                                                                    }
+                                                                                                }
+                                                                                            </picture>
+                                                                                        </label>
+                                                                                        <div class="d-flex justify-content-between align-items-center "><span class="attachment-filename"><a href="@attachment.Uri" target="_blank">@attachment.NameWithOutBase64</a></span></div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                attachmentIndex = attachmentIndex + 1;
+                                                                            }
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            }
+                                                            else
+                                                            {
+                                                                                                        <div class="row no-gutters mb-4">
+                                                                                                            <div class="text-muted">
+                                                                                                                <div>ATTACHMENT : - </div>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                            }
+                                                            @if (((IEnumerable<dynamic>)ViewBag.Tags).Count() > 0)
+                                                            {
+                                                                <div class="row no-gutters mb-4">
+                                                                    <div class="text-muted mb-4">
+                                                                        <div>Tags</div>
+                                                                        <div id="add-tag-list" class="row no-gutters">
+                                                                            <div class="container">
+                                                                                <div class="row my-4">
+                                                                                    @foreach (var tag in ViewBag.Tags)
+                                                            {
+                                                                                        <div class="bg-secondary rounded-pill text-white px-3 py-2 mr-3"><span>@tag.Name</span></div>
+                                                                                    }
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            }
+                                                            else
+                                                            {
+                                                                <div class="row no-gutters mb-4">
+                                                                    <div class="text-muted mb-4">
+                                                                        <div>Tags : -</div>
+                                                                    </div>
+                                                                </div>
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </section>
+                                        @if (Model.Status.Equals(6) || Model.Status.Equals(3))// TR requested to close or closed
+                                        {
+                                            <div class="position-relative">
+                                                <section class="card bg-white shadow-sm border-0 mb-5">
+                                                    <nav class="card-navbar navbar navbar-dark bg-secondary text-white">
+                                                        <div class="left d-flex align-items-center">
+                                                            <div class="icon mr-2"><i class="far fa-lightbulb fa-2x"></i></div>
+                                                            <div class="h4 font-secondary mb-0">RESOLUTION</div>
+                                                        </div>
+                                                        <div class="right">
+                                                            <button data-toggle="collapse" data-target="#collapse-target-2" type="button" class="btn btn-sm bg-transparent rounded-pill text-white btn-remove"><i class="fa fa-chevron-right"></i></button>
+                                                        </div>
+                                                    </nav>
+                                                    <div id="collapse-target-2" class="collapse show">
+                                                        <div class="card-body bg-warning light">
+                                                            <div class="chat-notes no-ribbon">
+                                                                <div class="date"><small><strong class="text-warning">Resolution  </strong><span class="text-muted">@ViewBag.Resolution.Day </span><strong class="text-dark">@ViewBag.Resolution.Time</strong></small></div>
+                                                                <div class="sender"><span class="text-danger">@ViewBag.Resolution.CommenterName</span><small class="ml-1 text-muted"><em>Responder</em></small><i class="icon-verified-user d-inline-block ml-2"><img src="@Url.Content("~/assets/images/repository/chat-verified-user.png")" alt=""></i></div>
+                                                                <div class="text">@Html.Raw(ViewBag.Resolution.Description)</div>
+                                                            </div>
+                                                            <div class="text-center">
+                                                                @if (Model.Status.Equals(6))
+                                                                {
+                                                                    <div>This technical request responder has <strong>posted solution but submiter currently haven't rated back the responder.</strong></div>
+                                                                }
+                                                                else if (Model.Status.Equals(3))
+                                                                {
+                                                                    <div>This technical request has <strong>closed</strong> and meet solution.</div>
+                                                                }
+
+                                                                <hr />
+
+                                                                <div class="row justify-content-md-center">
+                                                                    <div class="col-5">
+                                                                        <div><small class="text-uppercase mb-2">submiter</small></div>
+                                                                        <img src="@Url.Content("~/Upload/UserProfile/" + ViewBag.Submiter.PhotoProfile)" onerror="this.onerror=null;this.src='@Url.Content("~/assets/images/repository/avatar-default.jpg")';" alt="" style="width: 60px; height: 60px; border-width: 2px !important;" class="object-fit-cover @colorSubmiter rounded-circle">
+                                                                        <div class="my-2">Rated for @ViewBag.Submiter.Name</div>
+                                                                        @if (ViewBag.Stars != null)
+                                                                        {
+                                                                            <ul id="stars" class="list-unstyled">
+                                                                                @{
+                                                                                    int starSelect = 1;
+                                                                                    int starUnselect = 5 - ViewBag.Stars.Rate;
+                                                                                    int i = 1;
+                                                                                    while (starSelect <= ViewBag.Stars.Rate)
+                                                                                    {
+                                                                                        <li class="star d-inline-block"><i class="fa fa-star fa-fw text-warning"></i></li>
+                                                                                        starSelect += 1;
+                                                                                    }
+                                                                                    while (i <= starUnselect)
+                                                                                    {
+                                                                                        <li class="star d-inline-block"><i class="fa fa-star fa-fw"></i></li>
+                                                                                        i += 1;
+                                                                                    }
+                                                                                }
+                                                                            </ul>
+                                                                                    if (!String.IsNullOrWhiteSpace(ViewBag.Stars.Description))
+                                                                                    {
+                                                                                        <div><small class="text-uppercase">Responder Message Rated</small></div>
+                                                                                        <div>" @ViewBag.Stars.Description "</div>
+                                                                                        }
+
+                                                                                    }
+                                                                                    else
+                                                                                    {
+
+                                                                                    }
+                                                                    </div>
+                                                                    <div class="col-5">
+
+                                                                        <div><small class="text-uppercase mb-2">Responder</small></div>
+                                                                        <img src="@Url.Content("~/Upload/UserProfile/" + ViewBag.Responder.PhotoProfile)" onerror="this.onerror=null;this.src='@Url.Content("~/assets/images/repository/avatar-default.jpg")';" alt="" style="width: 60px; height: 60px; border-width: 2px !important;" class="object-fit-cover @colorResponder rounded-circle">
+                                                                        <div class="my-2">Rated for @ViewBag.Responder.Name</div>
+                                                                        @if (ViewBag.StarsResponder != null)
+                                                                        {
+                                                                            <ul id="stars" class="list-unstyled">
+                                                                                @{
+                                                                                    int starSelect = 1;
+                                                                                    int starUnselect = 5 - ViewBag.StarsResponder.Rate;
+                                                                                    int i = 1;
+                                                                                    while (starSelect <= ViewBag.StarsResponder.Rate)
+                                                                                    {
+                                                                                        <li class="star d-inline-block"><i class="fa fa-star fa-fw text-warning"></i></li>
+                                                                                        starSelect += 1;
+                                                                                    }
+                                                                                    while (i <= starUnselect)
+                                                                                    {
+                                                                                        <li class="star d-inline-block"><i class="fa fa-star fa-fw"></i></li>
+                                                                                        i += 1;
+                                                                                    }
+                                                                                }
+                                                                            </ul>
+                                                                                    if (!String.IsNullOrWhiteSpace(ViewBag.StarsResponder.Description))
+                                                                                    {
+                                                                                        <div><small class="text-uppercase">Submiter Message Rated</small></div>
+                                                                                        <div>" @ViewBag.StarsResponder.Description "</div>
+                                                                                        }
+
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        <div class="my-2 text-danger">Waiting @ViewBag.Submiter.Name to give a rating</div>
+                                                                                    }
+                                                                    </div>
+                                                                </div>
+
+
+
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </section>
+                                            </div>
+                                        }
+                                        @if (Model.Status != 1)
+                                        {
+                                            <div class="position-relative">
+                                                <section class="discussion-wrap card bg-white shadow-sm border-0 mb-5">
+                                                    <nav class="card-navbar navbar navbar-dark bg-secondary text-white">
+                                                        <div class="left d-flex align-items-center">
+                                                            <div class="icon mr-2"><i class="fa fa-comment-dots fa-2x"></i></div>
+                                                            <div class="h4 font-secondary mb-0">DISCUSSION</div>
+                                                        </div>
+                                                        <div class="right">
+                                                            <button data-toggle="collapse" data-target="#collapse-target-1" type="button" class="btn btn-sm bg-transparent rounded-pill text-white btn-remove"><i class="fa fa-chevron-right"></i></button>
+                                                        </div>
+                                                    </nav>
+                                                    <div id="collapse-target-1" class="collapse show">
+                                                        <div class="chat-bubbles card-body">
+                                                            <div data-ajax_api='@Url.Content("~/api/ApiJsonCommentTR/" + Model.TicketId + "?uid=" + Session["useridbackend"] + "&isBackend=true")' data-image_path="@Url.Content("~/assets/images/repository/")" id="chat-bubbles-list"></div>
+                                                        </div>
+
+                                                        <div class="chat-form card-body">
+                                                            <form id="form-new-chat" data-submit_new_chat_api="@Url.Content("~/TechnicalRequest/AddDiscussionBackend")" novalidate method="POST" enctype="multipart/form-data" class="needs-validation">
+                                                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                                                @Html.HiddenFor(model => model.TicketId)
+                                                                <input type="hidden" name="UserToRate" value="@Model.Submiter">
+                                                                <div id="modal--rate-responder" class="modal fade">
+                                                                    <div style="max-width: 25rem" class="modal-dialog modal-dialog-centered">
+                                                                        <div class="modal-content">
+                                                                            <div class="modal-body pb-0">
+                                                                                <button type="button" data-dismiss="modal" class="close close-btn-rating"><span aria-hidden="true">&times;</span></button>
+                                                                            </div>
+                                                                            <div class="modal-body pt-0">
+                                                                                <div class="form-group d-flex justify-content-center">
+                                                                                    <div class="media align-items-center">
+                                                                                        @if (ViewBag.UserLevelName.Contains("Yellow"))
+                                                                                            {
+                                                                                                RoleColor = "border border-warning";
+                                                                                            }
+                                                                                            else if (ViewBag.UserLevelName.Contains("Green"))
+                                                                                            {
+                                                                                                RoleColor = "border border-success";
+                                                                                            }
+                                                                                        <img style="border-width: 3px !important; width: 80px; height: 80px;" src="@Url.Content("~/assets/images/repository/avatar-default.jpg")" alt="" class="object-fit-cover rounded-circle @RoleColor img-thumbnail mr-3"><div class="media-body">
+                                                                                            <div class="mb-1">
+                                                                                                <div> <small class="text-muted">Thank you!</small></div>
+                                                                                                <div>Please rate submiter</div>
+                                                                                            </div>
+                                                                                            <div class="mb-2">
+                                                                                                <div> <small><em class="text-muted">Submiter</em></small></div>
+                                                                                                <div><strong class="m-0">@ViewBag.Submiter.Name</strong></div>
+                                                                                            </div>
+                                                                                            <div class="rating-stars">
+                                                                                                <ul id="stars" class="list-unstyled">
+                                                                                                    <li data-value="1" class="star d-inline-block"><i class="fa fa-star fa-fw"></i></li>
+                                                                                                    <li data-value="2" class="star d-inline-block"><i class="fa fa-star fa-fw"></i></li>
+                                                                                                    <li data-value="3" class="star d-inline-block"><i class="fa fa-star fa-fw"></i></li>
+                                                                                                    <li data-value="4" class="star d-inline-block"><i class="fa fa-star fa-fw"></i></li>
+                                                                                                    <li data-value="5" class="star d-inline-block"><i class="fa fa-star fa-fw"></i></li>
+                                                                                                </ul>
+                                                                                                <input type="text" name="rate" data-value-toggle="{'target': '#write-review', 'min_value': 3}" class="d-none rate-value">
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="form-group">
+                                                                                    <textarea id="write-review" style="display:none;" disabled rows="4" name="review" placeholder="Write your review" required class="form-control rounded-lg bg-light"></textarea>
+                                                                                </div>
+                                                                                <div class="form-group text-center mb-0">
+                                                                                    <button type="button" disabled id="btn-submit-resolution" class="btn btn-warning px-4 submit-rating">SUBMIT</button>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                @if(Model.Status == 3)
+                                                                    {
+                                                                    <div class="alert alert-white text-black my-0 text-center" role="alert">
+                                                                        Insert Comment is not available because this technical request has been <strong>Closed</strong>
+                                                                    </div>
+                                                                    }
+                                                                    else if (Model.Status == 6)
+                                                                    {
+                                                                    <div class="alert alert-white text-black my-0 text-center" role="alert">
+                                                                        Reply Session has been ended because responder in this technical request has meet solution and <strong>Solved</strong>
+                                                                    </div>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                    <div class="form-group text-muted insert-comment-wrap mb-4">
+                                                                        <label><strong>Insert Comment</strong></label>
+                                                                        <textarea name="comment-text" id="insertComment" required rows="4" class="form-control"></textarea>
+                                                                        <em class="small form-text text-danger invalid-feedback">Field cannot be empty</em>
+                                                                    </div>
+                                                                        <div class="form-group">
+                                                                            <div id="comment-add-attachment" class="row"></div>
+
+                                                                            <div class="row">
+                                                                                <div class="col-lg-6">
+                                                                                    <button id="btn-comment_add_attachment" data-attachment_add_item="#comment-add-attachment" type="button" class="btn btn-secondary btn-secondary ml-2 mb-0"><i class="fa fa-paperclip"></i></button>
+
+                                                                                </div>
+                                                                                <div class="col-lg-6 d-flex justify-content-end">
+                                                                                    <div class="dropup">
+                                                                                        <button data-toggle="dropdown" type="button" class="btn btn-warning btn-chat-submit px-4"><i class="fas fa-paper-plane"></i></button>
+                                                                                        <div class="dropdown-menu dropdown-menu-right text-nowrap">
+                                                                                            <div class="list-group list-group-flush">
+
+                                                                                                <label class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                                                                                                    <input type="radio" name="chat-type" value="2" class="d-none"><i class="fa fa-reply text-muted small mr-3"></i><span>REPLY as Notes</span>
+                                                                                                </label>
+                                                                                                @if (Model.Status != 6)
+                                                                                                {
+                                                                                                    <label class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                                                                                                        <input type="radio" name="chat-type" value="3" class="d-none"><i class="fas fa-lightbulb text-muted small mr-3"></i><span>Write Resolution</span>
+                                                                                                    </label>
+                                                                                                }
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+
+                                                                        </div>
+                                                                    }
+                                                            </form>
+                                                        </div>
+
+                                                        <div id="modal--save-pdf" class="modal fade">
+                                                            <div style="max-width: 25rem" class="modal-dialog modal-dialog-centered">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-body pb-0">
+                                                                        <button type="button" data-dismiss="modal" class="close"><span aria-hidden="true">&times;</span></button>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        @using (Html.BeginForm("GeneratePdf", "TechnicalRequest", FormMethod.Get, new { target = "_blank" }))
+                                                                        {
+                                                                            <input type="hidden" name="ticketId" value="@Model.TicketId" />
+                                                                            <div class="form-group">
+                                                                                <div class="custom-control custom-checkbox">
+                                                                                    <input type="checkbox" name="tec" id="pdf-field--tr" value="1" checked class="custom-control-input">
+                                                                                    <label for="pdf-field--tr" class="custom-control-label">Technical Request</label>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <div class="custom-control custom-checkbox">
+                                                                                    <input type="checkbox" name="res" id="pdf-field--r" value="1" checked class="custom-control-input">
+                                                                                    <label for="pdf-field--r" class="custom-control-label">Resolution</label>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <div class="custom-control custom-checkbox">
+                                                                                    <input type="checkbox" name="not" id="pdf-field--n" value="1" checked class="custom-control-input">
+                                                                                    <label for="pdf-field--n" class="custom-control-label">Notes</label>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <div class="custom-control custom-checkbox">
+                                                                                    <input type="checkbox" name="com" id="pdf-field--c" value="1" checked class="custom-control-input">
+                                                                                    <label for="pdf-field--c" class="custom-control-label">Comments</label>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <button type="submit" class="btn btn-primary">Submit</button>
+                                                                            </div>
+                                                                        }
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </section>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</main>
+
+@section ScriptBottom {
+    <script type="text/javascript">
+        $('.star').on('click', function () {
+            $('.submit-rating').attr('disabled', false);
+        })
+
+        $('.close-btn-rating').on('click', function () {
+            $('.submit-rating').attr('disabled', true);
+        })
+
+        $(document).ready(function () {
+            CKEDITOR.replace('insertComment', {
+                height: 150,
+                toolbar:
+                [
+                    { name: 'basicstyles', items: ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat'] },
+                    {
+                        name: 'paragraph', items: ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', 'CreateDiv',
+                            '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'BidiLtr', 'BidiRtl']
+                    },
+                    { name: 'tools', items: ['Maximize', 'ShowBlocks', '-'] }
+                ]
+            });
+        });
+    </script>
+}

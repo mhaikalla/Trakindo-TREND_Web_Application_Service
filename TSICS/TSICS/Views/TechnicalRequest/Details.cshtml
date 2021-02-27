@@ -1,0 +1,1773 @@
+﻿@using Com.Trakindo.TSICS.Data.Model
+@model Com.Trakindo.TSICS.Data.Model.Ticket
+@using System.Text.RegularExpressions;
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    String colorGraph1 = "", colorGraph2 = "", colorGraph3 = "", Message = "", AlertColor = "", RoleColor = "", colorSubmiter = "", colorResponder = "";
+    if (ViewBag.Submiter != null)
+    {
+
+        if (ViewBag.Submiter.RoleId > 1 && ViewBag.Submiter.Username != "Guest")
+        {
+            colorSubmiter = "border border-warning";
+        }
+        else if (ViewBag.Submiter.RoleId == 1 && ViewBag.Submiter.Username != "Guest")
+        {
+            colorSubmiter = "border border-success";
+        }
+
+    }
+    if (ViewBag.Responder != null)
+    {
+        if (Model.TicketCategoryId != 9)
+        {
+            if (ViewBag.Responder.RoleId > 1 && ViewBag.Responder.Username != "Guest")
+            {
+                colorResponder = "border border-warning";
+            }
+            else if (ViewBag.Responder.RoleId == 1 && ViewBag.Responder.Username != "Guest")
+            {
+                colorResponder = "border border-success";
+            }
+        }
+    }
+    if (Model.DueDateAnswer != null)
+    {
+        if (Model.DueDateAnswer.Value.Date < DateTime.Today)
+        {
+            colorGraph1 = "danger";
+            colorGraph2 = "danger";
+            colorGraph3 = "danger";
+            AlertColor = "danger";
+            Message = "Your Time Limit Has Ran Out";
+
+        }
+        else if (Model.DueDateAnswer.Value.Date == DateTime.Today)
+        {
+            colorGraph1 = "warning";
+            colorGraph2 = "warning";
+            colorGraph3 = "warning";
+            AlertColor = "danger";
+            Message = "This is your last day to reply";
+        }
+        else if (Model.DueDateAnswer.Value.Date > DateTime.Today)
+        {
+            if (DateTime.Today.Subtract(Model.DueDateAnswer.Value).Days == -1)
+            {
+                colorGraph1 = "success";
+                colorGraph2 = "success";
+                colorGraph3 = "secondary";
+                AlertColor = "danger";
+                Message = "You Have 1 Day left to Reply";
+            }
+            else if (DateTime.Today.Subtract(Model.DueDateAnswer.Value).Days < -1)
+            {
+                colorGraph1 = "success";
+                colorGraph2 = "secondary";
+                colorGraph3 = "secondary";
+                AlertColor = "secondary";
+                Message = Model.DueDateAnswer.Value.Subtract(DateTime.Today).Days.ToString() + " days remaining";
+
+            }
+        }
+    }
+    Regex regex = new Regex(@"\s");
+    string category = ViewBag.CategoryName.ToLower();
+    category = regex.Replace(category, "-");
+
+    string[] imgExt = { ".jpg", ".png", ".jpeg", ".gif", ".bmp", ".tif", ".tiff", ".ico", ".psd", ".ai", ".svg", ".ps" };
+    string[] compressExt = { ".rar", ".zip", ".7zip", ".7z", ".rar", ".tar", ".gz", ".pkg"};
+    string[] documentExt = { ".doc",".docx",".dot",".dotx",".docm",".txt",".tex",".wpd",".rtf"};
+    string[] slideshowExt = { ".ppt", ".ppsx", ".pptm", ".ppsm", ".pptx", ".pps", ".potx", ".potm" };
+    string[] spreadsheetExt = { ".xls", ".xlxs", ".xla", ".xlt", ".xltx", ".xltm", ".xlm", ".xll", "xll", ".dif" };
+    string[] pdfExt = { ".pdf" };
+    string[] audioExt = { ".wav", ".mp3", ".mp4", ".mpeg", ".avi", ".ogg", ".midi", ".mid", ".wpl", ".wma", ".mpa" };
+    string[] movieExt = { ".mov", ".3gp", ".mkv", ".wm", ".avi", ".3gpp", ".m4v", ".wmv",".flv" };
+    string[] codeExt = { ".html", ".htm", ".xhtml", ".php", ".xml", ".js", ".css", ".bin", ".bat", ".aspx", ".asp", ".dll" };
+    string[] csvExt = { ".csv" };
+    string[] discExt = { ".iso",".vcd",".toast"};
+    string[] dbExt = { ".sql",".mdb",".mda", ".accdb",".accdt",".accdw",".accdr",".adn",".adp",".mdf",".acc",".db",".dbf",".dat",".log"};
+}
+
+<main class="body position-relative d-flex flex-column">
+    <div data-active_page="@category" class="content-wrap flex-fill">
+        <section class="position-relative mt-5">
+            <div class="container">
+                <div class="row">
+                    <aside id="sidebar" style="top: 7rem;" class="sidebar col-lg-3 d-none d-lg-flex flex-column align-self-start position-sticky">
+                        <div class="sidebar-wrap flex-fill">
+                            @Html.Partial("_PartTRCategory")
+                        </div>
+                    </aside>
+                    <div class="col-lg-9 position-relative">
+                        <div style="top: 7rem; height: 0;" class="position-sticky z-index-10">
+                            <a style="right: -4rem;" href="@Url.Action("HelpDesk", "TechnicalRequest")" class="btn btn-warning border-0 btn-customer-service position-absolute" target="_blank"><img src="@Url.Content("~/assets/images/repository/customer-service-icon.png")" alt=""></a>
+                        </div>
+                        <div id="pdf-cache"></div>
+
+                        <div class="position-relative">
+                            <section class="card bg-white shadow-sm border-0 mb-5">
+                                <div class="card-header bg-transparent border-0">
+                                    <div class="row">
+                                        <div class="col-lg-6 d-flex align-items-center">
+                                            <div class="h3 font-secondary card-title mb-0">
+                                                <span>TECHNICAL REQUEST -  </span>
+                                                <span class="text-muted">@ViewBag.CategoryName</span>
+                                                <span>
+                                                    @if (Model.Status == 3) {
+                                                    <a href="@Url.Action("Reopen/" + Model.TicketId, "TechnicalRequest")" type="button" class="btn btn-success text-white px-2">
+                                                        <span>Re-Open</span>
+                                                    </a>
+                                                    }
+                                                    <button id="btn-to-pdf" data-target="#modal--save-pdf" data-toggle="modal" type="button" class="btn btn-outline-warning px-2">
+                                                        <span>Save as PDF</span>
+                                                    </button>
+                                                </span>
+                                                @if (Model.Status != 1 && Model.TicketCategoryId == 7 && Model.Responder == Convert.ToInt32(Session["userid"]))
+                                                {
+                                                    <span>
+                                                        <a href="@Url.Action("GenerateCatElectronicTechnician/" + Model.TicketId, "TechnicalRequest")" target="_blank" class="btn btn-outline-warning px-2">GET PASSWORD</a>
+                                                    </span>
+                                                }
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 mt-3 mt-lg-0">
+                                            <div class="status text-lg-right">
+                                                <div class="text-muted">Feedback Status<strong class='text-dark'></strong></div>
+                                            
+                                                @if (Model.Status == 1)
+                                                {
+                                                        <div class="text-dark"><em><strong>DRAFT</strong></em></div>
+                                                }
+                                                else if (Model.Status == 2)
+                                                {
+                                                    if (ViewBag.IsEscalated)
+                                                    {
+                                                        if (Model.NextCommenter.Equals(0))
+                                                        {
+                                                            if (Model.Responder == Convert.ToInt32(Session["userid"]) && Model.Submiter == Convert.ToInt32(Session["userid"]))
+                                                            {
+                                                                <div class="text-danger"><em>Escalated - Waiting Your Feedback</em></div>
+                                                            }
+                                                            else
+                                                            {
+                                                                <div><em class="text-danger">Escalated</em> - <em class="text-dark">PRA</em></div>
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            if (Convert.ToInt32(Session["userid"]) == Model.NextCommenter)
+                                                            {
+                                                                <div><em class="text-danger">Escalated</em> - <em class="text-dark">Waiting Your FeedBack</em></div>
+                                                            }
+                                                            else
+                                                            {
+                                                                if (Model.Responder == Model.NextCommenter)
+                                                                {
+                                                                    <div><em class="text-danger">Escalated</em> - <em class="text-dark">PRA</em></div>
+                                                                }
+                                                                else if (Model.Submiter == Model.NextCommenter)
+                                                                {
+                                                                    <div><em class="text-danger">Escalated</em> - <em class="text-dark">PSA</em></div>
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        if (Model.NextCommenter.Equals(0))
+                                                        {
+                                                            if (Model.Responder.Equals(Convert.ToInt32(Session["userid"])) && Model.Submiter.Equals(Convert.ToInt32(Session["userid"])))
+                                                            {
+                                                                <div class="text-danger"><em>waiting your feedback</em><span class="badge badge-@AlertColor text-white ml-2" id="alertReply">@Message</span></div>
+                                                            }
+                                                            else
+                                                            {
+                                                                <div class="text-dark"><em>PRA</em></div>
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            if (Convert.ToInt32(Session["userid"]) == Model.NextCommenter)
+                                                            {
+                                                               <div class="text-danger"><em>waiting your feedback</em><span class="badge badge-@AlertColor text-white ml-2">@Message</span></div>
+                                                            }
+                                                            else
+                                                            {
+                                                                if (Model.NextCommenter == Model.Responder)
+                                                                {
+                                                                    <div class="text-dark"><em>PRA</em></div>
+                                                                }
+                                                                else if (Model.NextCommenter == Model.Submiter)
+                                                                {
+                                                                    <div class="text-dark"><em>PSA</em></div>
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                    <div style="max-width: 250px" class="progress-wrap d-flex ml-auto mt-2 w-100">
+                                                            <div style="height: 4px;" class="progress flex-fill rounded-0 mx-1">
+                                                                <div style="width: 100%;" class="progress-bar bg-@colorGraph1"></div>
+                                                            </div>
+                                                            <div style="height: 4px;" class="progress flex-fill rounded-0 mx-1">
+                                                                <div style="width: 100%;" class="progress-bar bg-@colorGraph2"></div>
+                                                            </div>
+                                                            <div style="height: 4px;" class="progress flex-fill rounded-0 mx-1">
+                                                                <div style="width: 100%;" class="progress-bar bg-@colorGraph3"></div>
+                                                            </div>
+                                                    </div>
+                                                }
+                                                else if (Model.Status == 3)
+                                                {
+                                                    <div class="text-danger"><em>Closed</em></div>
+                                                }
+                                                else if (Model.Status == 6)
+                                                {
+                                                    <div class="text-danger"><em>Solved</em></div>
+                                                }
+                                              
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="text-muted mb-4">
+                                        <div>TITLE</div>
+                                        <div>@(String.IsNullOrWhiteSpace(Model.Title) ? "-" : Model.Title)</div>
+                                    </div>
+                                   
+                                    <div class="card border-0">
+                                        <div class="card-body border-top px-0 px-lg-3">
+                                            <div class="row">
+                                                <div class="col-md-6 col-lg-3">
+                                                    <div class="text-muted">TR Number</div>
+                                                    <div>@Model.TicketNo</div>
+                                                </div>
+                                                <div class="col-md-6 col-lg-3">
+                                                    <div class="text-muted">Submiter</div>
+                                                      <div>@ViewBag.Submiter.Name</div>
+                                                </div>
+                                                <div class="col-md-6 col-lg-3">
+                                                    <div class="text-muted">Responder</div>
+                                                    @if (Model.TicketCategoryId == 9)
+                                                    {
+                                                        if (Model.Responder != 0)
+                                                        {
+                                                            <div>@ViewBag.Responder.Name</div>
+                                                        }
+                                                        else
+                                                        {
+                                                            <div>TREND Admin</div>
+                                                        }
+                                                    }
+                                                    else if (Model.TicketCategoryId != 9)
+                                                    {
+                                                        if (Model.Responder != 0)
+                                                        {
+                                                            <div>@ViewBag.Responder.Name</div>
+                                                        }
+                                                        else
+                                                        {
+                                                            <div>Submiter has not <strong>chosen</strong> yet</div>
+                                                        }
+                                                    }
+                                                </div>
+                                               
+                                                @if (Model.TicketCategoryId != 9)
+                                                {
+                                                    if (Model.EmailCC != null && Model.EmailCC != "" && !Model.EmailCC.Contains("undefined"))
+                                                    {
+                                                        <div class="col-md-6 col-lg-3">
+                                                            <div class="text-muted">CC</div>
+                                                            <div>@Model.EmailCC</div>
+                                                        </div>
+                                                    }
+                                                }
+                                                <div class="col-md-6 col-lg-3">
+                                                    <div class="text-muted">Date Created</div>
+                                                    <div>@Model.CreatedAt.Value.ToString("dd MMMM yyyy")</div>
+                                                </div>
+                                                @if (Model.TicketCategoryId != 9) {
+                                                <div class="col-md-6 col-lg-3">
+                                                    <div class="text-muted">DPPM Number</div>
+                                                    <div>@(String.IsNullOrWhiteSpace(Model.DPPMno) ? "Not Inputed Yet" : Model.DPPMno)</div>
+                                                </div>
+                                                }
+                                            </div>
+                                        </div>
+                                        <div class="d-flex align-items-center">
+                                            <div class="flex-grow-1">
+                                                <hr class="my-2">
+                                            </div>
+                                            @if (Model.TicketCategoryId != 9)
+                                            {
+                                                <button data-toggle="collapse" data-target="#show-full-1" type="button" class="btn border-0 bg-transparent btn-sm text-muted"><span>SHOW FULL</span><i class="fa fa-chevron-down ml-2"></i></button>
+                                            }
+                                        </div>
+                                        <div class="card-body px-0 px-lg-3">
+                                            <div class="detail">
+                                                <div>
+                                                    <div class="no-gutters mb-4">
+                                                     @{ 
+                                                         if (new[] { 1,5,6,8,10 }.Contains(Model.TicketCategoryId)) {
+                                                            <div class="text-muted">Problem  Description</div>
+                                                         }
+                                                         else if(new[] { 2,3,7 }.Contains(Model.TicketCategoryId))
+                                                         {
+                                                            <div class="text-muted">Request Description</div>
+                                                         }
+                                                         else
+                                                         {
+                                                            <div class="text-muted">Description</div>
+                                                         }
+                                                         }
+                                                        @if (!String.IsNullOrWhiteSpace(Model.Description))
+                                                        {
+                                                            <div>
+                                                                <p>@Html.Raw(Model.Description)</p>
+                                                                <p></p>
+                                                            </div>
+                                                        }
+                                                        else
+                                                        {
+                                                            <div>
+                                                                <p>-</p>
+                                                                <p></p>
+                                                            </div>
+                                                        }
+                                                     </div>
+                                                </div>
+                                                @if (ViewBag.Attachments != null && ViewBag.Attachments.Count != 0)
+                                                {
+                                                    int attachmentIndex = 1;
+                                                    <div>
+                                                        <div class="row no-gutters mb-4">
+                                                            <div class="text-muted">ATTACHMENT</div>
+                                                        </div>
+                                                        <div id="attachment-item-output" class="row">
+                                                            @{
+                                                                if (ViewBag.UserLevelName.ToLower() == "yellow")
+                                                                {
+                                                                    foreach (TicketAttachmentsAPI attachment in ViewBag.Attachments)
+                                                                    {
+                                                                        <div class="attachment-item col-6 col-sm-auto my-2">
+                                                                            <div class="card border-0">
+                                                                                <label class="position-relative">
+                                                                                    @{
+                                                                                        if (!imgExt.Contains(attachment.Type))
+                                                                                        {
+                                                                                           
+                                                                                            <div class="attachment-select mb-2">
+                                                                                                <span><i class="fa fa-download"></i></span>
+                                                                                                <a target="_blank" href="@Url.Content("~/Upload/TechnicalRequestAttachments/" + attachment.Name)">@attachment.Uri</a>
+                                                                                            </div>
+                                                                                            <picture class="d-block atc-prev-wrap text-center">
+                                                                                                @if (documentExt.Contains(attachment.Type))
+                                                                                                {
+                                                                                                    <i style="height: 110px; font-size: 3rem; line-height: 110px; width: 110px; border: solid 1px #ddd;" class="fa fa-file-word text-muted mb-2"></i>
+                                                                                                }
+                                                                                                else if (spreadsheetExt.Contains(attachment.Type))
+                                                                                                {
+                                                                                                    <i style="height: 110px; font-size: 3rem; line-height: 110px; width: 110px; border: solid 1px #ddd;" class="fa fa-file-excel text-muted mb-2"></i>
+                                                                                                }
+                                                                                                else if (pdfExt.Contains(attachment.Type))
+                                                                                                {
+                                                                                                    <i style="height: 110px; font-size: 3rem; line-height: 110px; width: 110px; border: solid 1px #ddd;" class="fa fa-file-pdf text-muted mb-2"></i>
+                                                                                                }
+                                                                                                else if (slideshowExt.Contains(attachment.Type))
+                                                                                                {
+                                                                                                    <i style="height: 110px; font-size: 3rem; line-height: 110px; width: 110px; border: solid 1px #ddd;" class="fa fa-file-powerpoint text-muted mb-2"></i>
+                                                                                                }
+                                                                                                else if (compressExt.Contains(attachment.Type))
+                                                                                                {
+                                                                                                    <i style="height: 110px; font-size: 3rem; line-height: 110px; width: 110px; border: solid 1px #ddd;" class="fa fa-file-archive text-muted mb-2"></i>
+                                                                                                }
+                                                                                                else if (audioExt.Contains(attachment.Type))
+                                                                                                {
+                                                                                                    <i style="height: 110px; font-size: 3rem; line-height: 110px; width: 110px; border: solid 1px #ddd;" class="fa fa-file-audio text-muted mb-2"></i>
+                                                                                                }
+                                                                                                else if (movieExt.Contains(attachment.Type))
+                                                                                                {
+                                                                                                    <i style="height: 110px; font-size: 3rem; line-height: 110px; width: 110px; border: solid 1px #ddd;" class="fa fa-file-video text-muted mb-2"></i>
+                                                                                                }
+                                                                                                else if (codeExt.Contains(attachment.Type))
+                                                                                                {
+                                                                                                    <i style="height: 110px; font-size: 3rem; line-height: 110px; width: 110px; border: solid 1px #ddd;" class="fa fa-file-code text-muted mb-2"></i>
+                                                                                                }
+                                                                                                else if (csvExt.Contains(attachment.Type))
+                                                                                                {
+                                                                                                    <i style="height: 110px; font-size: 3rem; line-height: 110px; width: 110px; border: solid 1px #ddd;" class="fa fa-file-csv text-muted mb-2"></i>
+                                                                                                }
+                                                                                                else if (discExt.Contains(attachment.Type))
+                                                                                                {
+                                                                                                    <i style="height: 110px; font-size: 3rem; line-height: 110px; width: 110px; border: solid 1px #ddd;" class="fa fa-compact-disc text-muted mb-2"></i>
+                                                                                                }
+                                                                                                else if (dbExt.Contains(attachment.Type))
+                                                                                                {
+                                                                                                    <i style="height: 110px; font-size: 3rem; line-height: 110px; width: 110px; border: solid 1px #ddd;" class="fa fa-database text-muted mb-2"></i>
+                                                                                                }
+                                                                                                else
+                                                                                                {
+                                                                                                    <i style="height: 110px; font-size: 3rem; line-height: 110px; width: 110px; border: solid 1px #ddd;" class="fa fa-file text-muted mb-2"></i>
+                                                                                                }
+                                                                                            </picture>
+                                                                                        }
+                                                                                        else
+                                                                                        {
+                                                                                            <div class="attachment-select mb-2">
+                                                                                                <span><i class="fa fa-download"></i></span>
+                                                                                                <a target="_blank" href="@Url.Content(attachment.Name)">@attachment.Uri</a>
+                                                                                            </div>
+                                                                                            <picture class="d-block atc-prev-wrap text-center">
+                                                                                                <img src="@attachment.Name" alt="Attachment-@attachmentIndex" style="width: 120px; height: 120px;" class="card-img-top object-fit-cover attachment-preview mb-2 img-zoomable">
+                                                                                            </picture>
+                                                                                        }
+                                                                                    }
+                                                                                </label>
+                                                                            </div>
+                                                                        </div>
+                                                                                                attachmentIndex = attachmentIndex + 1;
+                                                                                            }
+                                                                                        }
+                                                                                        else
+                                                                                        {
+                                                                                            foreach (TicketAttachmentsAPI attachment in ViewBag.Attachments)
+                                                                                            {
+                                                                                                if (attachment.Level.ToLower() == ViewBag.UserLevelName.ToLower() || attachment.Level.ToLower() == "guest")
+                                                                                                {
+                                                                                                    <div class="attachment-item col-6 col-sm-auto my-2">
+                                                                                                        <div class="card border-0">
+                                                                                                            <label class="position-relative">
+                                                                                                                @{
+                                                                                                                    if (!imgExt.Contains(attachment.Type))
+                                                                                                                    {
+                                                                                                                        <div class="attachment-select mb-2">
+                                                                                                                            <span><i class="fa fa-download"></i></span>
+                                                                                                                            <a href="@Url.Content("~/Upload/TechnicalRequestAttachments/" + attachment.Name)">Attachment-@attachmentIndex</a>
+                                                                                                                        </div>
+
+                                                                                                                        <picture class="d-block atc-prev-wrap text-center">
+                                                                                                                        @if (attachment.Type.Substring(1).Contains("doc"))
+                                                                                                                        {
+                                                                                                                            <i style="height: 110px; font-size: 3rem; line-height: 110px; width: 110px; border: solid 1px #ddd;" class="fa fa-file-word text-muted mb-2"></i>
+                                                                                                                        }
+                                                                                                                        else if (attachment.Type.Substring(1).Contains("xlx") || attachment.Type.Substring(1).Contains("xls"))
+                                                                                                                        {
+                                                                                                                                <i style="height: 110px; font-size: 3rem; line-height: 110px; width: 110px; border: solid 1px #ddd;" class="fa fa-file-excel text-muted mb-2"></i>
+                                                                                                                        }
+                                                                                                                        else if (attachment.Type.Substring(1).Contains("pdf"))
+                                                                                                                        {
+                                                                                                                            <i style="height: 110px; font-size: 3rem; line-height: 110px; width: 110px; border: solid 1px #ddd;" class="fa fa-file-pdf text-muted mb-2"></i>
+                                                                                                                        }
+                                                                                                                        else if (attachment.Type.Substring(1).Contains("ppt"))
+                                                                                                                        {
+                                                                                                                            <i style="height: 110px; font-size: 3rem; line-height: 110px; width: 110px; border: solid 1px #ddd;" class="fa fa-file-powerpoint text-muted mb-2"></i>
+                                                                                                                        }
+                                                                                                                        else if (attachment.Type.Substring(1).Contains("rar") || attachment.Type.Substring(1).Contains("zip"))
+                                                                                                                        {
+                                                                                                                            <i style="height: 110px; font-size: 3rem; line-height: 110px; width: 110px; border: solid 1px #ddd;" class="fa fa-file-archive text-muted mb-2"></i>
+                                                                                                                        }
+                                                                                                                        else
+                                                                                                                        {
+                                                                                                                            <i style="height: 110px; font-size: 3rem; line-height: 110px; width: 110px; border: solid 1px #ddd;" class="fa fa-file text-muted mb-2"></i>
+                                                                                                                        }
+                                                                                                                        </picture>
+                                                                                                                    }
+                                                                                                                    else
+                                                                                                                    {
+                                                                                                                        <div class="attachment-select mb-2">
+                                                                                                                            <span><i class="fa fa-download"></i></span>
+                                                                                                                            <a target="_blank" href="@Url.Content(attachment.Name)">Attachment-@attachmentIndex</a>
+                                                                                                                        </div>
+                                                                                                                        <picture class="d-block atc-prev-wrap text-center">
+                                                                                                                            <img src="@attachment.Name" alt="Attachment-@attachmentIndex" style="width: 120px; height: 120px;" class="card-img-top object-fit-cover attachment-preview mb-2 img-zoomable">
+                                                                                                                        </picture>
+                                                                                                                    }
+                                                                                                                }
+                                                                                                            </label>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                                                attachmentIndex = attachmentIndex + 1;
+                                                                                                                            }
+                                                                                                                        }
+                                                                                                                    }
+                                                                                }
+                                                                            </div>
+                                                                        </div>
+                                                                                                                    }
+
+                                                                    @{ 
+                                                                        if (((IEnumerable<dynamic>)ViewBag.Tags).Count() > 0)
+                                                                        {
+                                                                        <div class="row no-gutters mb-4">
+                                                                            <div class="text-muted mb-4">
+                                                                                <div>Tags</div>
+                                                                                <div id="add-tag-list" class="row no-gutters">
+                                                                                    <div class="container">
+                                                                                        <div class="row my-4">
+                                                                                            @foreach (var tag in ViewBag.Tags)
+                                                                                            {
+                                                                                                <div class="bg-secondary rounded-pill text-white px-3 py-2 mr-3"><span>@tag.Name</span></div>
+                                                                                            }
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        }
+                                                                        }
+                                                                        @if (ViewBag.Participants != null && Model.TicketCategoryId != 9)
+                                                                        {
+                                                                        <div>
+                                                                            <div class="row no-gutters mb-4">
+                                                                                <div class="text-muted">PARTICIPANTS</div>
+                                                                            </div>
+                                                                            @if (ViewBag.ResponderUserId.Equals(int.Parse(Session["userid"].ToString())) && Model.Status != 3)
+                                                                            {
+                                                                                using (Html.BeginForm(null, null, FormMethod.Post, new { enctype = "multipart/form-data", id = "request-form", novalidate = "", Class = "needs-validation" }))
+                                                                                {
+                                                                                    <div class="row">
+                                                                                        <div class="col-6">
+                                                                                            <div class="form-group text-muted mb-4">
+                                                                                                @Html.DropDownList("ParticipantList", new SelectList(ViewBag.ListUser, "UserId", "Name"), null, new { @class = "selectpicker", multiple = "", placeholder = "Add Participants", data_style = "border bg-white", data_width = "100%", data_live_search = "true", data_container = "body", required = "" })
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="col-6">
+                                                                                            <div class="form-group text-muted mb-4">
+                                                                                                <div class="text-right">
+                                                                                                    <button type="submit" class="btn rounded-0 btn-warning ml-2 btn-draft">Add</button>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                }
+                                                                            }
+                                                                            <div id="add-tag-list" class="row no-gutters mb-4">
+                                                                                @if (ViewBag.Participants.Count > 0)
+                                                                                {
+                                                                                    foreach (var participant in ViewBag.Participants)
+                                                                                    {
+                                                                                    <div class="tag-item col-auto text-truncate ml-3 mr-2 my-2 m-md-3" style="max-width: 300px;" id="tag-@participant.TicketParcipant.TicketParcipantId">
+                                                                                        <div class="bg-secondary rounded-pill text-white pl-2 pr-3">
+                                                                                            @if (ViewBag.ResponderUserId == int.Parse(Session["userid"].ToString()))
+                                                                                            {
+                                                                                                <a href="javascript:void(0);" onclick="participantDelete(@participant.TicketParcipant.TicketParcipantId)" class="btn rounded-circle text-white btn-sm btn-remove mr-2">
+                                                                                                    <i class="fa fa-times"></i>
+                                                                                                </a>
+                                                                                            }
+                                                                                            <span>@participant.Name</span>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    }
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    <span>There's No Participants</span>
+                                                                                }
+                                                                            </div>
+                                                                        </div>
+                                                                        }
+
+                                                                        <div id="show-full-1" class="collapse">
+                                                                           @if (Model.TicketCategoryId != 3)
+                                                                           {
+                                                                            <div class="no-gutters mt-4">
+
+                                                                                @if (!String.IsNullOrWhiteSpace(Model.SerialNumber))
+                                                                                {
+                                                                                    <div class="text-muted">Unit Serial Number</div>
+                                                                                    if (!Model.SerialNumber.Contains("undefined")) {
+                                                                                    <div>@Model.SerialNumber</div>
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        <div>-</div>
+                                                                                    }
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    <div class="text-muted">Unit Serial Number</div>
+                                                                                    <div>-</div>
+                                                                                }
+                                                                            </div>
+                                                                            <div class="no-gutters mt-4">
+                                                                                @if (!String.IsNullOrWhiteSpace(Model.Customer))
+                                                                                {
+
+                                                                                    <div class="text-muted">Customer</div>
+                                                                                    if (!Model.Customer.Contains("undefined")) {
+                                                                                        <div>@Model.Customer</div>
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        <div>-</div>
+                                                                                    }
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    <div class="text-muted">Customer</div>
+                                                                                    <div>-</div>
+                                                                                }
+                                                                            </div>
+                                                                            
+                                                                            <div class="no-gutters mt-4">
+
+                                                                                @if (!String.IsNullOrWhiteSpace(Model.Location))
+                                                                                {
+                                                                                    <div class="text-muted">Location</div>
+                                                                                    if (!Model.Location.Contains("undefined")) {
+                                                                                    <div>@Model.Location</div>
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        <div>-</div>
+                                                                                    }
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    <div class="text-muted">Location</div>
+                                                                                    <div>-</div>
+                                                                                }
+
+                                                                            </div>
+
+                                                                            <div class="no-gutters mt-4">
+
+                                                                                @if (Model.MepBranch != null)
+                                                                                {
+                                                                                    <div class="text-muted">Branch</div>
+                                                                                    <div>@Model.MepBranch</div>
+                                                                                }
+                                                                            </div>
+                                                                            }
+                                                                            @if (Model.TicketCategoryId != 3)
+                                                                            {
+                                                                            <div class="no-gutters mt-4">
+
+                                                                                @if (Model.Make != null)
+                                                                                {
+                                                                                    <div class="text-muted">Make</div>
+                                                                                    <div>@Model.Make</div>
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    <div class="text-muted">Make</div>
+                                                                                    <div>-</div>
+                                                                                }
+
+                                                                            </div>
+                                                                            }
+                                                                            @if (Model.TicketCategoryId != 3)
+                                                                            {
+                                                                            <div class="no-gutters mt-4">
+
+                                                                                @if (Model.DeliveryDate != null)
+                                                                                {
+                                                                                    <div class="text-muted">Delivery Date</div>
+                                                                                    <div>@Model.DeliveryDate.Value.ToString("dd/MM/yyyy")</div>
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    <div class="text-muted">Delivery Date</div>
+                                                                                    <div>-</div>
+                                                                                }
+
+                                                                            </div>}
+                                                                             @if (Model.TicketCategoryId != 3)
+                                                                             {
+                                                                            <div class="no-gutters mt-4">
+
+                                                                                @if (Model.ArrangementNo != null)
+                                                                                {
+                                                                                    <div class="text-muted">Arrangement No.</div>
+                                                                                    <div>@Model.ArrangementNo</div>
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    <div class="text-muted">Arrangement No.</div>
+                                                                                    <div>-</div>
+                                                                                }
+                                                                            </div>
+
+                                                                            <div class="no-gutters mt-4">
+
+                                                                                @if (Model.Family != null)
+                                                                                {
+                                                                                    <div class="text-muted">Family</div>
+                                                                                    <div>@Model.Family</div>
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    <div class="text-muted">Family</div>
+                                                                                    <div>-</div>
+                                                                                }
+                                                                            </div>
+                                                                            <div class="no-gutters mt-4">
+
+                                                                                @if (Model.Model != null)
+                                                                                {
+                                                                                    <div class="text-muted">Model</div>
+                                                                                    <div>@Model.Model</div>
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    <div class="text-muted">Model</div>
+                                                                                    <div>-</div>
+                                                                                }
+                                                                            </div>
+                                                                                 if (Model.TicketCategoryId != 3)
+                                                                                 {
+                                                                                    <div class="no-gutters mt-4">
+
+                                                                                        @if (!String.IsNullOrWhiteSpace(Model.SMU))
+                                                                                        {
+                                                                                            <div class="text-muted">SMU</div>
+                                                                                            <div>@Model.SMU</div>
+                                                                                        }
+                                                                                        else
+                                                                                        {
+                                                                                            <div class="text-muted">SMU</div>
+                                                                                            <div>-</div>
+                                                                                        }
+                                                                                    </div>
+                                                                                 }
+                                                                            <div class="no-gutters mt-4">
+
+                                                                                @if (Model.SMUDate != null)
+                                                                                {
+                                                                                    <div class="text-muted">SMU Date</div>
+                                                                                    <div>@Model.SMUDate.Value.ToString("dd/MM/yyyy")</div>
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    <div class="text-muted">SMU Date</div>
+                                                                                    <div>-</div>
+                                                                                }
+
+                                                                            </div>
+                                                                             }
+                                                                            @if (Model.TicketCategoryId == 1)
+                                                                            {
+                                                                                <div class="no-gutters mt-4">
+                                                                                            
+                                                                                            @if (!String.IsNullOrWhiteSpace(Model.PartsDescription) && !Model.PartsDescription.Contains("undefined"))
+                                                                                            {
+                                                                                                <div class="text-muted">Parts Description</div>
+                                                                                                <div>
+                                                                                                    <p>@Html.Raw(Model.PartsDescription)</p>
+                                                                                                    <p></p>
+                                                                                                </div>
+                                                                                            }
+                                                                                            else
+                                                                                            {
+                                                                                                <div class="text-muted">Parts Description</div>
+                                                                                            <div class="text-muted">Parts Description</div>
+                                                                                            <div>-</div>
+                                                                                        }
+                                                                                </div>
+                                                                                <div class="no-gutters mt-4">
+
+                                                                                    @if (!String.IsNullOrWhiteSpace(Model.PartCausingFailure) && !Model.PartCausingFailure.ToLower().Contains("undefined"))
+                                                                                    {
+                                                                                        <div class="text-muted">Part causing Failure</div>
+                                                                                        <div>@Model.PartCausingFailure</div>
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        <div class="text-muted">Part causing Failure</div>
+                                                                                        <div>-</div>
+                                                                                    }
+                                                                                </div>
+                                                                            }
+                                                                            
+                                                                           
+                                                                                @{
+                                                                                    if (Model.TicketCategoryId.Equals(5))
+                                                                                    {
+                                                                                        <div class="no-gutters mt-4">
+
+                                                                                            @if (!String.IsNullOrWhiteSpace(Model.PartCausingFailure) && !Model.PartCausingFailure.ToLower().Contains("undefined"))
+                                                                                            {
+                                                                                                    <div class="text-muted">Part causing Failure</div>
+                                                                                                    <div>@Model.PartCausingFailure</div>
+                                                                                            }
+                                                                                            else
+                                                                                            {
+                                                                                                <div class="text-muted">Part causing Failure</div>
+                                                                                                <div>-</div>
+                                                                                            }
+                                                                                        </div>
+                                                                                <div class="no-gutters mt-4">
+                                                                                        @if (!String.IsNullOrWhiteSpace(Model.Description) && !Model.PartsDescription.Contains("undefined"))
+                                                                                        {
+                                                                                        <div class="text-muted">Parts Description</div>
+                                                                                              <div>
+                                                                                                    <p>@Html.Raw(Model.PartsDescription)</p>
+                                                                                                    <p></p>
+                                                                                                </div>
+                                                                                        }
+                                                                                        else
+                                                                                        {
+                                                                                            <div class="text-muted">Parts Description</div>
+                                                                                                <div>
+                                                                                                    <p>-</p>
+                                                                                                    <p></p>
+                                                                                                </div>
+                                                                                            }
+                                                                                </div>
+                                                                                    } }
+                                                                              @{
+                                                                                  if (Model.TicketCategoryId.Equals(2) || Model.TicketCategoryId.Equals(3))
+                                                                                  {
+                                                                                        <div class="no-gutters mt-4">
+                                                                                            @if (!String.IsNullOrWhiteSpace(Model.PartsNumber) && !Model.PartsNumber.Contains("undefined"))
+                                                                                            {
+                                                                                                <div class="text-muted">Parts Number</div>
+                                                                                                <div>@Model.PartsNumber</div>
+                                                                                            }
+                                                                                            else
+                                                                                            {
+                                                                                                <div class="text-muted">Parts Number</div>
+                                                                                                <div>-</div>
+                                                                                            }
+                                                                                        </div>
+                                                                                      }
+                                                                                  }
+                                                                            @{
+                                                                                if (Model.TicketCategoryId.Equals(2))
+                                                                                {
+                                                                                    <div class="no-gutters mt-4">
+                                                                                           
+                                                                                            @if (String.IsNullOrWhiteSpace(Model.PartsDescription) || Model.PartsDescription.Contains("undefined"))
+                                                                                            {
+                                                                                                <div class="text-muted">Parts Description</div>
+                                                                                                <div>
+                                                                                                    <p>-</p>
+                                                                                                    <p></p>
+                                                                                                </div>
+                                                                                            }
+                                                                                            else
+                                                                                            {
+                                                                                                <div class="text-muted">Parts Description</div>
+                                                                                                <div>
+                                                                                                    <p>@Html.Raw(Model.PartsDescription)</p>
+                                                                                                    <p></p>
+                                                                                                </div>
+                                                                                            }
+                                                                                        
+                                                                                    </div>
+                                                                                }
+                                                                            }
+                                                                            @if (Model.TicketCategoryId == 3)
+                                                                            {
+                                                                                <div class="no-gutters mt-4">
+                                                                                   
+                                                                                            @if (!String.IsNullOrWhiteSpace(Model.PartsDescription) && !Model.PartsDescription.Contains("undefined"))
+                                                                                            {
+                                                                                                <div class="text-muted">Parts Description</div>
+                                                                                                <div>
+                                                                                                    <p>@Html.Raw(Model.PartsDescription)</p>
+                                                                                                    <p></p>
+                                                                                                </div>
+                                                                                            }
+                                                                                            else
+                                                                                            {
+                                                                                                <div class="text-muted">Parts Description</div>
+                                                                                                <div>
+                                                                                                    <p>-</p>
+                                                                                                    <p></p>
+                                                                                                </div>
+                                                                                            }
+                                                                                </div>
+                                                                            }
+                                                                            @if (Model.TicketCategoryId == 5)
+                                                                            {
+                                                                                <div class="no-gutters mt-4">
+
+                                                                                    @if (Model.WarrantyTypeId != 0)
+                                                                                    {
+                                                                                        <div class="text-muted">Warranty Type</div>
+                                                                                        <div>@ViewBag.WarrantyName</div>
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        <div class="text-muted">Warranty Type</div>
+                                                                                        <div>-</div>
+                                                                                    }
+                                                                                </div>
+                                                                                <div class="no-gutters mt-4">
+                                                                                    @if (!String.IsNullOrWhiteSpace(Model.ServiceOrderNumber))
+                                                                                    {
+
+                                                                                        <div class="text-muted">Service Order Number</div>
+                                                                                        if (!Model.ServiceOrderNumber.ToLower().Contains("undefined")) {
+                                                                                        <div>@Model.ServiceOrderNumber</div>
+                                                                                        }
+                                                                                        else
+                                                                                        {
+                                                                                            <div>-</div>
+                                                                                        }
+
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        <div class="text-muted">Service Order Number</div>
+                                                                                        <div>-</div>
+                                                                                    }
+                                                                                </div>
+                                                                                <div class="no-gutters mt-4">
+
+                                                                                    @if (!String.IsNullOrWhiteSpace(Model.ClaimNumber))
+                                                                                    {
+                                                                                        <div class="text-muted">Claim Number</div>
+                                                                                        if (!Model.ClaimNumber.ToLower().Contains("undefined"))
+                                                                                        {
+                                                                                            <div>@Model.ClaimNumber</div>
+                                                                                        }
+                                                                                        else
+                                                                                        {
+                                                                                            <div>-</div>
+                                                                                        }
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        <div class="text-muted">Claim Number</div>
+                                                                                        <div>-</div>
+                                                                                    }
+                                                                                </div>
+                                                                            }
+
+                                                                            @if (Model.TicketCategoryId == 6)
+                                                                            {
+                                                                                <div class="no-gutters mt-4">
+
+                                                                                    @if (!String.IsNullOrWhiteSpace(Model.ServiceOrderNumber))
+                                                                                    {
+                                                                                        if (!Model.ServiceOrderNumber.ToLower().Contains("undefined"))
+                                                                                        {
+                                                                                        <div class="text-muted">Service Order Number</div>
+                                                                                        <div>@Model.ServiceOrderNumber</div>
+                                                                                        }
+                                                                                        else
+                                                                                        {
+                                                                                            <div class="text-muted">Service Order Number</div>
+                                                                                            <div>-</div>
+                                                                                        }
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        <div class="text-muted">Service Order Number</div>
+                                                                                        <div>-</div>
+                                                                                    }
+                                                                                </div>
+                                                                                <div class="no-gutters mt-4">
+
+                                                                                    @if (!Model.ClaimNumber.ToLower().Contains("undefined") && !String.IsNullOrWhiteSpace(Model.ClaimNumber))
+                                                                                    {
+                                                                                        <div class="text-muted">Claim Number</div>
+                                                                                        <div>@Model.ClaimNumber</div>
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        <div class="text-muted">Claim Number</div>
+                                                                                        <div>-</div>
+                                                                                    }
+                                                                                </div>
+                                                                                <div class="no-gutters mt-4">
+
+                                                                                    @if (!String.IsNullOrWhiteSpace(Model.PartCausingFailure))
+                                                                                    {
+                                                                                        if (!Model.PartCausingFailure.ToLower().Contains("undefined"))
+                                                                                        {
+                                                                                        <div class="text-muted">Part causing Failure</div>
+                                                                                    <div>@Model.PartCausingFailure</div>
+                                                                                        }
+                                                                                        else
+                                                                                        {
+                                                                                            <div class="text-muted">Part causing Failure</div>
+                                                                                            <div>-</div>
+                                                                                        }
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        <div class="text-muted">Part causing Failure</div>
+                                                                                        <div>-</div>
+                                                                                    }
+                                                                                </div>
+                                                                                <div class="no-gutters mt-4">
+
+                                                                                    @if (!String.IsNullOrWhiteSpace(Model.PartsDescription))
+                                                                                    {
+                                                                                        <div class="text-muted">Parts Description</div>
+                                                                                        if (!Model.PartsDescription.ToLower().Contains("undefined"))
+                                                                                        {
+                                                                                            if (!String.IsNullOrWhiteSpace(Model.Description))
+                                                                                            {
+                                                                                                <div>
+                                                                                                    <p>@Html.Raw(Model.PartsDescription)</p>
+                                                                                                    <p></p>
+                                                                                                </div>
+                                                                                            }
+                                                                                            else
+                                                                                            {
+                                                                                                <div>
+                                                                                                    <p>-</p>
+                                                                                                    <p></p>
+                                                                                                </div>
+                                                                                            }
+                                                                                        }
+                                                                                        else
+                                                                                        {
+                                                                                            <div>-</div>
+                                                                                        }
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        <div class="text-muted">Parts Description</div>
+                                                                                        <div>
+                                                                                            <p>-</p>
+                                                                                            <p></p>
+                                                                                        </div>
+                                                                                    }
+                                                                                </div>
+                                                                            }
+                                                                            @if (Model.TicketCategoryId == 7) //password
+                                                                            {
+
+                                                                                <div class="no-gutters mt-4">
+
+                                                                                    @if (Model.ServiceToolSN != null && Model.ServiceToolSN != "")
+                                                                                    {<div class="text-muted">Service Tool S/N</div>
+                                                                                    <div>@Model.ServiceToolSN</div>
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        <div class="text-muted">Service Tool S/N</div>
+                                                                                        <div>-</div>
+                                                                                    }
+                                                                                </div>
+                                                                                <div class="no-gutters mt-4">
+
+                                                                                    @if (Model.EngineSN != null && Model.EngineSN != "")
+                                                                                    { <div class="text-muted">Engine S/N</div>
+                                                                                    <div>@Model.EngineSN</div>
+                                                                                    }
+                                                                                    else{
+                                                                                        <div class="text-muted">Engine S/N</div>
+                                                                                    <div>-</div>
+                                                                                    }
+
+                                                                                </div>
+                                                                                <div class="no-gutters mt-4">
+                                                                                    @if (Model.EcmSN != null && Model.EcmSN != "")
+                                                                                    {
+                                                                                        <div class="text-muted">ECM S/N</div>
+                                                                                        <div>@Model.EcmSN</div>
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        <div class="text-muted">ECM S/N</div>
+                                                                                        <div>-</div>
+                                                                                    }
+                                                                                </div>
+                                                                                <div class="no-gutters mt-4">
+
+                                                                                    @if (Model.TotalTattletale != null && Model.TotalTattletale != "")
+                                                                                    { <div class="text-muted">Total Tattletale</div>
+                                                                                    <div>@Model.TotalTattletale</div>
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        <div class="text-muted">Total Tattletale</div>
+                                                                                        <div>-</div>
+                                                                                    }
+                                                                                </div>
+                                                                                <div class="no-gutters mt-4">
+                                                                                    <div class="text-muted">Reason Code</div>
+                                                                                    @if (Model.ReasonCode != null && Model.ReasonCode != "")
+                                                                                    {   
+                                                                                    <div>@Model.ReasonCode</div>
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        <div>-</div>
+                                                                                    }
+                                                                                </div>
+                                                                                <div class="no-gutters mt-4">
+                                                                                    <div class="text-muted">From Interlock</div>
+                                                                                    @if (Model.FromInterlock != null)
+                                                                                    {
+                                                                                        <div>@Model.FromInterlock</div>
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        <div>-</div>
+                                                                                    }
+
+                                                                                </div>
+                                                                                <div class="no-gutters mt-4">
+                                                                                    <div class="text-muted">To Interlock</div>
+                                                                                    @if (Model.ToInterlock != null)
+                                                                                    {
+                                                                                        <div>@Model.ToInterlock</div>
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        <div>-</div>
+                                                                                    }
+
+                                                                                </div>
+                                                                                <div class="no-gutters mt-4">
+                                                                                    <div class="text-muted">Diagnostic Clock</div>
+                                                                                    @if (Model.DiagnosticClock != null)
+                                                                                    {
+                                                                                        <div>@Model.DiagnosticClock</div>
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        <div>-</div>
+                                                                                    }
+                                                                                </div>
+                                                                                <div class="no-gutters mt-4">
+                                                                                    <div class="text-muted">Software Part Number</div>
+                                                                                    @if (Model.SoftwarePartNumber != null && Model.SoftwarePartNumber != "")
+                                                                                    {
+                                                                                    <div>@Model.SoftwarePartNumber</div>
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        <div>-</div>
+                                                                                    }
+                                                                                </div>
+                                                                                <div class="no-gutters mt-4">
+                                                                                    <div class="text-muted">Test Spesification</div>
+                                                                                    @if (Model.TestSpec != null || !String.IsNullOrWhiteSpace(Model.TestSpec))
+                                                                                    {
+                                                                                        <div>@Model.TestSpec</div>
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        <div>-</div>
+                                                                                    }
+
+                                                                                </div>
+                                                                                <div class="no-gutters mt-4">
+                                                                                    <div class="text-muted">Test Spesification With BrakeSaver</div>
+                                                                                    @if (Model.TestSpecBrakeSaver != null || !String.IsNullOrWhiteSpace(Model.TestSpecBrakeSaver))
+                                                                                    {
+                                                                                        <div>@Model.TestSpecBrakeSaver</div>
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        <div>-</div>
+                                                                                    }
+                                                                                </div>
+                                                                            }
+                                                                            @if (Model.TicketCategoryId == 10 || Model.TicketCategoryId == 8) 
+                                                                            {
+                                                                                <div class="no-gutters mt-4">
+                                                                                    <div class="text-muted">Part causing Failure</div>
+                                                                                    @if (!String.IsNullOrWhiteSpace(Model.PartCausingFailure))
+                                                                                    {
+                                                                                        if (!Model.PartCausingFailure.Contains("undefined"))
+                                                                                        {
+                                                                                            <div>@Model.PartCausingFailure</div>
+                                                                                        }
+                                                                                        else
+                                                                                        {
+                                                                                            <div>-</div>
+                                                                                        }
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        <div>-</div>
+                                                                                    }
+
+                                                                                </div>
+                                                                                <div class="no-gutters mt-4">
+
+                                                                                    @if (!String.IsNullOrWhiteSpace(Model.PartsDescription))
+                                                                                    {
+                                                                                        <div class="text-muted">Parts Description</div>
+                                                                                        if (!Model.PartsDescription.ToLower().Contains("undefined"))
+                                                                                        {
+                                                                                            if (!String.IsNullOrWhiteSpace(Model.Description))
+                                                                                            {
+                                                                                                <div>
+                                                                                                    <p>@Html.Raw(Model.PartsDescription)</p>
+                                                                                                    <p></p>
+                                                                                                </div>
+                                                                                            }
+                                                                                            else
+                                                                                            {
+                                                                                                <div>
+                                                                                                    <p>-</p>
+                                                                                                    <p></p>
+                                                                                                </div>
+                                                                                            }
+                                                                                        }
+                                                                                        else
+                                                                                        {
+                                                                                            <div>-</div>
+                                                                                        }
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        <div class="text-muted">Parts Description</div>
+                                                                                        <div>-</div>
+                                                                                    }
+                                                                                </div>
+                                                                            }
+                                                                        </div>
+                                                                    </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </section>
+                                            </div>
+
+                                            @if (Model.Status.Equals(6) || Model.Status.Equals(3))// TR requested to close or closed
+                                            {
+                                                <div class="position-relative">
+                                                    <section class="card bg-white shadow-sm border-0 mb-5">
+                                                        <nav class="card-navbar navbar navbar-dark bg-secondary text-white">
+                                                            <div class="left d-flex align-items-center">
+                                                                <div class="icon mr-2"><i class="far fa-lightbulb fa-2x"></i></div>
+                                                                <div class="h4 font-secondary mb-0">RESOLUTION</div>
+                                                            </div>
+                                                            <div class="right">
+                                                                <button data-toggle="collapse" data-target="#collapse-target-2" type="button" class="btn btn-sm bg-transparent rounded-pill text-white btn-remove"><i class="fa fa-chevron-right"></i></button>
+                                                            </div>
+                                                        </nav>
+                                                        <div id="collapse-target-2" class="collapse show">
+                                                            <div class="card-body bg-warning light">
+                                                                <div class="chat-notes no-ribbon">
+                                                                    <div class="date"><small><strong class="text-warning">Resolution  </strong><span class="text-muted">@ViewBag.Resolution.Day </span><strong class="text-dark">@ViewBag.Resolution.Time</strong></small></div>
+                                                                    <div class="sender"><span class="text-danger">@ViewBag.Resolution.CommenterName</span><small class="ml-1 text-muted"><em>@ViewBag.Resolution.CommenterAs</em></small><i class="icon-verified-user d-inline-block ml-2"><img src="@Url.Content("~/assets/images/repository/chat-verified-user.png")" alt=""></i></div>
+                                                                    <div class="text">@Html.Raw(ViewBag.Resolution.Description)</div>
+                                                                </div>
+                                                                <div class="text-center">
+                                                                    @if (Model.Status.Equals(6))
+                                                                    {
+                                                                        <div>This technical request responder has <strong>posted solution but submiter currently haven't rated back the responder.</strong></div>
+                                                                    }
+                                                                    else if (Model.Status.Equals(3))
+                                                                    {
+                                                                        <div> This technical request has <strong>closed</strong> and meet solution.</div>
+                                                                    }
+                                                                    <br/>
+                                                                    @if (Convert.ToInt32(Session["userid"]).Equals(Model.Submiter) || Convert.ToInt32(Session["userid"]).Equals(Model.Responder))
+                                                                    {
+                                                                    <hr />
+
+                                                                    <div class="row justify-content-md-center">
+                                                                        <div class="col-5">
+                                                                            <div><small class="text-uppercase mb-2">submiter</small></div>
+                                                                            <img src="@Url.Content("~/Upload/UserProfile/" + ViewBag.Submiter.PhotoProfile)" onerror="this.onerror=null;this.src='@Url.Content("~/assets/images/repository/avatar-default.jpg")';" alt="" style="width: 60px; height: 60px; border-width: 2px !important;" class="object-fit-cover @colorSubmiter rounded-circle">
+                                                                            <div class="my-2">Rated for @ViewBag.Submiter.Name</div>
+                                                                            @if (ViewBag.Stars != null)
+                                                                            {
+                                                                                <ul id="stars" class="list-unstyled">
+                                                                                    @{
+                                                                                        int starSelect = 1;
+                                                                                        int starUnselect = 5 - ViewBag.Stars.Rate;
+                                                                                        int i = 1;
+                                                                                        while (starSelect <= ViewBag.Stars.Rate)
+                                                                                        {
+                                                                                            <li class="star d-inline-block"><i class="fa fa-star fa-fw text-warning"></i></li>
+                                                                                            starSelect += 1;
+                                                                                        }
+                                                                                        while (i <= starUnselect)
+                                                                                        {
+                                                                                            <li class="star d-inline-block"><i class="fa fa-star fa-fw"></i></li>
+                                                                                            i += 1;
+                                                                                        }
+                                                                                    }
+                                                                                </ul>
+                                                                                        if (!String.IsNullOrWhiteSpace(ViewBag.Stars.Description))
+                                                                                        {
+                                                                                           <div><small class="text-uppercase">Responder Message Rated</small></div>
+                                                                                            <div>" @ViewBag.Stars.Description "</div>
+                                                                                            }
+
+                                                                                        }
+                                                                        </div>
+                                                                        <div class="col-5">
+
+                                                                            <div><small class="text-uppercase mb-2">Responder</small></div>
+                                                                            <img src="@Url.Content("~/Upload/UserProfile/" + ViewBag.Responder.PhotoProfile)" onerror="this.onerror=null;this.src='@Url.Content("~/assets/images/repository/avatar-default.jpg")';" alt="" style="width: 60px; height: 60px; border-width: 2px !important;" class="object-fit-cover @colorResponder rounded-circle">
+                                                                            <div class="my-2">Rated for @ViewBag.Responder.Name</div>
+                                                                            @if (ViewBag.StarsResponder != null)
+                                                                            {
+                                                                                <ul id="stars" class="list-unstyled">
+                                                                                    @{
+                                                                                        int starSelect = 1;
+                                                                                        int starUnselect = 5 - ViewBag.StarsResponder.Rate;
+                                                                                        int i = 1;
+                                                                                        while (starSelect <= ViewBag.StarsResponder.Rate)
+                                                                                        {
+                                                                                            <li class="star d-inline-block"><i class="fa fa-star fa-fw text-warning"></i></li>
+                                                                                            starSelect += 1;
+                                                                                        }
+                                                                                        while (i <= starUnselect)
+                                                                                        {
+                                                                                            <li class="star d-inline-block"><i class="fa fa-star fa-fw"></i></li>
+                                                                                            i += 1;
+                                                                                        }
+                                                                                    }
+                                                                                </ul>
+                                                                                        if (!String.IsNullOrWhiteSpace(ViewBag.StarsResponder.Description))
+                                                                                        {
+                                                                                            <div><small class="text-uppercase">Submiter Message Rated</small></div>
+                                                                                            <div>" @ViewBag.StarsResponder.Description "</div>
+                                                                                            }
+
+                                                                                        }
+                                                                                        else
+                                                                                        {
+                                                                                            if (ViewBag.SubmiterUserId == int.Parse(Session["userid"].ToString()) && !ViewBag.IsRatedBySubmiter)
+                                                                                            {
+                                                                                                <div class="text-center text-danger my-0">
+                                                                                                    <div>Please rate back the responder.</div>
+                                                                                                </div>
+                                                                                                <div class="text-center">
+                                                                                                    <div>
+                                                                                                        <button type="button" data-toggle="modal" data-target="#modal--rate-submiter" class="btn btn-primary"><span>Rate The Responder</span></button>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            }
+                                                                                            else
+                                                                                            {
+                                                                                                <div class="my-2 text-danger">Waiting @ViewBag.Submiter.Name to give a rating</div>
+                                                                                            }
+
+                                                                                        }
+                                                                        </div>
+                                                                    </div>
+                                                                                        }
+                                                                </div>
+                                                                
+                                                            </div>
+                                                        </div>
+                                                    </section>
+                                                </div>
+                                            }
+                                            @if (Model.Status != 1)
+                                            {
+                                            <div class="position-relative">
+                                                <section class="discussion-wrap card bg-white shadow-sm border-0 mb-5">
+                                                    <nav class="card-navbar navbar navbar-dark bg-secondary text-white">
+                                                        <div class="left d-flex align-items-center">
+                                                            <div class="icon mr-2"><i class="fa fa-comment-dots fa-2x"></i></div>
+                                                            <div class="h4 font-secondary mb-0">DISCUSSION</div>
+                                                        </div>
+                                                        <div class="right">
+                                                            <button data-toggle="collapse" data-target="#collapse-target-1" type="button" class="btn btn-sm bg-transparent rounded-pill text-white btn-remove"><i class="fa fa-chevron-right"></i></button>
+                                                        </div>
+                                                    </nav>
+                                                    <div id="collapse-target-1" class="collapse show">
+                                                        <div class="chat-bubbles card-body">
+                                                            <div data-ajax_api='@Url.Content("~/api/ApiJsonCommentTR/" + Model.TicketId + "?uid=" + Session["userid"])'  id="chat-bubbles-list"></div>
+                                                        </div>
+                                                    @*@if (Convert.ToInt32(Session["Delegation"]) == 0 && DateTime.Today.Subtract(Convert.ToDateTime(Session["DelegateUntil"])).Days > 0)
+                                                    {*@
+                                                        @if (Model.Status == 6)
+                                                        {
+                                                            <div class="alert alert-white text-black my-3 text-center" role="alert">
+                                                                Insert Comment is not available because the problem in this technical request has been <strong>Solved</strong>
+                                                            </div>
+                                                        }
+                                                        else if (Model.Status == 3)
+                                                        {
+                                                            <div class="alert alert-white text-black my-3 text-center" role="alert">
+                                                                <strong>Insert Comment</strong> is not available because this technical request has been <strong>Closed</strong>
+                                                            </div>
+                                                        }
+                                                        else if (ViewBag.IsInvolved == false)
+                                                        {
+                                                            <div class="alert alert-white text-black my-3 text-center" role="alert">
+                                                                You're not <Strong>included</Strong> with this Technical Request, insert comment isn't available
+                                                            </div>
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="chat-form card-body">
+                                                                <form id="form-new-chat" data-submit_new_chat_api="@Url.Action("AddDiscussion", "TechnicalRequest")" novalidate method="POST" enctype="multipart/form-data" class="">
+
+                                                                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                                                    @Html.HiddenFor(model => model.TicketId)
+                                                                    <input type="hidden" name="UserToRate" value="@Model.Submiter">
+                                                                    <div id="modal--rate-responder" class="modal fade">
+                                                                        <div style="max-width: 25rem" class="modal-dialog modal-dialog-centered">
+                                                                            <div class="modal-content">
+                                                                                <div class="modal-body pb-0">
+                                                                                    <button type="button" data-dismiss="modal" class="close close-btn-rating"><span aria-hidden="true">&times;</span></button>
+                                                                                </div>
+                                                                                <div class="modal-body pt-0">
+                                                                                    <div class="form-group d-flex justify-content-center">
+                                                                                        <div class="media align-items-center">
+                                                                                            <img src="@Url.Content("~/Upload/UserProfile/" + ViewBag.Submiter.PhotoProfile)" onerror="this.onerror=null;this.src='@Url.Content("~/assets/images/repository/avatar-default.jpg")';" alt="" style="width: 80px; height: 80px; border-width: 4px !important;" class='rounded-circle mr-4 @(ViewBag.Submiter.RoleId >= 2 ? "object-fit-cover border border-warning" : ViewBag.Submiter.RoleId == 1 ? "object-fit-cover border border-success" : "")'>
+                                                                                      
+                                                                                            <div class="media-body">
+                                                                                                <div class="mb-1">
+                                                                                                    <div> <small class="text-muted">Thank you!</small></div>
+                                                                                                    <div>Please rate submiter</div>
+                                                                                                </div>
+                                                                                                <div class="mb-2">
+                                                                                                    <div> <small><em class="text-muted">Submiter</em></small></div>
+                                                                                                    <div><strong class="m-0">@ViewBag.Submiter.Name</strong></div>
+                                                                                                </div>
+                                                                                                <div class="rating-stars">
+                                                                                                    <ul id="stars" class="list-unstyled">
+                                                                                                        <li data-value="1" class="star d-inline-block"><i class="fa fa-star fa-fw"></i></li>
+                                                                                                        <li data-value="2" class="star d-inline-block"><i class="fa fa-star fa-fw"></i></li>
+                                                                                                        <li data-value="3" class="star d-inline-block"><i class="fa fa-star fa-fw"></i></li>
+                                                                                                        <li data-value="4" class="star d-inline-block"><i class="fa fa-star fa-fw"></i></li>
+                                                                                                        <li data-value="5" class="star d-inline-block"><i class="fa fa-star fa-fw"></i></li>
+                                                                                                    </ul>
+                                                                                                    <input type="text" name="rate" data-value-toggle="{'target': '#write-review', 'min_value': 3}" class="d-none rate-value">
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="form-group">
+                                                                                        <textarea id="write-review" style="display:none;" disabled rows="4" name="review" placeholder="Write your review" required class="form-control rounded-lg bg-light"></textarea>
+                                                                                    </div>
+                                                                                    <div class="form-group text-center mb-0">
+                                                                                        <button type="button" disabled id="btn-submit-resolution" class="btn btn-warning px-4 submit-rating">SUBMIT</button>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    @if (Model.Status.Equals(6))
+                                                                    {
+                                                                        <div class="alert alert-white text-black my-3 text-center" role="alert">
+                                                                            Insert Comment is not available because the problem in this technical request has been <strong>Solved</strong>
+                                                                        </div>
+                                                                    }
+                                                                    else if (Model.Status.Equals(3))
+                                                                    {
+                                                                        <div class="alert alert-white text-black my-3 text-center" role="alert">
+                                                                            <strong>Insert Comment</strong> is not available because this technical request has been <strong>Closed</strong>
+                                                                        </div>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <div class="form-group text-muted insert-comment-wrap mb-4">
+                                                                            <label><strong>Insert Comment</strong></label>
+                                                                            <textarea name="comment-text" id="insertComment" required rows="4" class="form-control"></textarea>
+                                                                            <em class="small form-text text-danger invalid-feedback">Field cannot be empty</em>
+                                                                        </div>
+                                                                        <div class="form-group">
+                                                                            <div id="comment-add-attachment" class="row"></div>
+                                                                            <div class="row">
+                                                                                <div class="col-lg-6">
+                                                                                    <button id="btn-comment_add_attachment" data-attachment_add_item="#comment-add-attachment" type="button" class="btn btn-secondary btn-secondary ml-2 mb-0"><i class="fa fa-paperclip"></i></button>
+                                                                                    @if (ViewBag.ResponderUserId != null)
+                                                                                    {
+                                                                                        if (ViewBag.ResponderUserId.Equals(int.Parse(Session["userid"].ToString())))
+                                                                                        {
+                                                                                            <span>
+                                                                                                <button data-toggle="modal" data-target="#modal-escalate" type="button" class="btn btn-outline-warning px-2">
+                                                                                                    <span>Escalate</span>
+                                                                                                </button>
+                                                                                            </span>
+                                                                                        }
+                                                                                    }
+                                                                                </div>
+                                                                                <div class="col-lg-6 d-flex justify-content-end">
+                                                                                    <div class="dropup">
+                                                                                        <button data-toggle="dropdown" type="button" class="btn btn-warning btn-chat-submit px-4"><i class="fas fa-paper-plane"></i></button>
+                                                                                        <div class="dropdown-menu dropdown-menu-right text-nowrap">
+                                                                                            <div class="list-group list-group-flush">
+                                                                                                @if (Model.TicketCategoryId != 9)
+                                                                                                {
+                                                                                                    <label class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                                                                                                        <input type="radio" name="chat-type" value="1" onclick="directPage()" class="d-none"><i class="fa fa-reply text-muted small mr-3"></i><span>REPLY</span>
+                                                                                                    </label>
+                                                                                                }
+                                                                                                @if (ViewBag.SubmiterUserId == int.Parse(Session["userid"].ToString()) || ViewBag.ResponderUserId == int.Parse(Session["userid"].ToString()))
+                                                                                                {
+                                                                                                    <label class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                                                                                                        <input type="radio" name="chat-type" value="2" onclick="directPage()" class="d-none"><i class="fa fa-reply text-muted small mr-3"></i><span>REPLY as Notes</span>
+                                                                                                    </label>
+                                                                                                    if (Model.TicketCategoryId != 9)
+                                                                                                    {
+                                                                                                        if (ViewBag.ResponderUserId != null && ViewBag.ResponderUserId.Equals(int.Parse(Session["userid"].ToString())) && Model.Status != 6)
+                                                                                                        {
+                                                                                                            <label class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                                                                                                                <input type="radio" name="chat-type" value="3" class="d-none"><i class="fas fa-lightbulb text-muted small mr-3"></i><span>Write Resolution</span>
+                                                                                                            </label>
+
+                                                                                                        }
+                                                                                                    }
+                                                                                                }
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    }
+
+                                                                </form>
+                                                            </div>
+                                                        }
+                                                    @*}
+                                                    else
+                                                    {
+                                                            <div class="alert alert-white text-black my-0 text-center" role="alert">
+                                                                Insert Comment is not available during in <strong>Delegation Period</strong>
+                                                            </div>
+                                                    }*@
+                                                        <div id="modal--save-pdf" class="modal fade">
+                                                            <div style="max-width: 25rem" class="modal-dialog modal-dialog-centered">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-body pb-0">
+                                                                        <button type="button" data-dismiss="modal" class="close"><span aria-hidden="true">&times;</span></button>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        @using (Html.BeginForm("GeneratePdf", "TechnicalRequest", FormMethod.Get, new { target = "_blank" }))
+                                                                        {
+                                                                            <input type="hidden" name="ticketId" value="@Model.TicketId" />
+                                                                            <div class="form-group">
+                                                                                <div class="custom-control custom-checkbox">
+                                                                                    <input type="checkbox" name="tec" id="pdf-field--tr" value="1" checked class="custom-control-input">
+                                                                                    <label for="pdf-field--tr" class="custom-control-label">Technical Request</label>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <div class="custom-control custom-checkbox">
+                                                                                    <input type="checkbox" name="res" id="pdf-field--r" value="1" checked class="custom-control-input">
+                                                                                    <label for="pdf-field--r" class="custom-control-label">Resolution</label>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <div class="custom-control custom-checkbox">
+                                                                                    <input type="checkbox" name="not" id="pdf-field--n" value="1" checked class="custom-control-input">
+                                                                                    <label for="pdf-field--n" class="custom-control-label">Notes</label>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <div class="custom-control custom-checkbox">
+                                                                                    <input type="checkbox" name="com" id="pdf-field--c" value="1" checked class="custom-control-input">
+                                                                                    <label for="pdf-field--c" class="custom-control-label">Comments</label>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <button type="submit" class="btn btn-primary">Submit</button>
+                                                                            </div>
+                                                                        }
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </section>
+                                            </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                        </div>
+                    </main>
+
+@using (Html.BeginForm("Escalate", "TechnicalRequest", FormMethod.Post, new { id = "form-escalate", novalidate = "" }))
+{
+    <div id="modal-escalate" class="modal fade">
+        <div style="max-width: 25rem" class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body pb-0">
+                    <button type="button" data-dismiss="modal" class="close"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body pt-0">
+                    <div class="form-group d-flex justify-content-center">
+                        <label>You will be swap as participant in this technical request.</label>
+                    </div>
+                    <div class="form-group">
+                        <label><strong>If you are AGREE please select responder</strong></label>
+                        <select class="selectpicker" data-container="body" data-live-search="true" data-style="border bg-white" data-val="true" data-val-number="The field Responder must be a number." data-val-required="The Responder field is required." data-width="100%" id="Responder" name="Responder" placeholder="Select Users" required>
+                            @foreach (var item in ViewBag.ListUser)
+                            {
+                                if (Model.Submiter != item.UserId)
+                                {
+                                    <option value="@item.UserId">@item.Name</option>
+                                }
+                            }
+                        </select>
+                            <datalist id="responder-list"></datalist>
+                            <em class="small form-text text-danger invalid-feedback">Field cannot be empty</em>
+
+                            <input type="text" name="TicketId" value="@Model.TicketId" hidden>
+</div>
+                    <div class="form-group text-center mb-0">
+                        <button type="submit" class="btn btn-warning px-4">ESCALATE</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<div id="modal--rate-submiter" class="modal fade">
+    <div style="max-width: 25rem" class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body pb-0">
+                <button type="button" data-dismiss="modal" class="close close-btn-rating"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body pt-0">
+                @using (Html.BeginForm("RateResponder", "TechnicalRequest", FormMethod.Post, new { id = "form-reate-submiter", novalidate = "" }))
+                {
+                    <div class="form-group d-flex justify-content-center">
+                        <div class="media align-items-center">
+                            
+                            @if (ViewBag.UserLevelName.Contains("Yellow"))
+                            {
+                                RoleColor = "border border-warning";
+                            }
+                            else if (ViewBag.UserLevelName.Contains("Green"))
+                            {
+                                RoleColor = "border border-success";
+                            }
+                             @if (Model.Status == 6)
+                             {
+                                <img style="border-width: 3px !important; width: 80px; height: 80px;" src="@Url.Content("~/Upload/UserProfile/" + ViewBag.ResponderPhoto)" onerror="this.onerror=null;this.src='@Url.Content("~/assets/images/repository/avatar-default.jpg")';" alt="" class="object-fit-cover rounded-circle @RoleColor img-thumbnail mr-3">
+                             }
+                             else
+                             {
+                                <img style="border-width: 3px !important; width: 80px; height: 80px;" src="@Url.Content("~/Upload/UserProfile/" + ViewBag.SubmiterPhoto)" onerror="this.onerror=null;this.src='@Url.Content("~/assets/images/repository/avatar-default.jpg")';" alt="" class="object-fit-cover rounded-circle @RoleColor img-thumbnail mr-3">
+                             }
+                            <div class="media-body">
+                                <div class="mb-1">
+                                    <div> <small class="text-muted">Thank you!</small></div>
+                                    <div>Please rate responder service</div>
+                                </div>
+                                <div class="mb-2">
+                                    <div> <small><em class="text-muted">Responder</em></small></div>
+                                    @if (ViewBag.Responder != null)
+                                    {
+                                        <div><strong class="m-0">@ViewBag.Responder.Name</strong></div>
+                                    }
+                                    else
+                                    {
+                                        if (Model.Status != 1)
+                                        {
+                                            <div><strong class="m-0">TREND Admin</strong></div>
+                                        }
+                                    }
+                                </div>
+                                <div class="rating-stars">
+                                    <ul class="list-unstyled">
+                                        <li data-value="1" class="star d-inline-block"><i class="fa fa-star fa-fw"></i></li>
+                                        <li data-value="2" class="star d-inline-block"><i class="fa fa-star fa-fw"></i></li>
+                                        <li data-value="3" class="star d-inline-block"><i class="fa fa-star fa-fw"></i></li>
+                                        <li data-value="4" class="star d-inline-block"><i class="fa fa-star fa-fw"></i></li>
+                                        <li data-value="5" class="star d-inline-block"><i class="fa fa-star fa-fw"></i></li>
+                                    </ul>
+                                    <input type="text" name="rate" data-value-toggle="{'target': '#write-review-2', 'min_value': 3}" class="d-none rate-value">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <textarea id="write-review-2" style="display:none;" disabled rows="4" name="review" placeholder="Write your review" required class="form-control rounded-lg bg-light"></textarea>
+                        <input type="hidden" name="UserToRate" value="@Model.Responder">
+                        <input type="hidden" name="TicketId" value="@Model.TicketId">
+                    </div>
+                    <div class="form-group text-center mb-0">
+                        <button type="submit" disabled class="btn btn-warning px-4 submit-rating">SUBMIT</button>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@Scripts.Render("~/assets/js/jquery-3.4.1.min.js")
+
+<script type="text/javascript">
+   
+    let url = window.location.href;
+    let sectionId = url.substring(url.lastIndexOf('#') + 1);
+    if (sectionId == 'comment') {
+        scrollToComment();
+    }
+    function directPage() {
+        document.getElementsByClassName("dropup").Remove();
+
+        setTimeout(function () {
+            window.location = '@Request.Url.Scheme' + '://' + '@Request.Url.Authority' +
+                '@Url.Action("Index", "MyTechnicalRequest")';
+        }, 4000);
+
+    }
+    $('.star').on('click', function () {
+        $('.submit-rating').attr('disabled', false);
+    })
+
+    $('.close-btn-rating').on('click', function () {
+        $('.submit-rating').attr('disabled', true);
+    })
+
+    $('#btn-comment_end_ticket').on('click', function () {
+        scrollToResolution();
+    })
+
+    $('#write-resolution').on('click', function (e) {
+        e.preventDefault();
+        scrollToResolution();
+    })
+
+    function scrollToResolution() {
+        $('html, body').animate({
+            scrollTop: $("#resolution-section").offset().top - 100
+        }, 500);
+
+        $('#resolution').focus();
+    }
+
+    function scrollToComment() {
+        setTimeout(function () {
+            $('html, body').animate({
+                scrollTop: $("#comment").offset().top + 100
+            }, 1000).delay(2000);
+
+            $('#comment').focus();
+        }, 1500);
+    }
+
+
+    function participantDelete(id) {
+        var r = confirm("Are you sure ?");
+        if (r == true) {
+            $.post( '@Url.Action("DeleteParticipant", "TechnicalRequest")/'+id)
+                .done(function( data ) {
+                    window.location = '@Request.Url.Scheme' + '://' + '@Request.Url.Authority'+
+                        '@Url.Action("Details", "TechnicalRequest")/';
+                });
+
+        } else {
+        }
+    }
+</script>
+@section ScriptBottom {
+<script type="text/javascript">
+            $(document).ready(function () {
+                CKEDITOR.replace('insertComment', {
+                    height: 150,
+                    toolbar:
+                    [
+                        { name: 'basicstyles', items: ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat'] },
+                        {
+                            name: 'paragraph', items: ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', 'CreateDiv',
+                                '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'BidiLtr', 'BidiRtl']
+                        },
+                        { name: 'tools', items: ['Maximize', 'ShowBlocks', '-'] }
+                    ]
+                });
+            });
+</script>
+}

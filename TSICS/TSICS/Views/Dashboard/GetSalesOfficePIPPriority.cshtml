@@ -1,0 +1,37 @@
+﻿@using Com.Trakindo.TSICS.Data.Model
+@{
+    var getDataFC = (GetFormCollectionPSLCompletionPip)ViewBag.ModelFormCollectionPSLCompletionPip;
+    var urlGetSalesOffice = "&dateRangeFrom=" + getDataFC.DateRangeFrom + "&dateRangeEnd=" + getDataFC.DateRangeEnd + "&inventory=" + getDataFC.Inventory + "&rental=" + getDataFC.Rental + "&hid=" + getDataFC.HID + "&others=" + getDataFC.Others + "&area=" + getDataFC.Area + "&storeName=" + getDataFC.StoreName + "&pslId=" + getDataFC.PSLId + "&pslType=" + getDataFC.PSLType;
+    ViewBag.Title = "GetSalesOfficePipPriority";
+    Layout = "~/Views/Shared/_LayoutBlank.cshtml";
+
+}
+<ul id="sidebar-nav" class="nav d-flex flex-column accordion-nav">
+    @{
+        foreach (var item in ViewBag.ListSalesOfficePipPriority)
+        {
+            <li class="nav-item">
+                <div class="nav-link d-flex justify-content-between">
+                    <div class="d-flex align-items-center">
+                        <a href="#salesoffice-@item.Title" class="btn-toggle-nav_child collapsed"><i class="fa fa-plus icon-left"></i>&nbsp;&nbsp;@item.TicketNo</a>
+                        <a href="javascript:;" data-api-nav_child="{'api': '@ViewBag.Domain/Dashboard/GetPSLIdPIPPriority?parentarea=@ViewBag.AreaPriority&salesOffice=@item.TicketNo@urlGetSalesOffice', 'target': '#salesoffice-@item.Title'}">&nbsp;&nbsp;</a>
+                    </div>
+                </div>
+                <div id="salesoffice-@item.Title" class="is-child show"></div>
+            </li>
+        }
+    }
+
+    @*@foreach (var item in ViewBag.ListSalesOfficePipPriority)
+    {
+        <li class="nav-item">
+            <div class="nav-link d-flex justify-content-between">
+                <div class="d-flex align-items-center">
+                    <a href="#child-@item" class="btn-toggle-nav_child collapsed"><i class="fa fa-plus icon-left"></i>&nbsp;&nbsp;@item</a>
+                    <a href="javascript:;" data-api-nav_child="{'api': '@ViewBag.Domain/Dashboard/GetPSLIdPIPPriority?area=@ViewBag.AreaPriority&salesOffice=@item', 'target': '#child-@item'}">&nbsp;&nbsp;</a>
+                </div>
+            </div>
+            <div id="child-@item" class="is-child show"></div>
+        </li>
+    }*@
+</ul>

@@ -1,0 +1,291 @@
+﻿@using Com.Trakindo.TSICS.Data.Model
+@{
+    ViewBag.Title = "Product Health";
+    Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
+}
+
+<main class="body position-relative d-flex flex-column">
+    <div data-active_page="admin--dashboard--ppm-update" class="content-wrap flex-fill">
+        @*<section class="position-relative mt-5">
+            <div class="container">
+                <form class="bg-white d-flex flex-fill rounded-0 shadow-sm">
+                    <input id="search-anything-input" type="text" placeholder="Search Anything" class="bg-white flex-fill rounded-0 border-0 p-3">
+                    <label for="search-anything-input" class="input-group-append mb-0">
+                        <button class="btn border-0 input-group-text bg-warning rounded-0 text-white px-4 py-3"><span>Search</span></button>
+                    </label>
+                </form>
+            </div>
+        </section>*@
+
+        <section class="position-relative mt-5">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12 position-relative">
+                        <section class="mb-3">
+                            <div class="d-sm-flex justify-content-between align-items-center mb-3">
+                                <h2 class="h4-size">PPM Dashboard / DPPM Product Problem Update</h2>
+                                <div class="small text-muted"><i class="far fa-clock mr-2"></i><span>Edited 1w ago</span></div>
+                            </div>
+                        </section>
+                        <section>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <nav>
+                                        <div class="nav nav-tabs nav-tabs-warning"><a href="admin--dashboard--ppm-update-1.html" class="nav-item nav-link active">Data Detail</a></div>
+                                    </nav>
+                                    <div class="card bg-white shadow-sm border-0 mb-3">
+                                        <div id="register-ppm" class="card-body">
+                                            <div style="display: none;" id="clicked-info">
+                                                <div class="row">
+                                                    <div class="col-md-10 mb-3 mb-md-0">
+                                                        <form id="filter-lists">
+                                                            <div class="form-group form-inline clicked-lists"></div>
+                                                            <div class="form-group">
+                                                                <button type="submit" id="btn-resubmit-filter" class="btn btn-outline-primary">Resubmit Filter</button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <div class="text-md-right"><a href="javascript:;" id="btn-ppm-reset" class="btn btn-primary btn-sm align-self-baseline mb-4"><i class="fa fa-redo mr-2"></i><span>Reset Filter</span></a></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="text-center chart-title">DPPM Affected Units</div>
+                                            <div class="data-check">
+                                                <div class="data-check--false">
+                                                    <div class="title">Data Not Found</div>
+                                                </div>
+                                                <div class="data-check--true">
+                                                    <div class="float-right">
+                                                        <button data-img-target="#register-ppm" data-img-filename="register-ppm" type="button" class="btn-img-download btn btn-outline-secondary btn-sm ml-3"><small>Save as image</small></button>
+                                                    </div>
+                                                    <div class="table-responsive">
+                                                        <div class="chart vertical-bar">
+                                                            <div id="chart-ppm-update-bar" data-chart-params="{'api': '@Url.Action("ChartPPMUpdateBar", "Dashboard")'}" data-table-params="{'chart':'vertical-bar','type':'register-dppm'}" class="chart-wrap">
+                                                                <canvas style="width: 900px; height: 350px;" class="mx-auto"></canvas>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <div class="card mb-4">
+                                                        <div id="dppm-status" class="card-body">
+                                                            <div class="text-center chart-title">DPPM Status</div>
+                                                            <div class="data-check">
+                                                                <div class="data-check--false">
+                                                                    <div class="title">Data Not Found</div>
+                                                                </div>
+                                                                <div class="data-check--true">
+                                                                    <div class="table-responsive">
+                                                                        <div class="chart vertical-bar">
+                                                                            <div data-chart-pie-label data-type="status" data-chart-params="{'api': '@Url.Action("ChartPPMPie","Dashboard")?type=status'}" data-table-params="{'chart':'pie','type':'status'}" class="chart-wrap">
+                                                                                <canvas style="width: 280px; height: 180px;" class="mx-auto"></canvas>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="card-footer text-right">
+                                                            <button data-img-target="#dppm-status" data-img-filename="dppm-status" type="button" class="btn-img-download btn btn-outline-secondary btn-sm ml-3"><small>Save as image</small></button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div id="dppm-industry" class="card mb-4">
+                                                        <div class="card-body">
+                                                            <div class="text-center chart-title">DPPM Product Family</div>
+                                                            <div class="data-check">
+                                                                <div class="data-check--false">
+                                                                    <div class="title">Data Not Found</div>
+                                                                </div>
+                                                                <div class="data-check--true">
+                                                                    <div class="table-responsive">
+                                                                        <div class="chart vertical-bar">
+                                                                            <div data-chart-pie-label data-type="industry" data-chart-params="{'api': '@Url.Action("ChartPPMPie","Dashboard")?type=industry'}" data-table-params="{'chart':'pie','type':'productfamily'}" class="chart-wrap">
+                                                                                <canvas style="width: 280px; height: 180px;" class="mx-auto"></canvas>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="card-footer text-right">
+                                                            <button data-img-target="#dppm-industry" data-img-filename="dppm-industry" type="button" class="btn-img-download btn btn-outline-secondary btn-sm ml-3"><small>Save as image</small></button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div id="dppm-reps" class="card mb-4">
+                                                        <div class="card-body">
+                                                            <div class="text-center chart-title">DPPM Tech Reps.</div>
+                                                            <div class="data-check">
+                                                                <div class="data-check--false">
+                                                                    <div class="title">Data Not Found</div>
+                                                                </div>
+                                                                <div class="data-check--true">
+                                                                    <div class="table-responsive">
+                                                                        <div class="chart vertical-bar">
+                                                                            <div data-chart-pie-label data-type="tech_reps" data-chart-params="{'api': '@Url.Action("ChartPPMPie","Dashboard")?type=tech-reps'}" data-table-params="{'chart':'pie','type':'tech-reps'}" class="chart-wrap">
+                                                                                <canvas style="width: 800px; height: 250px;" class="mx-auto"></canvas>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="card-footer text-right">
+                                                            <button data-img-target="#dppm-reps" data-img-filename="dppm-reps" type="button" class="btn-img-download btn btn-outline-secondary btn-sm ml-3"><small>Save as image</small></button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div id="dppm-contact" class="card mb-4">
+                                                        <div class="card-body">
+                                                            <div class="text-center chart-title">DPPM Dealer Contact</div>
+                                                            <div class="table-responsive">
+                                                                <div class="chart vertical-bar">
+                                                                    <div data-chart-params="{'api': '@Url.Action("ChartContactDealerPPMUpdate","Dashboard")', 'form_data_source': ''}" data-table-params="{'chart':'vertical-bar','type':'dealer-contact'}" id="chart-ppm-dealer-contact" class="canvas-wrap mx-auto">
+                                                                        <canvas style="width: 400px; height: 180px;" class="mx-auto"></canvas>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="card-footer text-right">
+                                                            <button data-img-target="#dppm-contact" data-img-filename="dppm-contact" type="button" class="btn-img-download btn btn-outline-secondary btn-sm ml-3"><small>Save as image</small></button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card rounded-0 mb-3">
+                                        <div class="card-body">
+                                            <div id="table--ppm-update-1" data-dt-params="{'fixedHeader': true, 'fixedColumns': { 'leftColumns': 0 }}" data-dt-api="@Url.Action("TableDPPMUpdate","Dashboard")" style="display:none;" class="table-responsive">
+                                                <table class="table table-dt">
+                                                    <thead>
+                                                        <tr>
+                                                            <th><small>TITLE</small></th>
+                                                            <th><small>DESC</small></th>
+                                                            <th><small>ICA</small></th>
+                                                            <th><small>PCA</small></th>
+                                                            <th><small>DPPM NO</small></th>
+                                                            <th><small>STATUS</small></th>
+                                                            <th><small>DEALER CONTACT</small></th>
+                                                            <th><small>CAT REP</small></th>
+                                                            <th><small>DATE CREATED</small></th>
+                                                            <th><small>DATE LAST UPDATE</small></th>
+                                                        </tr>
+                                                    </thead>
+                                                </table>
+                                                <script>
+                                    var column_dt_table = [
+                                        {
+                                            data: 'title',
+                                            render: function (data, type, row) {
+                                                var html = ''
+                                                html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                                return html
+                                            }
+                                        },
+                                        {
+                                            data: 'desc',
+                                            render: function (data, type, row) {
+                                                var html = ''
+                                                html = '<span class="d-block ' + data.style + '" style="width:250px">' + data.value + '</span>'
+                                                return html
+                                            }
+                                        },
+                                        {
+                                            data: 'ica',
+                                            render: function (data, type, row) {
+                                                var html = ''
+                                                    html = '<span class="d-block ' + data.style + '" style="width:250px">' + data.value + '</span>'
+                                                return html
+                                            }
+                                        },
+                                        {
+                                            data: 'pca',
+                                            render: function (data, type, row) {
+                                                var html = ''
+                                                    html = '<span class="d-block ' + data.style + '" style="width:250px">' + data.value + '</span>'
+                                                return html
+                                            }
+                                        },
+                                        {
+                                        data    : 'dppm_no',
+                                        render  : function (data,type,row) {
+                                          var html = ''
+                                          html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                          return html
+                                        }
+                                      },
+                                      {
+                                        data    : 'status',
+                                        render  : function (data,type,row) {
+                                          var html = ''
+                                          html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                          return html
+                                        }
+                                      },
+                                      {
+                                        data    : 'dealer_contact',
+                                        render  : function (data,type,row) {
+                                          var html = ''
+                                          html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                          return html
+                                        }
+                                      },
+                                      {
+                                        data    : 'cat_rep',
+                                        render  : function (data,type,row) {
+                                          var html = ''
+                                          html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                          return html
+                                        }
+                                      },
+                                      {
+                                        data    : 'date_created',
+                                        render  : function (data,type,row) {
+                                          var html = ''
+                                          html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                          return html
+                                        }
+                                      },
+                                      {
+                                        data    : 'date_last_update',
+                                        render  : function (data,type,row) {
+                                          var html = ''
+                                          html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                          return html
+                                        }
+                                      }
+
+                                    ]
+
+                                                </script>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</main>
+@section ScriptBottom {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#chart-ppm-update-bar").on('click', function () {
+                console.log("datamodel:", $("#chart-ppm-update-bar").val());
+            });
+        });
+    </script>
+}

@@ -1,0 +1,57 @@
+﻿
+@{
+    ViewBag.Title = "SubCategory";
+    Layout = "~/Views/Shared/_LayoutBlank.cshtml";
+}
+<div class="modal fade" id="Details" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">Category Detail</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <label class="text-dark">Category Name<span class="d-none d-xl-inline mx-1">:</span><span class="d-none d-xl-inline mx-1 btn" id="Name-data"></span></label><br />
+                <label class="text-dark">Created Date<span class="d-none d-xl-inline mx-1">:</span><span class="d-none d-xl-inline mx-1 btn" id="CreatedAt-data"></span></label><br />
+                <label class="text-dark">From Category<span class="d-none d-xl-inline mx-1">:</span><span class="d-none d-xl-inline mx-1 btn" id="Parent-data"></span></label><br />
+
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+    @foreach (var item in ViewBag.ListCategoryChild)
+    {
+        <div class="card mx-3 my-2">
+            <div class="card-body items">
+                <div class="row">
+                    <div class="col-10">
+                        <a href="#child-@item.ArticleCategoryId" data-toggle="collapse" class="collapsed" data-api-nav_child="{'api': '@ViewBag.Domain/Admin/Category/SubCategory?parent=@item.ArticleCategoryId', 'target': '#child-@item.ArticleCategoryId'}">@item.Name<small class="ml-1">@(item.Subcategory != 0 ? "(" + item.Subcategory + " Sub category)" : "")</small></a>
+                    </div>
+                    <div class="col-2 float-right Action">
+                        <a href="@Url.Action("Create", "Category", new { parent = item.ArticleCategoryId})" class="mx-1"><i class="fa fa-plus"></i></a>
+                        <a href="@Url.Action("Edit", "Category", new { id = item.ArticleCategoryId})" class="mx-1"><i class="fa fa-pencil-alt"></i></a>
+                        <a href="@Url.Action("Details", "Category", new { id = item.ArticleCategoryId})" class="mx-1"><i class="fa fa-info-circle"></i></a>
+                        @*<a class="mx-1 getData" data-toggle="modal" data-target="#Details" data-category='{"CategoryId":"@item.ArticleCategoryId","Parent":"@item.Parent", "Name":"@item.Name", "Status":"@item.Status", "CreatedAt":"@item.CreatedAt","Icon":"@(item.Icon == null ? "-" : item.Icon)"}'><i class="fa fa-info"></i></a>*@
+                        <a href="@Url.Action("Delete", "Category", new { id = item.ArticleCategoryId})" data-category='{"CategoryId":"@item.ArticleCategoryId","Parent":"@item.Parent", "Name":"@item.Name", "Status":"@item.Status", "CreatedAt":"@item.CreatedAt","Icon":"@(item.Icon == null ? "-" : item.Icon)"}' class="mx-1 Delete"><i class="fa fa-trash"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div id="child-@item.ArticleCategoryId" class="is-child collapse"></div>
+        </div>
+    }
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".getData").on('click', function () {
+            $('#CategoryId-data').val($(this).data('category').CategoryId);
+            $('#Parent-data').html($(this).data('category').Parent);
+            $('#Name-data').html($(this).data('category').Name);
+            $('#Icon-data').val($(this).data('category').Icon);
+            $('#CreatedAt-data').val($(this).data('category').CreatedAt);
+            $('#Status-data').val($(this).data('category').Status);
+        });
+    });
+    </script>

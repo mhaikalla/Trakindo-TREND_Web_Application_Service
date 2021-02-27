@@ -1,0 +1,90 @@
+﻿@model Com.Trakindo.TSICS.Data.Model.Delegation
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<main class="body position-relative d-flex flex-column">
+    <div data-active_page="delegation--log" class="content-wrap flex-fill">
+        <section class="position-relative mt-5">
+            <div class="container-fluid">
+                <div class="row no-gutters mb-5">
+                    <div class="col-lg-12 position-relative">
+                        <section class="card bg-white shadow-sm border-0 rounded-0">
+                            <div class="card-header bg-transparent border-0 ">
+                                <div class="row">
+                                    <div class="col-lg-6 d-flex align-items-center">
+                                        <div class="h3 font-secondary card-title mb-0">
+                                            <span>DETAILS</span> <span class="text-muted">DELEGATION</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 d-flex align-items-center">
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                               
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="row no-gutters text-muted mb-5 mb-xl-0">
+                                            <div class="col-xl-4 mb-0 mb-xl-2 d-flex justify-content-between">Start Date<span class="d-none d-xl-inline mx-1">:</span></div>
+                                            <div class="col-xl-8 mb-3 mb-lg-2 text-dark">@Model.StartDate.Value.ToString("dddd, dd MMMM yyyy")</div>
+                                            <div class="col-xl-4 mb-0 mb-xl-2 d-flex justify-content-between">End Date<span class="d-none d-xl-inline mx-1">:</span></div>
+                                            <div class="col-xl-8 mb-3 mb-lg-2 text-dark">@Model.EndDate.Value.ToString("dddd, dd MMMM yyyy")</div>
+                                            <div class="col-xl-4 mb-0 mb-xl-2 d-flex justify-content-between">From User<span class="d-none d-xl-inline mx-1">:</span></div>
+                                            <div class="col-xl-8 mb-3 mb-lg-2 text-dark">@ViewBag.FromUserData.Name</div>
+                                            <div class="col-xl-4 mb-0 mb-xl-2 d-flex justify-content-between">To User<span class="d-none d-xl-inline mx-1">:</span></div>
+                                            <div class="col-xl-8 mb-3 mb-lg-2 text-dark">@ViewBag.ToUserData.Name</div>
+                                            <div class="col-xl-4 mb-0 mb-xl-2 d-flex justify-content-between">Status<span class="d-none d-xl-inline mx-1">:</span></div>
+                                            @if (Model.Status == 1)
+                                            {
+                                                <div class="col-xl-8 mb-3 mb-lg-2 text-dark">On Going</div>
+                                            }
+                                            else if (Model.Status == 2)
+                                            {
+                                                <div class="col-xl-8 mb-3 mb-lg-2 text-dark">Ended</div>
+                                            }
+                                            else if (Model.Status == 3)
+                                            {
+                                                <div class="col-xl-8 mb-3 mb-lg-2 text-dark">Not Started Yet</div>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                        <section style="bottom: 0;" class="position-sticky bg-light py-3 sticky-submit-form z-index-10">
+                            <div class="container-fluid container-admin ml-0">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="d-none d-md-flex justify-content-between">
+                                            <div>
+                                                <a class="btn rounded-0 border-warning bg-light my-1" href="@Url.Action("index", "Delegation")" role="button">Back to List</a>
+                                            </div>
+                                            <div>
+                                                @if (Model.Status != 2)
+                                                {
+                                                    <div class="form-actions no-color">
+                                                        <a class="btn rounded-0 btn-warning text-white my-1" href="@Url.Action("Edit/" + @Model.DelegateId, "Delegation")" role="button">Edit</a>
+                                                    </div>
+
+                                                }
+                                                <div class="form-actions no-color">
+                                                    <a class="btn rounded-0 btn-danger text-white my-1" href="@Url.Action("Delete/" + @Model.DelegateId, "Delegation")" role="button">Delete</a>
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</main>
+

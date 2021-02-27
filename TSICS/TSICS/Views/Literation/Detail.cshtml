@@ -1,0 +1,130 @@
+﻿@model Com.Trakindo.TSICS.Data.Model.Article
+@using Com.Trakindo.TSICS.Data.Model
+@using TSICS.Helper;
+
+@{
+    ViewBag.Title = "Detail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<main class="body position-relative d-flex flex-column">
+    <div data-active_page="library" class="content-wrap flex-fill">
+        <section class="position-relative mt-5">
+            <div class="container">
+                <form class="bg-white d-flex flex-fill rounded-0 shadow-sm">
+                    <input id="search-anything-input" type="text" placeholder="Search Anything" class="bg-white flex-fill rounded-0 border-0 p-3">
+                    <label for="search-anything-input" class="input-group-append mb-0">
+                        <button class="btn border-0 input-group-text bg-warning rounded-0 text-white px-4 py-3"><span>Search</span></button>
+                    </label>
+                </form>
+            </div>
+        </section>
+        <form action="product-health-review.html" novalidate method="POST" enctype="multipart/form-data" class="needs-validation">
+            <section class="position-relative mt-5">
+                <div class="container">
+                    <div class="row">
+                        
+                        @Html.Partial("_LayoutArticle")
+
+                        <div class="col-lg-9 position-relative">
+                            <h3 class="mb-5"> <span class="font-secondary">WHAT'S NEWS</span>
+                            @if (Common.CheckUserYellow())
+                            {
+                                <a href="@Url.Action("Create", "Library")" class="btn btn-warning rounded-pill ml-3 px-3"><i class="fa fa-file-alt text-white"></i><span class="ml-2">Add New</span></a>
+                            }
+                            </h3>
+                            <section class="card bg-white shadow-sm border-0 mb-5">
+                                <div class="card-header bg-transparent border-0">
+                                    <nav>
+                                        <ol class="breadcrumb bg-transparent small text-secondary p-0">
+                                            <li class="breadcrumb-item active"><a href="@Url.Action("Create", "Library")" class="text-dark">Library</a></li>
+                                            @if (Model.Category1Id != 0)
+                                                {<li class="breadcrumb-item">@Model.Category1</li>}
+                                            @if (Model.Category2Id != 0)
+                                                {<li class="breadcrumb-item">@Model.Category2</li> }
+                                            @if (Model.Category3Id != 0)
+                                                { <li class="breadcrumb-item">@Model.Category3</li> }
+                                            @if (Model.Category4Id != 0)
+                                                { <li class="breadcrumb-item">@Model.Category4</li> }
+                                            @if (Model.Category5Id != 0)
+                                                { <li class="breadcrumb-item">@Model.Category5</li> }
+                                            @if (Model.Category6Id != 0)
+                                                { <li class="breadcrumb-item">@Model.Category6</li> }
+                                            @if (Model.Category7Id != 0)
+                                                { <li class="breadcrumb-item">@Model.Category7</li>}
+
+                                        </ol>
+                                    </nav>
+                                    <div class="row">
+                                        <div class="col-sm-10 mx-sm-auto">
+                                            <h1 class="h3">@Model.Title</h1>
+                                            <div>AUTHOR</div><strong class="mb-3">
+                                            @Html.Action("GetAuthorName", new { id = Model.CreatedBy })
+                                            <div class="text-secondary"><em><small>@Model.CreatedAt.Value.ToString("MMMM dd, yyyy")   </small></em><span class="text-warning"></span></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <img src="@ViewBag.PathImg" alt="" class="img-fluid mb-5 w-100 h-25">
+                                    <div class="row overlap-top-10">
+                                        <div class="col-sm-10 mx-sm-auto">
+                                            <article class="bg-white-75 p-lg-5">
+                                                <p>@Html.Raw(Model.Description)</p>
+                                                <p></p>
+                                                
+                                                @if (ViewBag.ListFile != null)
+                                                {
+                                                <p>Documents download:</p>
+                                                <div class="row">
+                                                    @if (Session["userid"] == null)
+                                                    {
+                                                        foreach (ArticleFile item in ViewBag.ListFile)
+                                                        {
+                                                            if (item.LevelUser == "guest")
+                                                            {
+                                                                <a href="~/Upload/Article/Attachments/@item.Name" download class="col-auto mb-2">
+                                                                    <i class="fa fa-paperclip mr-2"></i><em class="text-muted">@item.Name</em>
+                                                                </a>
+                                                            }
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        if (Session["roleColor"].ToString().ToLower() == "yellow")
+                                                        {
+                                                            foreach (ArticleFile item in ViewBag.ListFile)
+                                                            {
+                                                                <a href="~/Upload/Article/Attachments/@item.Name" download class="col-auto mb-2">
+                                                                    <i class="fa fa-paperclip mr-2"></i><em class="text-muted">@item.Name</em>
+                                                                </a>
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            foreach (ArticleFile item in ViewBag.ListFile)
+                                                            {
+                                                                if (item.LevelUser == "guest" || item.LevelUser == "green")
+                                                                {
+                                                                    <a href="~/Upload/Article/Attachments/@item.Name" download class="col-auto mb-2">
+                                                                        <i class="fa fa-paperclip mr-2"></i><em class="text-muted">@item.Name</em>
+                                                                    </a>
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                </div>
+                                                }
+                                            </article>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                        </div>
+                    </div>
+                </div>
+                </section>
+            <div class="sticky-submit-form-observer"></div>
+        </form>
+    </div>
+</main>
+

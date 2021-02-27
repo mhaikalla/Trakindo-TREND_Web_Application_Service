@@ -1,0 +1,198 @@
+﻿@{
+    ViewBag.Title = "Dashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<main class="body position-relative d-flex flex-column">
+    <div data-active_page="admin--dashboard--tr-my" class="content-wrap flex-fill">
+        <section id="tr-dashboard" class="position-relative mt-5">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12 position-relative">
+                        <section class="mb-3">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h2 class="h4-size">My TR Dashboard</h2><a href="#" class="btn btn-dark btn-sm"><i class="fa fa-plus mr-2"></i><small>CREATE NEW</small></a>
+                            </div>
+                            <div class="d-flex"><a href="tr--dashboard--my-reporting.html" class="btn btn-sm btn-warning mb-3"><i class="fa fa-chevron-left mr-2"></i><span>Back</span></a></div>
+                        </section>
+                        <section data-date-performance-detail="{'api': {'chart': '@Url.Action("MonthlySummaryDetailGauge","Dashboard")?', 'table': '@Url.Action("TableMonthlySubmitterDetail","Dashboard")?'}, 'type': 'submitter', 'month_year': 'm=0&y=0'}" id="chart-gauge-detail">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <header class="d-lg-flex justify-content-between mb-2">
+                                        <div>
+                                            <div class="h4-size">MONTH TO DATE TR PERFORMANCE</div>
+                                            <div class="small">All my monthly TR Performance rates and response time</div>
+                                        </div><small class="text-muted ml-2"><i class="fa fa-clock"></i><span class="ml-2">Edited 1w ago</span></small>
+                                    </header>
+                                    <div class="mb-2">
+                                        <span>Period:</span>
+                                        <div class="d-inline-block">
+                                            <select data-style="btn-sm border ml-2" data-change-period="{'target': '#chart-gauge-detail', 'attr': 'data-date-performance-detail', 'param_to_change': 'month_year', 'func_name': 'datePerformanceDetail'}" class="selectpicker">
+                                                @{
+                                                    var tahunSekarang = DateTime.Now.Year;
+                                                    var tahunKebelakang = tahunSekarang - 5;
+                                                    for (var i = tahunSekarang; i >= tahunKebelakang; i--)
+                                                    {
+                                                        <option value="m=12&y=@(i)">Desember @(i)</option>
+                                                        <option value="m=11&y=@(i)">November @(i)</option>
+                                                        <option value="m=10&y=@(i)">Oktober @(i)</option>
+                                                        <option value="m=09&y=@(i)">September @(i)</option>
+                                                        <option value="m=08&y=@(i)">Agustus @(i)</option>
+                                                        <option value="m=07&y=@(i)">Juli @(i)</option>
+                                                        <option value="m=06&y=@(i)">Juni @(i)</option>
+                                                        <option value="m=05&y=@(i)">Mei @(i)</option>
+                                                        <option value="m=04&y=@(i)">April @(i)</option>
+                                                        <option value="m=03&y=@(i)">Maret @(i)</option>
+                                                        <option value="m=02&y=@(i)">Februari @(i)</option>
+                                                        <option value="m=01&y=@(i)">Januari @(i)</option>
+                                                    }
+                                                }
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="chart gauge">
+                                        <div class="canvas-wrap mx-auto">
+                                            <canvas></canvas>
+                                            <div class="min-target"><span>min. target</span></div>
+                                        </div>
+                                        <div class="info mx-auto">
+                                            <small>avg. rating</small>
+                                            <div class="show-value h4-size">0</div>
+                                            <div class="stars"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="table-responsive">
+                                                <table id="table--modal-chart-gauge-detail" class="table table-dt">
+                                                    <thead>
+                                                        <tr>
+                                                            <th><small>TICKET NO</small></th>
+                                                            <th><small>CATEGORY</small></th>
+                                                            <th><small>TITLE</small></th>
+                                                            <th><small>SUBMITTER</small></th>
+                                                            <th><small>RESPONDER</small></th>
+                                                            <th><small>DATE CREATED</small></th>
+                                                            <th><small>DATE CLOSED</small></th>
+                                                            <th><small>DATE UPDATED</small></th>
+                                                            <th><small>STATUS TR</small></th>
+                                                            <th><small>STATUS USER</small></th>
+                                                        </tr>
+                                                    </thead>
+                                                </table>
+                                            </div>
+                                            <script>
+                                              var dt_option = {
+                                                fixedColumns  : {
+                                                  leftColumns   : 1
+                                                },
+                                                sortable      : true,
+                                                paging        : true,
+                                                order         : [[ 1, 'desc' ]],
+                                                hide_column   : []
+                                              }
+
+                                              var column_dt_table = [
+                                                {
+                                                  data    : 'ticket_no',
+                                                  render  : function (data,type,row) {
+                                                    var html = ''
+                                                    html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                                    return html
+                                                  }
+                                                },
+                                                {
+                                                  data    : 'category',
+                                                  render  : function (data,type,row) {
+                                                    var html = ''
+                                                    html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                                    return html
+                                                  }
+                                                },
+                                                {
+                                                  data    : 'title',
+                                                  render  : function (data,type,row) {
+                                                    var html = ''
+                                                    html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                                    return html
+                                                  }
+                                                },
+                                                {
+                                                  data    : 'submitter',
+                                                  render  : function (data,type,row) {
+                                                    var html = ''
+                                                    html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                                    return html
+                                                  }
+                                                },
+                                                {
+                                                  data    : 'responder',
+                                                  render  : function (data,type,row) {
+                                                    var html = ''
+                                                    html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                                    return html
+                                                  }
+                                                },
+                                                {
+                                                  data    : 'date_created',
+                                                  render  : function (data,type,row) {
+                                                    var html = ''
+                                                    html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                                    return html
+                                                  }
+                                                },
+                                                {
+                                                  data    : 'date_closed',
+                                                  render  : function (data,type,row) {
+                                                    var html = ''
+                                                    html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                                    return html
+                                                  }
+                                                },
+                                                {
+                                                  data    : 'date_updated',
+                                                  render  : function (data,type,row) {
+                                                    var html = ''
+                                                    html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                                    return html
+                                                  }
+                                                },
+                                                {
+                                                  data    : 'status_tr',
+                                                  render  : function (data,type,row) {
+                                                    var html = ''
+                                                    html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                                    return html
+                                                  }
+                                                },
+                                                {
+                                                  data    : 'status_user',
+                                                  render  : function (data,type,row) {
+                                                    var html = ''
+                                                    html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                                    return html
+                                                  }
+                                                }
+                                              ]
+
+                                           </script>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</main>
+
+<script src="assets/js/libs.js" type="text/javascript"></script>
+<script src="assets/js/dev.js" type="text/javascript"></script>

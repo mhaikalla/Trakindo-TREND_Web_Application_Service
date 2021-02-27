@@ -1,0 +1,74 @@
+﻿@model Com.Trakindo.TSICS.Data.Model.Ticket
+
+@{
+    ViewBag.Title = "Cat Electronic Technician";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<main class="body position-relative d-flex flex-column">
+    <div data-active_page="" class="content-wrap flex-fill">
+        <section class="position-relative mt-5">
+            <div class="container">
+                <div class="row">
+                    <aside id="sidebar" style="top: 7rem;" class="sidebar col-lg-3 d-none d-lg-flex flex-column align-self-start position-sticky">
+                        <div class="sidebar-wrap flex-fill">
+                            @Html.Partial("_PartTRCategory")
+                        </div>
+                    </aside>
+                    <div class="col-lg-9 position-relative">
+                        <div style="top: 7rem; height: 0;" class="position-sticky z-index-10">
+                            <a style="right: -4rem;" href="@Url.Action("HelpDesk", "TechnicalRequest")" class="btn btn-warning border-0 btn-customer-service position-absolute" target="_blank"><img src="../../assets/images/repository/customer-service-icon.png" alt=""></a>
+                        </div>
+                        <section class="card bg-white shadow-sm border-0 mb-5">
+                            <div class="card-header bg-transparent border-0">
+                                <div class="row">
+                                    <div class="col-lg-6 d-flex align-items-center">
+                                        <div class="h3 font-secondary card-title mb-0"> <span>GET PASSWORD</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <fieldset class="card-body">
+                                <legend></legend>
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="row no-gutters text-muted mb-5 mb-xl-0">
+                                            <div class="col-xl-4 mb-0 mb-lg-2 d-flex justify-content-between">Date Created<span class="d-none d-xl-inline mx-1">:</span></div>
+                                            <div class="col-xl-8 mb-3 mb-lg-2 text-dark" id="DateCreated">@Model.CreatedAt</div>
+                                            <div class="col-xl-4 mb-0 mb-lg-2 d-flex justify-content-between">Service Tool Serial Number<span class="d-none d-xl-inline mx-1">:</span></div>
+                                            <div class="col-xl-8 mb-3 mb-lg-2" id="ServiceToolSerialNumber">@Model.ServiceToolSN</div>
+                                            <div class="col-xl-4 mb-0 mb-lg-2 d-flex justify-content-between">Engine Serial Number<span class="d-none d-xl-inline mx-1">:</span></div>
+                                            <div class="col-xl-8 mb-3 mb-lg-2" id="EngineSerialNumber">@Model.EngineSN</div>
+                                            <div class="col-xl-4 mb-0 mb-lg-2 d-flex justify-content-between">ECM Serial Number<span class="d-none d-xl-inline mx-1">:</span></div>
+                                            <div class="col-xl-8 mb-3 mb-lg-2 text-dark" id="ECMSerialNumber">@Model.EcmSN</div>
+                                            <div class="col-xl-4 mb-0 mb-lg-2 d-flex justify-content-between">Total Tattletale<span class="d-none d-xl-inline mx-1">:</span></div>
+                                            <div class="col-xl-8 mb-3 mb-lg-2 text-dark" id="TotalTattletale">@Model.TotalTattletale</div>
+                                            <div class="col-xl-4 mb-0 mb-lg-2 d-flex justify-content-between">Reason Code<span class="d-none d-xl-inline mx-1">:</span></div>
+                                            <div class="col-xl-8 mb-3 mb-lg-2 text-dark" id="ReasonCode">@Model.ReasonCode</div>
+                                            <div class="col-xl-4 mb-0 mb-lg-2 d-flex justify-content-between">From Interlock<span class="d-none d-xl-inline mx-1">:</span></div>
+                                            <div class="col-xl-8 mb-3 mb-lg-2 text-dark" id="SoftwarePartNumber">@Model.FromInterlock</div>
+                                            <div class="col-xl-4 mb-0 mb-lg-2 d-flex justify-content-between">To Interlock<span class="d-none d-xl-inline mx-1">:</span></div>
+                                            <div class="col-xl-8 mb-3 mb-lg-2 text-dark" id="SoftwarePartNumber">@Model.ToInterlock</div>
+                                            <div class="col-xl-4 mb-0 mb-lg-2 d-flex justify-content-between">Diagnostic Clock<span class="d-none d-xl-inline mx-1">:</span></div>
+                                            <div class="col-xl-8 mb-3 mb-lg-2 text-dark" id="DiagnosticClock">@Model.DiagnosticClock</div>
+                                            <div class="col-xl-4 mb-0 mb-lg-2 d-flex justify-content-between">Software Part Number<span class="d-none d-xl-inline mx-1">:</span></div>
+                                            <div class="col-xl-8 mb-3 mb-lg-2 text-dark" id="SoftwarePartNumber">@Model.SoftwarePartNumber</div>
+                                            <div class="col-xl-4 mb-0 mb-lg-2 d-flex justify-content-between">Test Spesification<span class="d-none d-xl-inline mx-1">:</span></div>
+                                            <div class="col-xl-8 mb-3 mb-lg-2 text-dark" id="SoftwarePartNumber">@Model.TestSpec</div>
+                                            <div class="col-xl-4 mb-0 mb-lg-2 d-flex justify-content-between">Test Spesification With BreakSaver<span class="d-none d-xl-inline mx-1">:</span></div>
+                                            <div class="col-xl-8 mb-3 mb-lg-2 text-dark" id="SoftwarePartNumber">@Model.TestSpecBrakeSaver</div>
+                                        </div>
+                                        <hr class="my-3">
+                                        <div class="row no-gutters text-muted mb-5 mb-xl-0">
+                                            <p>If the above information is correct, please click on the link below.</p>
+                                            <h3><a id="submit-link" href="https://fpsdma.cat.com/fpsdma/legacyPassword.do?actionName=processlegacylink&svctl=@Model.ServiceToolSN&serno=@Model.EngineSN&ecm=@Model.EcmSN&ttt=@Model.TotalTattletale&rc=@Model.ReasonCode&from=@Model.FromInterlock&to=@Model.ToInterlock&units=@Model.DiagnosticClock&hmk=h&engtyp=C&prodtyp=E&swpn=@Model.SoftwarePartNumber">https://fpsdma.cat.com/fpsdma/</a></h3>
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</main>

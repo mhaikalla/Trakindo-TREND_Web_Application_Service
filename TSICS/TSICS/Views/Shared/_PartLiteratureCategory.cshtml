@@ -1,0 +1,94 @@
+﻿@using Com.Trakindo.TSICS.Data.Model
+@using TSICS.Helper
+
+@{
+    ViewBag.Title = "_PartLiteratureCategory";
+}
+<script>
+    window.onload = function () {
+        function getparent(i, id) {
+            $.get("http://localhost:1051/Literation/Testing?parent=1", function (data, status) {
+                alert("Data: " + data);
+                //$("'#" + id + "'").html(data);
+            });
+            //alert("tess");
+        }
+        $("#child-1").html('tesss');
+        console.log('asdasdasd')
+    }
+</script>
+
+
+<div data-active_page="library" class="content-wrap flex-fill">
+    <main id="sidebar">
+        <section class="sidebar-nav mb-5">
+            <div class="card bg-transparent border-0">
+                <div class="card-header bg-transparent border-dark px-0">
+                    <h4 class="font-secondary card-title mb-0">TYPES OF LIBRARIES</h4>
+                </div>
+                <div class="card-body bg-transparent p-0">
+                    <ul class="nav d-flex flex-column">
+                        <li class="nav-item">
+                            <a data-active_nav="Library" href="@Url.Action("Index", "Library")" class="nav-link d-flex justify-content-between align-items-center text-muted px-0">
+                                <span>Articles</span>
+                            </a>
+                        </li>
+                        <li class="nav-item"><a data-active_nav="Literature" href="@Url.Action("Index", "Literation")" class="nav-link d-flex justify-content-between align-items-center text-muted px-0"><span>Literature</span></a></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        <section class="sidebar-nav mb-5">
+            <div class="card bg-transparent border-0">
+                <div class="card-header bg-transparent border-dark px-0">
+                    <h4 class="font-secondary card-title mb-0">LITERATURE CATEGORY</h4>
+                </div>
+                <div class="card-body bg-transparent p-0">
+                    <ul id="sidebar-nav" class="nav d-flex flex-column accordion-nav">
+                        @foreach (var item in ViewBag.ListCategory1)
+                        {
+                            <li class="nav-item">
+                                <div class="nav-link d-flex justify-content-between">
+                                    <div class="d-flex align-items-center">
+                                        <a href="#child-@item.ArticleCategoryId" class="btn-toggle-nav_child collapsed"><i class="fa fa-plus icon-left"></i></a>
+                                        <a href="javascript:;" data-api-nav_child="{'api': '@ViewBag.Domain/Literation/Testing?parent=@item.ArticleCategoryId', 'target': '#child-@item.ArticleCategoryId'}" data-api-replace_content="{'api': '@ViewBag.Domain/Literation/LiteratureTemplate?Category=@item.ArticleCategoryId', 'target': '#content-update'}">@item.Name <small>@(item.CountUsed != 0 ? "(" + item.CountUsed + ")" : "")</small></a>
+                                    </div>
+                                </div>
+                                <div id="child-@item.ArticleCategoryId" class="is-child show"></div>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </section>
+        <section id="sidebar" class="sidebar-recent mt-3 mb-5 hide">
+            <div class="card bg-transparent border-0">
+                <div class="card-header bg-transparent border-dark px-0">
+                    @if (ViewBag.UseFullLink != null)
+                {
+                <h4 class="font-secondary card-title mb-0">USEFULL LINK</h4>
+                }
+                else
+                {
+                <h4 class="font-secondary card-title mb-0">NO USEFULL LINK RECENTLY</h4>
+                }
+                </div>
+                @if (ViewBag.UseFullLink != null)
+            {
+            <div class="card-body bg-transparent p-0" style="overflow:auto; height:300px;">
+                <div class="list-group list-group-flush">
+                    @foreach (Article usefull in ViewBag.UseFullLink)
+                        {
+                        <a href="@usefull.Description" target="_blank" class="list-group-item list-group-item-action bg-transparent text-warning d-flex justify-content-between align-items-center px-0 py-sm-2" target="_blank">
+                            <span><div class="text-dark" style="font-size:12.5px">@usefull.Title</div></span>
+                        </a>
+                        }
+                </div>
+            </div>
+            }
+            </div>
+        </section>
+
+    </main>
+
+</div>

@@ -1,0 +1,416 @@
+﻿@model Com.Trakindo.TSICS.Data.Model.Article
+@using Com.Trakindo.TSICS.Data.Model
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    List<SelectListItem> listCategoryEmpty = new List<SelectListItem>();
+    listCategoryEmpty.Add(new SelectListItem { Text = "Select Category", Value = null });
+
+    List<SelectListItem> userLevelList = new List<SelectListItem>();
+    userLevelList.Add(new SelectListItem { Text = "Guest", Value = "guest" });
+    userLevelList.Add(new SelectListItem { Text = "Green", Value = "green" });
+    userLevelList.Add(new SelectListItem { Text = "Yellow", Value = "yellow" });
+}
+
+<main class="body position-relative d-flex flex-column">
+    <div data-active_page="library" class="content-wrap flex-fill">
+      
+            @using (Html.BeginForm("Edit", "Library", FormMethod.Post, new { enctype = "multipart/form-data", id = "product-health-form", novalidate = "", Class = "needs-validation", data_save_to_draft = "{'target': 'assets/data/product-health.php', 'interval': 5}" }))
+            {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.ArticleId)
+            <section class="position-relative mt-5">
+                <div class="container">
+                    <div class="row">
+                        @Html.Partial("_LayoutMyPostArticle")
+                        <div class="col-lg-9 position-relative">
+                            <div data-active_page="Article" class="content-wrap flex-fill"></div>
+                            <div data-active_page="Article--List" class="content-wrap flex-fill"></div>
+                                <div style="top: 7rem; height: 0;" class="position-sticky z-index-10">
+                                    <a style="right: -4rem;" href="@Url.Action("HelpDesk", "TechnicalRequest")" class="btn btn-warning border-0 btn-customer-service position-absolute" target="_blank"><img src="@Url.Content("~/assets/images/repository/customer-service-icon.png")" alt=""></a>
+                                </div>
+                                <div id="tr-form-fields">
+                                    <input type="hidden" name="type" value="new" id="form-input-type">
+                                    <h3 class="font-secondary"> <span class="text-secondary">ARTICLES </span><span class="text-dark">EDIT</span></h3>
+                                    <section class="card bg-white shadow-sm border-0 mb-5">
+                                        <nav class="card-navbar navbar navbar-dark bg-secondary text-white">
+                                            <div class="left d-flex align-items-center">
+                                                <div class="h4 font-secondary mb-0">CHOOSE CATEGORY</div>
+                                            </div>
+                                            <div class="right">
+                                                <button data-toggle="collapse" data-target="#collapse-target-1" type="button" class="btn btn-sm bg-transparent rounded-pill text-white btn-remove"><i class="fa fa-chevron-right"></i></button>
+                                            </div>
+                                        </nav>
+                                        <fieldset id="collapse-target-1" class="collapse show">
+                                            <legend></legend>
+                                            <div class="card-body">
+                                                <div class="form-group row no-gutters">
+                                                    <div class="col-md-3 d-flex justify-content-between align-items-center">Category 1<span class="d-none d-md-inline mx-1">:</span></div>
+                                                    <div class="col-md-9">
+                                                        <select name="@Html.NameFor(model => model.Category1Id)" required id="Article-Category1" data-clone-target="#article-category1-preview" data-style="border bg-white" data-width="100%" data-title="Select Category" class="selectpicker clone-input-val" data-live-search="true">
+                                                            @foreach (var item in ViewBag.ListCategory1)
+                                                            {
+                                                                if (item.ArticleCategoryId == Model.Category1Id)
+                                                                {
+                                                                    <option value="@item.ArticleCategoryId" selected>@item.Name</option>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <option value="@item.ArticleCategoryId">@item.Name</option>
+                                                                }
+                                                            }
+                                                        </select>
+                                                        <em class="small form-text text-danger invalid-feedback">Please Select Category First</em>
+                                                        @Html.ValidationMessageFor(model => model.Category1Id, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <div id="checkbox-tag" class="bg-warning card-body light no-gutters row p-0"></div>
+                                        </fieldset>
+                                    </section>
+                                    <section class="card bg-white shadow-sm border-0 mb-5">
+                                        <nav class="card-navbar navbar navbar-dark bg-secondary text-white">
+                                            <div class="left d-flex align-items-center">
+                                                <div class="h4 font-secondary mb-0">ARTICLE</div>
+                                            </div>
+                                            <div class="right">
+                                                <button data-toggle="collapse" data-target="#collapse-target-2" type="button" class="btn btn-sm bg-transparent rounded-pill text-white btn-remove"><i class="fa fa-chevron-right"></i></button>
+                                            </div>
+                                        </nav>
+                                        <div id="collapse-target-2" class="collapse show">
+                                            <div class="card-body">
+                                                <div class="form-group mb-4">
+                                                    <label>User Level</label>
+                                                    <div>
+                                                        @Html.DropDownListFor(model => model.LevelUser, userLevelList, null, new { @class = "form-control", placeholder = "Select Level", data_style = "border bg-white", data_width = "100%", data_live_search = "true", data_container = "body" })
+                                                    </div>
+                                                </div>
+
+                                                <section class="card bg-white shadow-sm border-0 mb-5">
+                                                    <div class="card-body">
+                                                        <div class="row">
+                                                     <div class="col-12">
+                                                            <div class="h4 font-secondary mb-3">HEADER IMAGE</div>
+                                                            <div class="form-group m-0">
+                                                                        @if (Model.HeaderImage == null)
+                                                                        {
+                                                                            <div data-clone-target="#header-image" id="header-image-preview" class="clone-html">
+                                                                                <h4 class="text-center">There's No Header Image Inputed Yet</h4>
+                                                                            </div>
+                                                                            <input type="file" name="header" required accept=".jpg, .png, .jpeg, .gif, .bmp, .tif, .tiff|image/*" data-preview-upload="#header-image-preview" class="form-control-file text-center mt-4">
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <div data-clone-target="#header-image" id="header-image-preview" class="clone-html">
+                                                                                <img style="max-height: 400px; min-height: 150px" src="@ViewBag.HeaderImg" onerror="this.onerror=null;this.src='@Url.Content("~/Upload/image-not-found.png")';" class="img-fluid object-fit-cover w-100">
+                                                                            </div>
+                                                                            <input type="file" name="header" accept=".jpg, .png, .jpeg, .gif, .bmp, .tif, .tiff|image/*" data-preview-upload="#header-image-preview" class="form-control-file text-center mt-4">
+                                                                        }
+                                                             </div>
+                                                        </div>
+                                                        </div>
+                                                    </div>
+                                                </section>
+                                                <div class="form-group mb-4">
+                                                    <label>Title</label>
+                                                    <input name="@Html.NameFor(model =>model.Title)" type="text" value="@Model.Title" id="article-title" data-clone-target="#article-title-preview" required class="form-control bg-light clone-input-val"><em class="small form-text text-danger invalid-feedback">Field cannot be empty</em>
+                                                    @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+                                                </div>
+                                                <div class="form-group mb-4">
+                                                    <label>Content</label>
+                                                    <textarea name="@Html.NameFor(model => model.Description)" id="article-description" data-clone-target="#article-description-preview" required class="form-control bg-light clone-wysiwig">@Model.Description</textarea><em class="small form-text text-danger invalid-feedback">Field cannot be empty</em>
+                                                    @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </section>
+                                    <section class="card bg-white shadow-sm border-0 mb-5">
+                                        <nav class="card-navbar navbar navbar-dark bg-secondary text-white">
+                                            <div class="left d-flex align-items-center">
+                                                <div class="h4 font-secondary mb-0">ADD FILES (Document)</div>
+                                            </div>
+                                            <div class="right">
+                                                <button data-toggle="collapse" data-target="#collapse-target-3" type="button" class="btn btn-sm bg-transparent rounded-pill text-white btn-remove"><i class="fa fa-chevron-right"></i></button>
+                                            </div>
+                                        </nav>
+                                        <div id="collapse-target-3" class="collapse show">
+                                            <fieldset class="card-body">
+                                                <legend></legend>
+                                                <div class="border p-4">
+                                                    <div class="form-group">
+                                                        <button data-attachment_add_item="#attachment-item-output" data-use_options="{'name':'file_level[]','options':{'Guest':'guest','Green':'green','Yellow':'yellow'}}" type="button" class="btn bg-light border rounded-pill d-flex align-items-center px-3" data-accept="zip,application/octet-stream,application/zip,application/x-zip,application/x-zip-compressed,application/msword, application/vnd.ms-excel, application/vnd.ms-powerpoint, text/plain, application/pdf, image/*">
+                                                            <span>Add New</span>
+                                                            <i style="font-size: 1.5rem" class="fa fa-plus-circle ml-3"></i>
+                                                        </button>
+                                                    </div>
+                                                    <div class="form-group mb-0">
+                                                        <div id="attachment-item-output" class="row">
+                                                            @if (ViewBag.Attachments != null)
+                                                        {
+                                                            int currentAttachmentsIndex = 0;
+                                                            foreach (TicketAttachmentsAPI ticketAttachment in ViewBag.Attachments)
+                                                            {
+                                                            <div id="item-@ticketAttachment.Id" class="hide-attachment-item">
+                                                            <div class="attachment-item col-12 col-xs-6 col-sm-auto mt-2 mb-3" style="max-width: 180px;">
+                                                                <div class="card border-0">
+                                                                    <div class="position-relative">
+                                                                        <div style="top: 0; left: 0; right: 0;" class="position-absolute overflow-hidden">
+                                                                            <input type="hidden" name="current-attachments[]" value="@ticketAttachment.Id" />
+                                                                        </div>
+                                                                        <div class="attachment-select mb-2">
+                                                                            <select data-style="border bg-white" class="form-control" name="current-file_level[]" aria-invalid="false">
+                                                                                @if (ticketAttachment.Level == "guest")
+                                                                                        {
+                                                                                        <option value="guest" selected>Guest</option>
+                                                                                        }
+                                                                                        else
+                                                                                        {
+                                                                                        <option value="guest">Guest</option>
+                                                                                        }
+
+                                                                                @if (ticketAttachment.Level == "green")
+                                                                                        {
+                                                                                        <option value="green" selected>Green</option>
+                                                                                        }
+                                                                                        else
+                                                                                        {
+                                                                                        <option value="green">Green</option>
+                                                                                        }
+
+                                                                                @if (ticketAttachment.Level == "yellow")
+                                                                                        {
+                                                                                        <option value="yellow" selected>Yellow</option>
+                                                                                        }
+                                                                                        else
+                                                                                        {
+                                                                                        <option value="yellow">Yellow</option>
+                                                                                        }
+                                                                            </select>
+                                                                        </div>
+                                                                        <picture class="d-block atc-prev-wrap text-center">
+                                                                            @{
+                                                                                        string[] imgExt = { ".jpg", ".png", ".jpeg", ".gif", ".bmp", ".tif", ".tiff" };
+                                                                                        if (!imgExt.Contains(ticketAttachment.Type))
+                                                                                        {
+                                                                                    <img src="" alt="" style="width: 110px; height: 110px; display: none;" class="card-img-top object-fit-cover attachment-preview rounded-0 img-thumbnail mb-2" id="current-image-@currentAttachmentsIndex">
+                                                                                            if (ticketAttachment.Type.Contains(".zip") || ticketAttachment.Type.Contains(".rar") || ticketAttachment.Type.Contains(".7zip"))
+                                                                                            {
+                                                                                    <i style="height: 110px; font-size: 3rem; line-height: 110px; width: 110px; border: solid 1px #ddd;" class="fa fa-file-archive text-muted mb-2"></i>
+                                                                                            }
+                                                                                            else if (ticketAttachment.Type.Contains(".doc"))
+                                                                                            {
+                                                                                    <i style="height: 110px; font-size: 3rem; line-height: 110px; width: 110px; border: solid 1px #ddd;" class="fa fa-file-word text-muted mb-2"></i>
+                                                                                            }
+                                                                                            else if (ticketAttachment.Type.Contains(".xls"))
+                                                                                            {
+                                                                                    <i style="height: 110px; font-size: 3rem; line-height: 110px; width: 110px; border: solid 1px #ddd;" class="fa fa-file-excel text-muted mb-2"></i>
+                                                                                            }
+                                                                                            else if (ticketAttachment.Type.Contains(".ppt"))
+                                                                                            {
+                                                                                    <i style="height: 110px; font-size: 3rem; line-height: 110px; width: 110px; border: solid 1px #ddd;" class="fa fa-file-powerpoint text-muted mb-2"></i>
+                                                                                            }
+                                                                                            else if (ticketAttachment.Type.Contains(".pdf"))
+                                                                                            {
+                                                                                    <i style="height: 110px; font-size: 3rem; line-height: 110px; width: 110px; border: solid 1px #ddd;" class="fa fa-file-pdf text-muted mb-2"></i>
+                                                                                            }
+                                                                                            else
+                                                                                            {
+                                                                                    <i style="height: 110px; font-size: 3rem; line-height: 110px; width: 110px; border: solid 1px #ddd;" class="fa fa-file text-muted mb-2"></i>
+                                                                                            }
+                                                                                        }
+                                                                                        else
+                                                                                        {
+                                                                                    <img src="@ticketAttachment.Name" alt="" style="width: 110px; height: 110px;" class="card-img-top object-fit-cover attachment-preview rounded-0 img-thumbnail mb-2">
+
+                                                                                        }
+                                                                            }
+                                                                        </picture>
+                                                                    </div>
+                                                                    <div class="d-flex justify-content-between align-items-center ">
+                                                                        <small class="attachment-filename text-truncate d-inline-block text-muted" style="max-width: 100px;">@(currentAttachmentsIndex + 1). @ticketAttachment.NameWithOutBase64</small>
+                                                                        <button type="button" value="@ticketAttachment.Id" class="btn btn-outline-warning btn-delete-attachment btn-sm rounded-pill p-0" style="width:1.25rem; height: 1.25rem; line-height: 1.25rem; text-align: center;"><i class="fa fa-times"></i></button>
+                                                                    </div>
+                                                                    <a href="@Url.Content("~/Upload/TechnicalRequestAttachments/" + ticketAttachment.NameWithOutBase64)" target="_blank" class="btn-link d-block badge badge-success small mt-2">Download</a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                                currentAttachmentsIndex = currentAttachmentsIndex + 1;
+                                                             }
+                                                        }
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </fieldset>
+                                            <fieldset class="card-body">
+                                                <legend></legend>
+                                                <div class="text-muted">TAG</div>
+                                                <div class="rounded-lg border bg-light">
+                                                    <div class="p-1 p-md-4">
+                                                        <div class="input-group flex-nowrap border">
+                                                            <input data-add_tag_input="#add-tag-list" id="add-tag" name="Tag" type="text" class="bg-white flex-fill rounded-0 border-0 px-md-3">
+                                                            <label for="add-tag" class="input-group-append mb-0">
+                                                                <button type="button" class="btn border-0 input-group-text rounded-0 text-wrap btn-add_tag_input p-2 px-md-4 py-md-2"><span>Add TAG</span></button>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <div id="add-tag-list" class="row no-gutters">
+                                                        @{
+                                                        int tagElmntIdx = 0;
+                                                        if (ViewBag.Tags != null)
+                                                        {
+                                                            foreach (ArticleTags tag in ViewBag.Tags)
+                                                            {
+                                                    <div class="tag-item col-auto text-truncate ml-3 mr-2 my-2 m-md-3" style="max-width: 300px;" id="tag-@tagElmntIdx">
+                                                        <input type="hidden" value="@tag.Name" name="tag-input[]">
+                                                        <div class="bg-secondary rounded-pill text-white pl-2 pr-3">
+                                                            <button type="button" class="btn rounded-circle text-white btn-sm btn-remove mr-2"><i class="fa fa-times"></i></button>
+                                                            <span>@tag.Name</span>
+                                                        </div>
+                                                    </div>
+
+                                                                tagElmntIdx = tagElmntIdx + 1;
+                                                            }
+                                                        }
+                                                        }
+                                                    </div>
+                                                </div>
+                                            </fieldset>
+                                        </div>
+                                    </section>
+                                </div>
+                                <div id="tr-form-preview" style="display: none;">
+                                    <h3 class="font-secondary"> <span class="text-secondary">ARTICLE </span><span class="text-dark">PREVIEW</span></h3>
+
+                                    <section class="card bg-white shadow-sm border-0 mb-5">
+                                        <div class="card-header bg-transparent border-0">
+                                            <nav>
+                                                <ol class="breadcrumb bg-transparent small text-secondary p-0">
+                                                    <li class="breadcrumb-item active"><a href="/Trend/Library/Index" class="text-dark">Library</a></li>
+                                                    <li id="article-category1-preview" class="breadcrumb-item text-secondary"></li>
+                                                </ol>
+                                            </nav>
+                                            <div class="row">
+                                                <div class="col-sm-10 mx-sm-auto">
+                                                    <h1 class="h3"><div id="article-title-preview"></div></h1>
+                                                    <div>AUTHOR</div><strong class="mb-3">
+                                                        @Html.Action("GetAuthorName", new { id = Convert.ToInt32(Session["userid"]) })
+                                                        <div class="text-secondary"><em><small>@DateTime.Now.ToString("dddd, MMMM dd yyyy")</small></em><span class="text-warning"></span></div>
+                                                    </strong>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card-body">
+                                            @*<img src="@ViewBag.EmptyImg" alt="" class="img-fluid mb-5 w-100" style="max-height:500px;">*@
+                                            <div id="header-image"></div>
+                                            <div class="row overlap-top-10">
+                                                <div class="col-sm-10 mx-sm-auto">
+                                                    <article class="bg-white-75 p-lg-5">
+                                                        <div id="article-description-preview" class="bg-white-75 p-lg-5"></div>
+                                                        <br />
+                                                        <hr />
+                                                        <p><strong>Documents Download :</strong></p>
+                                                        <div class="row mx-0">
+                                                            <div class="form-group attachment-hide-select mb-0">
+                                                                <div id="tr-list-attachment-preview" class="row"></div>
+                                                            </div>
+                                                        </div>
+                                                        <br />
+                                                        <hr />
+                                                        <p><strong>Tags : </strong></p>
+                                                        <div id="tr-list-tag-preview" class="row no-gutters"></div>
+                                                    </article>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </section>
+                                </div>
+                            
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section style="bottom: 0;" class="position-sticky bg-light py-4 sticky-submit-form z-index-10">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12 col-lg-9 offset-lg-3">
+                            <div id="tr-form-fields-buttons">
+                                <div class="cust-fab d-inline-block d-md-none left">
+                                    <input id="fab-check" type="checkbox" name="" class="fab-check">
+                                    <label for="fab-check" class="btn btn-warning text-white rounded-circle btn-fab-trigger"><i class="fa fa-plus"></i></label>
+                                    <div class="fab-group">
+                                        <button type="submit" class="tr-form-btn-save_as_draft fab-item btn rounded-pill btn-light border-warning shadow-sm">Save as Draft</button>
+                                        <button type="submit" class="tr-form-btn-next fab-item btn rounded-pill btn-light border-warning shadow-sm">Next</button>
+                                        <button type="reset" class="fab-item btn rounded-pill btn-light border-warning shadow-sm">Cancel</button>
+                                    </div>
+                                </div>
+                                <div class="row d-none d-md-flex justify-content-between">
+                                    <div class="col-4">
+                                        <a class="btn rounded-0 border-warning bg-light my-1" href="javascript:history.go(-1)" role="button">Cancel</a>
+                                    </div>
+                                    <div class="col-8 text-right">
+                                        <button type="submit" class="tr-form-btn-save_as_draft btn rounded-0 btn-secondary ml-2">Save as Draft</button>
+                                        <button type="submit" class="tr-form-btn-next btn rounded-0 btn-warning ml-2">Next</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="tr-form-preview-buttons" style="display: none;">
+                                <div class="cust-fab d-inline-block d-md-none left">
+                                    <input id="fab-check" type="checkbox" name="" class="fab-check">
+                                    <label for="fab-check" class="btn btn-warning text-white rounded-circle btn-fab-trigger"><i class="fa fa-plus"></i></label>
+                                    <div class="fab-group">
+                                        <button type="submit" class="fab-item btn rounded-pill btn-light border-warning shadow-sm">Submit</button>
+                                        <button type="button" class="fab-item btn rounded-pill btn-light border-warning shadow-sm tr-form-btn-cancel">Cancel</button>
+                                    </div>
+                                </div>
+                                <div class="row d-none d-md-flex justify-content-between">
+                                    <div class="col-4">
+                                        <button type="button" class="btn rounded-0 border-warning bg-light tr-form-btn-cancel">Cancel</button>
+                                    </div>
+                                    <div class="col-lg-2 mt-3 mt-lg-0">
+                                        <button type="submit" class="tr-form-btn-submit btn rounded-0 btn-warning w-100">Submit</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <div class="sticky-submit-form-observer"></div>
+                                                        }
+    </div>
+</main>
+
+@Scripts.Render("~/assets/js/jquery-3.4.1.min.js")
+@section ScriptBottom {
+    <script type="text/javascript">
+        CKEDITOR.replace('Description');
+        $(document).ready(function () {
+
+             $(".btn-delete-attachment").click(function () {
+                var idItem = $(this).val()
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("DeleteFileArticle", "Articles")',
+                    dataType: 'json',
+                    data: { id: idItem },
+                    success: function (mems) {
+                        alert("Attachment Deleted");
+                        $("#item-" + idItem).remove();
+                        },
+                        error: function (ex) {
+                            alert('Attachment Delete Failed. error : ' + ex);
+                        }
+                });
+                   return false;
+            });
+             $(window).on('beforeunload', function () {
+                 $("input[type='file']").val(null);
+             });
+
+        });
+        
+    </script>
+}

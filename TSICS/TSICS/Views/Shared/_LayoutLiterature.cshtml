@@ -1,0 +1,57 @@
+﻿@using Com.Trakindo.TSICS.Data.Model
+@using TSICS.Helper
+<aside id="sidebar" class="sidebar col-lg-3 d-none d-lg-flex flex-column align-self-start">
+    <div data-active_page="library" class="content-wrap flex-fill">
+        <div class="sidebar-wrap flex-fill">
+            <section class="card bg-white shadow-sm border-0">
+                <div style="max-height: 600px;" class="card-body overflow-auto p-0">
+                    <div class="list-group list-group-flush list-group-stripe">
+
+                        @foreach (Article artikel in ViewBag.RecentLiterature)
+                        {
+                            <a href="@Url.Action("Detail", "Literature", new { id=artikel.ArticleId})" class="list-group-item list-group-item-action">
+                                <div class="text-info">@artikel.CreatedAt.Value.ToString("dd MMMM yyyy") </div>
+                                <h4>@artikel.Title</h4>
+
+                                @Common.GetShortDescription(artikel.Description)
+                                @*@Html.Raw(!String.IsNullOrEmpty(artikel.Description) ? artikel.Description.Substring(0, Math.Min(artikel.Description.Length, 50)) : artikel.Description)*@
+
+
+                                @*<p>@Html.Raw(artikel.Description)</p>*@
+                            </a>
+                        }
+                    </div>
+                </div>
+
+            </section>
+            <section id="sidebar" class="sidebar-recent mt-3 mb-5 hide">
+                <div class="card bg-transparent border-0">
+                    <div class="card-header bg-transparent border-dark px-0">
+                        @if (ViewBag.UseFullLink != null)
+                        {
+                            <h4 class="font-secondary card-title mb-0">USEFULL LINK</h4>
+                        }
+                        else
+                        {
+                            <h4 class="font-secondary card-title mb-0">NO USEFULL LINK RECENTLY</h4>
+                        }
+                    </div>
+                    @if (ViewBag.UseFullLink != null)
+                    {
+                        <div class="card-body bg-transparent p-0" style="overflow:auto; height:300px;">
+                            <div class="list-group list-group-flush">
+                                @foreach (Article usefull in ViewBag.UseFullLink)
+                                {
+                                    <a href="@usefull.Description" target="_blank" class="list-group-item list-group-item-action bg-transparent text-warning d-flex justify-content-between align-items-center px-0 py-sm-2" target="_blank">
+                                        <span><div class="text-dark" style="font-size:12.5px">@usefull.Title</div></span>
+                                    </a>
+                                }
+                            </div>
+                        </div>
+                    }
+                </div>
+            </section>
+
+        </div>
+        </div>
+</aside>

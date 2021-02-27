@@ -1,0 +1,341 @@
+﻿@model Com.Trakindo.TSICS.Data.Model.Article
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+
+    List<SelectListItem> listCategoryEmpty = new List<SelectListItem>();
+    listCategoryEmpty.Add(new SelectListItem { Text = "Select Category", Value = "0" });
+
+    List<SelectListItem> userLevelList = new List<SelectListItem>();
+    userLevelList.Add(new SelectListItem { Text = "Guest", Value = "guest" });
+    userLevelList.Add(new SelectListItem { Text = "Green", Value = "green" });
+    userLevelList.Add(new SelectListItem { Text = "Yellow", Value = "yellow" });
+}
+
+
+<main class="body position-relative d-flex flex-column">
+    <div data-active_page="Literature--create" class="content-wrap flex-fill">
+        @using (Html.BeginForm(null, null, FormMethod.Post, new { enctype = "multipart/form-data", id = "request-form", novalidate = "", Class = "needs-validation" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <section class="position-relative mt-5">
+                <div class="container-fluid container-admin ml-0">
+                    <div class="row">
+                        <div class="col-lg-12 position-relative">
+                            <h3 class="font-secondary"> <span class="text-secondary">CREATE</span> <span class="text-dark">LITERATURE</span></h3>
+                            <section class="card bg-white shadow-sm border-0 mb-5">
+                                <nav class="card-navbar navbar navbar-dark bg-secondary text-white">
+                                    <div class="left d-flex align-items-center">
+                                        <div class="h4 font-secondary mb-0">CHOOSE CATEGORY</div>
+                                    </div>
+                                    <div class="right">
+                                        <button data-toggle="collapse" data-target="#collapse-target-1" type="button" class="btn btn-sm bg-transparent rounded-pill text-white btn-remove"><i class="fa fa-chevron-right"></i></button>
+                                    </div>
+                                </nav>
+                                <fieldset id="collapse-target-1" class="collapse show">
+                                    <legend></legend>
+                                    <div class="card-body">
+
+                                        <div class="form-group row no-gutters">
+                                            <div class="col-md-3 d-flex justify-content-between align-items-center">Category 1<span class="d-none d-md-inline mx-1">:</span></div>
+                                            <div class="col-md-9">
+                                                @Html.DropDownListFor(model => model.Category1Id, new SelectList(ViewBag.ListCategory1, "ArticleCategoryId", "Name"), "Select Category", new { @required = "", @class = "selectpicker", placeholder = "Select Category", data_style = "border bg-white", data_width = "100%", data_live_search = "true", data_container = "body" })
+                                            </div>
+                                        </div>
+                                        <div class="form-group row no-gutters">
+                                            <div class="col-md-3 d-flex justify-content-between align-items-center">Category 2<span class="d-none d-md-inline mx-1">:</span></div>
+                                            <div class="col-md-9">
+                                                @Html.DropDownListFor(model => model.Category2Id, listCategoryEmpty, null, new { @class = "form-control", placeholder = "Select Category", data_style = "border bg-white", data_width = "100%", data_live_search = "true", data_container = "body" })
+                                            </div>
+                                        </div>
+                                        <div class="form-group row no-gutters">
+                                            <div class="col-md-3 d-flex justify-content-between align-items-center">Category 3<span class="d-none d-md-inline mx-1">:</span></div>
+                                            <div class="col-md-9">
+                                                @Html.DropDownListFor(model => model.Category3Id, listCategoryEmpty, null, new { @class = "form-control", placeholder = "Select Category", data_style = "border bg-white", data_width = "100%", data_live_search = "true", data_container = "body" })
+                                            </div>
+                                        </div>
+                                        <div class="form-group row no-gutters">
+                                            <div class="col-md-3 d-flex justify-content-between align-items-center">Category 4<span class="d-none d-md-inline mx-1">:</span></div>
+                                            <div class="col-md-9">
+                                                @Html.DropDownListFor(model => model.Category4Id, listCategoryEmpty, null, new { @class = "form-control", placeholder = "Select Category", data_style = "border bg-white", data_width = "100%", data_live_search = "true", data_container = "body" })
+                                            </div>
+                                        </div>
+                                        <div class="form-group row no-gutters">
+                                            <div class="col-md-3 d-flex justify-content-between align-items-center">Category 5<span class="d-none d-md-inline mx-1">:</span></div>
+                                            <div class="col-md-9">
+                                                @Html.DropDownListFor(model => model.Category5Id, listCategoryEmpty, null, new { @class = "form-control", placeholder = "Select Category", data_style = "border bg-white", data_width = "100%", data_live_search = "true", data_container = "body" })
+                                            </div>
+                                        </div>
+                                        <div class="form-group row no-gutters">
+                                            <div class="col-md-3 d-flex justify-content-between align-items-center">Category 6<span class="d-none d-md-inline mx-1">:</span></div>
+                                            <div class="col-md-9">
+                                                @Html.DropDownListFor(model => model.Category6Id, listCategoryEmpty, null, new { @class = "form-control", placeholder = "Select Category", data_style = "border bg-white", data_width = "100%", data_live_search = "true", data_container = "body" })
+                                            </div>
+                                        </div>
+                                        <div class="form-group row no-gutters">
+                                            <div class="col-md-3 d-flex justify-content-between align-items-center">Category 7<span class="d-none d-md-inline mx-1">:</span></div>
+                                            <div class="col-md-9">
+                                                @Html.DropDownListFor(model => model.Category7Id, listCategoryEmpty, null, new { @class = "form-control", placeholder = "Select Category", data_style = "border bg-white", data_width = "100%", data_live_search = "true", data_container = "body" })
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div id="checkbox-tag" class="bg-warning card-body light no-gutters row p-0"></div>
+                                </fieldset>
+                            </section>
+                           
+                            <section class="card bg-white shadow-sm border-0 mb-5">
+                                <nav class="card-navbar navbar navbar-dark bg-secondary text-white">
+                                    <div class="left d-flex align-items-center">
+                                        <div class="h4 font-secondary mb-0">LITERATURE CONTENT</div>
+                                    </div>
+                                    <div class="right">
+                                        <button data-toggle="collapse" data-target="#collapse-target-3" type="button" class="btn btn-sm bg-transparent rounded-pill text-white btn-remove"><i class="fa fa-chevron-right"></i></button>
+                                    </div>
+                                </nav>
+                                <div id="collapse-target-3" class="collapse show">
+                                    <fieldset class="card-body">
+                                        <legend></legend>
+                                        <div class="form-group mb-4">
+                                            <label>Title</label>
+                                            @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control border" } })
+                                            @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+                                        </div>
+                                        <div class="form-group mb-4">
+                                            <label>Content</label>
+                                            <textarea name="@Html.NameFor(model => model.Description)" id="article-description" data-clone-target="#article-description-preview" required class="form-control bg-light clone-wysiwig"></textarea><em class="small form-text text-danger invalid-feedback">Field cannot be empty</em>
+                                            @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                                        </div>
+                                        <div class="text-muted">ATTACHMENT</div>
+                                        <div class="border p-4">
+                                            <div class="form-group">
+                                                <button data-attachment_add_item="#attachment-item-output" data-use_options="{'name':'file_level[]','options':{'Guest':'guest','Green':'green','Yellow':'yellow'}}" type="button" class="btn bg-light border rounded-pill d-flex align-items-center px-3" data-accept="zip,application/octet-stream,application/zip,application/x-zip,application/x-zip-compressed,application/msword, application/vnd.ms-excel, application/vnd.ms-powerpoint, text/plain, application/pdf, image/*">
+                                                    <span>Add New</span>
+                                                    <i style="font-size: 1.5rem" class="fa fa-plus-circle ml-3"></i>
+                                                </button>
+                                            </div>
+                                            <div class="form-group mb-0">
+                                                <div id="attachment-item-output" class="row"></div>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                    <fieldset class="card-body">
+                                        <legend></legend>
+                                        <div class="text-muted">TAG</div>
+                                        <div class="rounded-lg border bg-light">
+                                            <div class="p-1 p-md-4">
+                                                <div class="input-group flex-nowrap border">
+                                                    <input data-add_tag_input="#add-tag-list" id="add-tag" type="text" class="bg-white flex-fill rounded-0 border-0 px-md-3">
+                                                    <label for="add-tag" class="input-group-append mb-0">
+                                                        <button type="button" class="btn border-0 input-group-text rounded-0 text-wrap btn-add_tag_input p-2 px-md-4 py-md-2"><span>Add TAG</span></button>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div id="add-tag-list" class="row no-gutters"></div>
+                                        </div>
+                                    </fieldset>
+                                </div>
+                            </section>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section style="bottom: 0;" class="position-sticky bg-light py-3 sticky-submit-form z-index-10">
+                <div class="container-fluid container-admin ml-0">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="cust-fab d-inline-block d-md-none left">
+                                <input id="fab-check" type="checkbox" name="" class="fab-check">
+                                <label for="fab-check" class="btn btn-warning text-white rounded-circle btn-fab-trigger"><i class="fa fa-plus"></i></label>
+                                <div class="fab-group">
+                                    <button type="submit" name="Submit" value="Submit" class="fab-item btn rounded-pill btn-light border-warning shadow-sm">Submit</button>
+                                    <button type="submit" name="Submit" value="Draft" class="fab-item btn rounded-pill btn-light border-warning shadow-sm">Save as Draft</button>
+                                    <a href="javascript:history.go(-1);"  class="fab-item btn rounded-pill btn-light border-warning shadow-sm" role="button">Cancel</a>
+                                </div>
+                            </div>
+                            <div class="d-none d-md-flex justify-content-between">
+                                <div>
+                                    <a class="btn rounded-0 border-warning bg-light my-1" href="javascript:history.go(-1);" role="button">Cancel</a>
+                                </div>
+                                <div>
+                                    <button type="submit" name="Submit" value="Draft" class="btn rounded-0 bg-secondary text-white my-1">Save as Draft</button>
+                                    <button type="submit" name="Submit" value="Submit" class="btn rounded-0 btn-warning my-1 ml-2">Submit</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <div class="sticky-submit-form-observer"></div>
+        }
+
+    </div>
+</main>
+
+@section ScriptBottom {
+    <script type="text/javascript">
+         $(document).ready(function () {
+            $("#Category1Id").change(function () {
+                $("#Category2Id").empty();
+                $("#Category3Id").empty();
+                $("#Category4Id").empty();
+                $("#Category5Id").empty();
+                $("#Category6Id").empty();
+                $("#Category7Id").empty();
+                $("#Category3Id").append("<option value='null'>Select</option>");
+                $("#Category4Id").append("<option value='null'>Select</option>");
+                $("#Category5Id").append("<option value='null'>Select</option>");
+                $("#Category6Id").append("<option value='null'>Select</option>");
+                $("#Category7Id").append("<option value='null'>Select</option>");
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("GetChild")',
+                    dataType: 'json',
+                    data: { id: $("#Category1Id").val() },
+                    success: function (mems) {
+                        // states contains the JSON formatted list
+                        // of states passed from the controller
+                        $("#Category2Id").append('<option value="null">Select</option>');
+                        $.each(mems, function (i, member) {
+                            $("#Category2Id").append('<option value="' + member.Value + '">' + member.Text + '</option>');
+                        });
+                    },
+                    error: function (ex) {
+                        alert('Failed to retrieve category.' + ex);
+                    }
+                });
+                return false;
+            });
+            $("#Category2Id").change(function () {
+                $("#Category3Id").empty();
+                $("#Category4Id").empty();
+                $("#Category5Id").empty();
+                $("#Category6Id").empty();
+                $("#Category7Id").empty();
+                $("#Category4Id").append("<option value='null'>Select</option>");
+                $("#Category5Id").append("<option value='null'>Select</option>");
+                $("#Category6Id").append("<option value='null'>Select</option>");
+                $("#Category7Id").append("<option value='null'>Select</option>");
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("GetChild")',
+                    dataType: 'json',
+                    data: { id: $("#Category2Id").val() },
+                    success: function (mems) {
+                        // states contains the JSON formatted list
+                        // of states passed from the controller
+                        $("#Category3Id").append('<option value="null">Select</option>');
+                        $.each(mems, function (i, member) {
+                            $("#Category3Id").append('<option value="' + member.Value + '">' + member.Text + '</option>');
+                        });
+                    },
+                    error: function (ex) {
+                        alert('Failed to retrieve category.' + ex);
+                    }
+                });
+                return false;
+            });
+            $("#Category3Id").change(function () {
+                $("#Category4Id").empty();
+                $("#Category5Id").empty();
+                $("#Category6Id").empty();
+                $("#Category7Id").empty();
+                $("#Category5Id").append("<option value='null'>Select</option>");
+                $("#Category6Id").append("<option value='null'>Select</option>");
+                $("#Category7Id").append("<option value='null'>Select</option>");
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("GetChild")',
+                    dataType: 'json',
+                    data: { id: $("#Category3Id").val() },
+                    success: function (mems) {
+                        // states contains the JSON formatted list
+                        // of states passed from the controller
+                        $("#Category4Id").append('<option value="null">Select</option>');
+                        $.each(mems, function (i, member) {
+                            $("#Category4Id").append('<option value="' + member.Value + '">' + member.Text + '</option>');
+                        });
+                    },
+                    error: function (ex) {
+                        alert('Failed to retrieve category.' + ex);
+                    }
+                });
+                return false;
+            });
+            $("#Category4Id").change(function () {
+                $("#Category5Id").empty();
+                $("#Category6Id").empty();
+                $("#Category7Id").empty();
+                $("#Category6Id").append("<option value='null'>Select</option>");
+                $("#Category7Id").append("<option value='null'>Select</option>");
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("GetChild")',
+                    dataType: 'json',
+                    data: { id: $("#Category4Id").val() },
+                    success: function (mems) {
+                        // states contains the JSON formatted list
+                        // of states passed from the controller
+                        $("#Category5Id").append('<option value="null">Select</option>');
+                        $.each(mems, function (i, member) {
+                            $("#Category5Id").append('<option value="' + member.Value + '">' + member.Text + '</option>');
+                        });
+                    },
+                    error: function (ex) {
+                        alert('Failed to retrieve category.' + ex);
+                    }
+                });
+                return false;
+            });
+            $("#Category5Id").change(function () {
+                $("#Category6Id").empty();
+                $("#Category7Id").empty();
+                $("#Category7Id").append("<option value='null'>Select</option>");
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("GetChild")',
+                    dataType: 'json',
+                    data: { id: $("#Category5Id").val() },
+                    success: function (mems) {
+                        // states contains the JSON formatted list
+                        // of states passed from the controller
+                        $("#Category6Id").append('<option value="null">Select</option>');
+                        $.each(mems, function (i, member) {
+                            $("#Category6Id").append('<option value="' + member.Value + '">' + member.Text + '</option>');
+                        });
+                    },
+                    error: function (ex) {
+                        alert('Failed to retrieve category.' + ex);
+                    }
+                });
+                return false;
+            });
+        $("#Category6Id").change(function () {
+            $("#Category7Id").empty();
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("GetChild")',
+                    dataType: 'json',
+                    data: { id: $("#Category6Id").val() },
+                    success: function (mems) {
+                        // states contains the JSON formatted list
+                        // of states passed from the controller
+                        $("#Category7Id").append('<option value="null">Select</option>');
+                        $.each(mems, function (i, member) {
+                            $("#Category7Id").append('<option value="' + member.Value + '">' + member.Text + '</option>');
+                        });
+                    },
+                    error: function (ex) {
+                        alert('Failed to retrieve category.' + ex);
+                    }
+                });
+                return false;
+            });
+       
+        CKEDITOR.replace('article-description');
+        });
+    </script>
+}
+

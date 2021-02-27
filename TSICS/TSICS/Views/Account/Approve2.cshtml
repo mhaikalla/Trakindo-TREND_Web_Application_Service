@@ -1,0 +1,193 @@
+﻿@model Com.Trakindo.TSICS.Data.Model.User
+
+@{
+    ViewBag.Title = "Approve2";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<main class="body position-relative d-flex flex-column">
+    <div data-active_page="library" class="content-wrap flex-fill">
+        <section class="position-relative mt-5">
+            <div class="container">
+                <form class="bg-white d-flex flex-fill rounded-0 shadow-sm">
+                    <input id="search-anything-input" type="text" placeholder="Search Anything" class="bg-white flex-fill rounded-0 border-0 p-3">
+                    <label for="search-anything-input" class="input-group-append mb-0">
+                        <button class="btn border-0 input-group-text bg-warning rounded-0 text-white px-4 py-3"><span>Search</span></button>
+                    </label>
+                </form>
+            </div>
+        </section>
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.UserId)
+            @*<form novalidate method="GET" enctype="multipart/form-data" class="needs-validation">*@
+            <section class="position-relative mt-5">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-9 offset-lg-3">
+                            <h3 class="font-secondary">INBOX</h3>
+                        </div>
+                    </div>
+                    <div class="row pb-5">
+                        <aside id="sidebar" style="top: 7rem;" class="sidebar col-lg-3 d-none d-lg-flex flex-column align-self-start position-sticky">
+                            <div class="sidebar-wrap flex-fill">
+                                <section class="card bg-white shadow-sm border-0">
+                                    <div style="max-height: 600px;" class="card-body overflow-auto p-0">
+                                        <div class="list-group list-group-flush list-group-stripe">
+                                            <a href="#" class="list-group-item list-group-item-action">
+                                                <div class="text-info">18 November 2019</div>
+                                                <h4>Everything You Need To Know About Economy</h4>
+                                                <p>Proactively fabricate one-to-one materials via effective e-business.</p>
+                                            </a><a href="#" class="list-group-item list-group-item-action">
+                                                <div class="text-info">18 November 2019</div>
+                                                <h4>Objectively integrate emerging core</h4>
+                                                <p>Objectively integrate emerging core competencies before process-centric communities</p>
+                                            </a><a href="#" class="list-group-item list-group-item-action">
+                                                <div class="text-info">18 November 2019</div>
+                                                <h4>Five Common Myths About Finance</h4>
+                                                <p>Dramatically evisculate holistic innovation rather than client-centric data</p>
+                                            </a><a href="#" class="list-group-item list-group-item-action">
+                                                <div class="text-info">18 November 2019</div>
+                                                <h4>Process-centric communities</h4>
+                                                <p>Progressively maintain extensive infomediaries via extensible niches</p>
+                                            </a><a href="#" class="list-group-item list-group-item-action">
+                                                <div class="text-info">18 November 2019</div>
+                                                <h4>Competencies before</h4>
+                                                <p>Iterative approaches to corporate strategy foster collaborative thinking to further the overall value proposition.</p>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </section>
+                            </div>
+                        </aside>
+                        <div class="col-lg-9 position-relative">
+                            <section class="card bg-white shadow-sm border-0 h-100">
+                                <div class="card-header bg-transparent border-0">
+                                    <div class="row">
+                                        <div class="col text-right">
+                                            <div class="h3 font-secondary card-title mb-0"> <span>TSCIS -  </span><span class="text-muted">NEED APPROVAL</span></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div>To: approval_mail@trakindo.co.id</div>
+                                    <div>Reply-to: approval_mail@trakindo.co.id</div>
+                                </div>
+                                <hr>
+                                <fieldset class="card-body">
+                                    <legend></legend>
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="row no-gutters text-muted mb-4">
+                                                <div class="col-xl-4 mb-0 mb-lg-2 d-flex justify-content-between">Salary No<span class="d-none d-xl-inline mx-1">:</span></div>
+                                                <div class="col-xl-8 mb-3 mb-lg-2">
+                                                    <div class="switch-field">
+                                                        <div class="prev">@Model.EmployeeId</div>
+
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-4 mb-0 mb-lg-2 d-flex justify-content-between">Full Name<span class="d-none d-xl-inline mx-1">:</span></div>
+                                                <div class="col-xl-8 mb-3 mb-lg-2">
+                                                    <div class="switch-field">
+                                                        <div class="prev">@Model.Name</div>
+
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-4 mb-0 mb-lg-2 d-flex justify-content-between">Date of Birth<span class="d-none d-xl-inline mx-1">:</span></div>
+                                                <div class="col-xl-8 mb-3 mb-lg-2">
+                                                    <div class="switch-field">
+                                                        <div class="prev">@Model.Dob</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row no-gutters text-muted mb-4">
+                                                <div class="col-xl-4 mb-0 mb-lg-2 d-flex justify-content-between">Position<span class="d-none d-xl-inline mx-1">:</span></div>
+                                                <div class="col-xl-8 mb-3 mb-lg-2">
+                                                    <div class="switch-field">
+                                                        <div class="prev">@Model.Position</div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-4 mb-0 mb-lg-2 d-flex justify-content-between">Email<span class="d-none d-xl-inline mx-1">:</span></div>
+                                                <div class="col-xl-8 mb-3 mb-lg-2">
+                                                    <div class="switch-field">
+                                                        <div class="prev">@Model.Email</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row no-gutters text-muted mb-4">
+                                                <div class="col-xl-4 mb-0 mb-lg-2 d-flex justify-content-between">Location Area<span class="d-none d-xl-inline mx-1">:</span></div>
+                                                <div class="col-xl-8 mb-3 mb-lg-2">
+                                                    <div class="switch-field">
+                                                        <div class="prev">@Model.AreaName</div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <fieldset class="card-body">
+                                    <legend></legend>
+                                    <div class="cust-fab d-inline-block d-md-none left">
+                                        <input id="fab-check" type="checkbox" name="" class="fab-check">
+                                        <label for="fab-check" class="btn btn-warning text-white rounded-circle btn-fab-trigger"><i class="fa fa-plus"></i></label>
+                                        <div class="fab-group">
+                                            <button type="submit" class="fab-item btn rounded-pill btn-light border-warning shadow-sm">Approve</button>
+                                            @*<button type="button" class="fab-item btn rounded-pill btn-light border-warning shadow-sm btn-toggle--switch-field">Edit This Request</button>*@
+                                            <button data-toggle="modal" data-target="#modal--confirm-reject" type="button" class="fab-item btn rounded-pill btn-light border-warning shadow-sm">Reject</button>
+                                        </div>
+                                    </div>
+                                    <div class="row d-none d-md-flex">
+                                        @*<div class="col-12 col-md-4 mb-3 mb-md-0">
+                                                <button type="button" class="btn rounded-0 border-warning bg-light btn-toggle--switch-field"><span>Edit This Request</span><i class="fa fa-pencil-alt ml-3"></i></button>
+                                            </div>*@
+                                        <div class="col-12 col-md-8 text-left text-md-right">
+                                            <button type="button" data-toggle="modal" data-target="#modal--confirm-reject" class="btn rounded-0 btn-danger ml-2">REJECT</button>
+                                            <button type="submit" class="btn rounded-0 btn-success ml-2">APPROVE</button>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </section>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        }
+        @*</form>*@
+
+
+        <div id="modal--confirm-reject" class="modal fade">
+            <div style="max-width: 25rem" class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-body pb-0">
+                        <button type="button" data-dismiss="modal" class="close"><span aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="modal-body">
+                        @using (Html.BeginForm("Reject2", "Account", FormMethod.Post))
+                        {
+                            @Html.AntiForgeryToken()
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                            @Html.HiddenFor(model => model.UserId)
+                            <form action="" method="POST">
+                                <div class="form-group">
+                                    <h4>Reason reject this Approval</h4>
+                                </div>
+                                <div class="form-group">
+                                    @*@Html.TextAreaFor(p => p.UserM, new { @cols = 60, @rows = 4 })*@
+                                    <textarea rows="4" name="rejectMsg" class="form-control"></textarea>
+                                </div>
+                                <div class="form-group d-flex justify-content-end mb-0">
+                                    @*<button type="button" class="btn rounded-0 btn-warning ml-2">CANCEL</button>*@
+                                    <button type="submit" class="btn rounded-0 btn-light border-warning ml-2">SUBMIT REJECTION</button>
+                                </div>
+                            </form>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</main>

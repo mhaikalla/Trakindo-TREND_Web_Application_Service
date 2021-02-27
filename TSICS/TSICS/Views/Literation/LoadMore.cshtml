@@ -1,0 +1,54 @@
+@model PagedList.IPagedList<Com.Trakindo.TSICS.Data.Model.Article>
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "LoadMore";
+    Layout = "~/Views/Shared/_LayoutBlank.cshtml";
+    var articlefileList = (List<Com.Trakindo.TSICS.Data.Model.ArticleFile>)ViewBag.LiteratureItem;
+}
+
+@if (Model.Count > 0 || Model == null)
+{
+    foreach (var item in Model)
+    {
+        <div class="card bg-white shadow-sm border-0 mb-3">
+            <div class="card-body">
+                <a href="@Url.Action("SaveFile", "Literation", new { id = item.ArticleId })" target="_blank" class="d-block h3-size text-dark mb-3">
+                    @item.Title
+                </a>
+                <div class="small mb-3"><em>@item.CreatedAt</em> | <span class="text-warning">Literature</span></div><p class="card-text">
+                    @foreach (var articlefileItem in articlefileList)
+                    {
+                        if (articlefileItem.ArticleId.Equals(item.ArticleId))
+                        {
+                            <i class="badge badge-warning badge-pill">@articlefileItem.Name</i>
+                        }
+                    }
+                </p>
+                <p class="card-text">
+                    @Html.Raw(item.Description)
+                </p>
+               @* @foreach (var tag in ViewBag.LiteratureTags)
+                {
+                    if (tag.ArticleId == item.ArticleId)
+                    {
+                        if (tag.Object != null)
+                        {
+                            <hr />
+                            <div class="mt-2 mb-3">Literature Tags</div>
+                            <div class="row pl-2">
+                                @foreach (var tagItem in tag.Object)
+                                {
+                                    <i class="badge badge-secondary rounded-pill px-2 py-2 mx-2">@tagItem.Name</i>
+                                }
+                            </div>
+                        }
+                    }
+                } *@
+                </div>
+            </div>
+            }
+            }
+            else
+            {
+            <div class="alert alert-danger data-not-found m-0" role="alert" >Data not found</div>
+                                            }

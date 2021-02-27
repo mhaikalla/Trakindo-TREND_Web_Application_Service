@@ -1,0 +1,48 @@
+﻿@using TSICS.Helper;
+@{
+    ViewBag.Title = "Category";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<main class="body position-relative d-flex flex-column">
+    <div data-active_page="library" class="content-wrap flex-fill">
+        <section class="position-relative mt-5">
+            <div class="container">
+                <form class="bg-white d-flex flex-fill rounded-0 shadow-sm">
+                    <input id="search-anything-input" type="text" placeholder="Search Anything" class="bg-white flex-fill rounded-0 border-0 p-3">
+                    <label for="search-anything-input" class="input-group-append mb-0">
+                        <button class="btn border-0 input-group-text bg-warning rounded-0 text-white px-4 py-3"><span>Search</span></button>
+                    </label>
+                </form>
+            </div>
+        </section>
+        <form action="#" novalidate method="POST" enctype="multipart/form-data" class="needs-validation">
+            <section class="position-relative mt-5">
+                <div class="container">
+                    <div class="row">
+                        
+                        <div class="col-lg-12 position-relative">
+                            <div style="top: 7rem; height: 0;" class="position-sticky z-index-10"><a style="right: -4rem;" href="@Url.Action("HelpDesk", "TechnicalRequest")" class="btn btn-warning border-0 btn-customer-service position-absolute"><img src="~/assets/images/repository/customer-service-icon.png" alt=""></a></div>
+                            <h3 class="mb-5"> <span class="font-secondary">WHAT'S NEWS CATEGORY @ViewBag.category</span>
+                            @if (Common.CheckUserYellow())
+                            {
+                                <a href="@Url.Action("Create", "Library")" class="btn btn-warning rounded-pill ml-3 px-3"><i class="fa fa-file-alt text-white"></i><span class="ml-2">Add New</span></a>
+                            }
+                            </h3>
+                            <div id="infinite-scroll" data-init_api="@Url.Action("", "api/Article/Category/" + ViewBag.category)" data-target="#news-grids" class="mb-5 pb-5">
+                                <div id="news-grids" class="row">
+                                </div>
+                                <div class="preload text-center">
+                                    <div style="width: 2rem; height: 2rem;" class="spinner-border text-muted my-5"></div>
+                                </div>
+                                <div class="end-of-data text-center mt-5">
+                                    <div class="alert alert-warning">NO MORE DATA</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </form>
+    </div>
+</main>

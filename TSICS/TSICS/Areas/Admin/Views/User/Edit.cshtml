@@ -1,0 +1,378 @@
+﻿@model Com.Trakindo.TSICS.Data.Model.User
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+
+@{
+    List<SelectListItem> listIsAdmin = new List<SelectListItem>();
+    listIsAdmin.Add(new SelectListItem { Text = "Yes", Value = "1", Selected = Model.IsAdmin == 0 ? false : true    });
+    listIsAdmin.Add(new SelectListItem { Text = "No", Value = "0", Selected = Model.IsAdmin == 0 ? true : false });
+
+    List<SelectListItem> listStatus = new List<SelectListItem>();
+    listStatus.Add(new SelectListItem { Text = "Register", Value = "2", Selected = Model.Status == 2 ? true : false });
+    listStatus.Add(new SelectListItem { Text = "Approve level 1", Value = "3", Selected = Model.Status == 3 ? true : false });
+    listStatus.Add(new SelectListItem { Text = "Reject level 1", Value = "4", Selected = Model.Status == 4 ? true : false });
+    listStatus.Add(new SelectListItem { Text = "Approve level 2", Value = "5", Selected = Model.Status == 5 ? true : false });
+    listStatus.Add(new SelectListItem { Text = "Reject level 2", Value = "6", Selected = Model.Status == 6 ? true : false });
+    listStatus.Add(new SelectListItem { Text = "Approve TS", Value = "9", Selected = Model.Status == 9 ? true : false });
+    listStatus.Add(new SelectListItem { Text = "Reject TS", Value = "10", Selected = Model.Status == 10 ? true : false });
+    listStatus.Add(new SelectListItem { Text = "Active", Value = "7", Selected = Model.Status == 7 ? true : false });
+    listStatus.Add(new SelectListItem { Text = "Remove", Value = "8", Selected = Model.Status == 8 ? true : false });
+
+    List<SelectListItem> listRole = new List<SelectListItem>();
+    
+}
+
+<main class="body position-relative d-flex flex-column">
+    <div data-active_page="user--manage" class="content-wrap flex-fill">
+            <div class="card col-lg-11 bg-white-75 mx-auto my-5">
+                <div class="card-header bg-transparent border-0">
+                    <div class="row">
+                        <div class="col-lg-6 d-flex align-items-center">
+                            <div class="h3 font-secondary card-title my-3"> <span class="text-muted">EDIT</span> <span>USER</span></div>
+                        </div>
+                    </div>
+                </div>     
+                <div class="card-body">
+                @if(String.IsNullOrWhiteSpace(ViewBag.EmployeeMaster_empId)){
+                <div class="alert alert-danger text-center p-3 mx-3">This employee is not registered in the employee master database</div>
+                }
+                                @using (Html.BeginForm("Edit", "User", FormMethod.Post, new { enctype = "multipart/form-data", novalidate = "", Class = "needs-validation" }))
+                                {
+                                @Html.AntiForgeryToken()
+
+                                <div class="form-horizontal">
+                                    
+                                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                    @Html.HiddenFor(model => model.UserId)
+                                    <div class="form-group text-lg-center">
+                                        <h4 class="text-muted text-center my-3">Photo Profile</h4>
+                                        <div class="row justify-content-center">
+                                            <div class="card border-0">
+                                                <div class="position-relative">
+                                                    @{ 
+                                                        String color = "";
+                                                        if(Model.RoleId > 1)
+                                                        {
+                                                            color = "warning";
+                                                        }
+                                                        else
+                                                        {
+                                                            color = "success";
+                                                        }
+                                                    }
+                                                    <picture class="d-block atc-prev-wrap text-center ">
+                                                        @if (Model.PhotoProfile == null)
+                                                        {
+                                                            <img style="border-width: 3px !important; width: 120px; height: 120px;" src="@Url.Content("~/assets/images/repository/avatar-default.jpg")" alt="" class="object-fit-cover rounded-circle border border-@color img-thumbnail mr-3">
+                                                        }
+                                                        else
+                                                        {
+                                                            <img style="border-width: 3px !important; width: 120px; height: 120px;" src="@Url.Content("~/Upload/UserProfile/" + Model.PhotoProfile)" alt="" class="object-fit-cover rounded-circle border border-@color img-thumbnail mr-3">
+                                                        }
+
+                                                    </picture>
+                                                    <div class="my-md-4">
+                                                        <input type="file" name="photo" accept=".jpg,.jpeg,.bmp,.png" >
+                                                    </div>
+                                                   </div>
+                                            </div>
+                                        </div>
+                                        <br />
+                                    </div>
+                                    <hr/>
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-11" })
+                                        <div class="col-md-12">
+                                            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                                            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.Username, htmlAttributes: new { @class = "control-label col-md-11" })
+                                        <div class="col-md-12">
+                                            @Html.EditorFor(model => model.Username, new { htmlAttributes = new { @class = "form-control", @readonly="true" } })
+                                            @Html.ValidationMessageFor(model => model.Username, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.EmployeeId, htmlAttributes: new { @class = "control-label col-md-11" })
+                                        <div class="col-md-12">
+                                            @Html.EditorFor(model => model.EmployeeId, new { htmlAttributes = new { @class = "form-control", @readonly = "true" } })
+                                            @Html.ValidationMessageFor(model => model.EmployeeId, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.Dob, htmlAttributes: new { @class = "control-label col-md-11" })
+                                        <div class="col-md-12">
+                                            @if (Model.Dob.HasValue)
+                                                {
+                                                <span class="form-control text-box single-line" readonly="true"> @Model.Dob.Value.ToString("dd MMM yyyy")</span>
+                                                }
+                                                @*@Html.EditorFor(model => model.Dob.HasValue, new { htmlAttributes = new { @class = "form-control" } })*@
+                                                @Html.ValidationMessageFor(model => model.Dob, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.Position, htmlAttributes: new { @class = "control-label col-md-11" })
+                                            <div class="col-md-12">
+                                                @Html.EditorFor(model => model.Position, new { htmlAttributes = new { @class = "form-control", @readonly = "true" } })
+                                                @Html.ValidationMessageFor(model => model.Position, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-11" for="Email">Email</label>
+                                            <div class="col-md-12">
+                                                @Html.Raw(ViewBag.EmpMasterEmail)
+                                                <input class="form-control text-box single-line" id="Email" name="Email" type="text" value="@ViewBag.Email">
+                                                <span class="field-validation-valid text-danger" data-valmsg-for="Email" data-valmsg-replace="true"></span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.Phone, htmlAttributes: new { @class = "control-label col-md-11" })
+                                            <div class="col-md-12">
+                                                @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control" } })
+                                                @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                        @*<div class="form-group">
+                                    @Html.LabelFor(model => model.AreaCode, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => model.AreaCode, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.AreaCode, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>*@
+                                        @*<div class="form-group">
+                                    <label class="ml-3">Choose Role Location</label>
+                                    <div class="col-md-10">
+                                        <div class="custom-control custom-radio custom-control-inline">
+                                            <input type="radio" id="customRadioInline1" name="customRadioInline1" value="1" class="custom-control-input" onclick="SelectRole(this);">
+                                            <label class="custom-control-label" for="customRadioInline1">HEAD OFFICE</label>
+                                        </div>
+                                        <div class="custom-control custom-radio custom-control-inline">
+                                            <input type="radio" id="customRadioInline2" name="customRadioInline1" value="2" class="custom-control-input" onclick="SelectRole(this);">
+                                            <label class="custom-control-label" for="customRadioInline2">AREA</label>
+                                        </div>
+                                        <div class="custom-control custom-radio custom-control-inline">
+                                            <input type="radio" id="customRadioInline3" name="customRadioInline1" value="3" class="custom-control-input" onclick="SelectRole(this);">
+                                            <label class="custom-control-label" for="customRadioInline3">BRANCH</label>
+                                        </div>
+                                    </div>
+                                </div>*@
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.AreaName, htmlAttributes: new { @class = "control-label col-md-11" })
+                                        <div class="col-md-12">
+                                            @Html.DropDownListFor(model => model.MasterAreaId, new SelectList(ViewBag.ListMasterArea, "MasterAreaId", "Name", 0), "No Choose", new { @class = "selectpicker", placeholder = "Select Area", id = "MasterAreaId", data_style = "border bg-white", data_width = "100%", data_live_search = "true", data_container = "body" })
+                                            @Html.ValidationMessageFor(model => model.BranchName, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                        @*<div class="form-group">
+                                    @Html.LabelFor(model => model.BranchCode, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => model.BranchCode, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.BranchCode, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>*@
+
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.BranchName, htmlAttributes: new { @class = "control-label col-md-11" })
+                                            <div class="col-md-12">
+                                                @Html.DropDownListFor(model => model.MasterBranchId, new SelectList(ViewBag.ListMasterBranch, "MasterBranchId", "Name", 0), "No Choose", new { @class = "form-control", id = "MasterBranchId", placeholder = "Select Branch", data_style = "border bg-white", data_width = "100%", data_live_search = "true", data_container = "body" })
+
+                                                @Html.ValidationMessageFor(model => model.BranchName, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                 
+                                    <div class="form-group" style="display : none;">
+                                        <label class="control-label col-md-11" for="POH_Name">Sales Office Location</label>
+                                        <div class="col-md-12">
+                                            <input class="form-control text-box single-line" id="POH_Name" name="POH_Name" type="text" value="@ViewBag.OriginBranch">
+                                            <span class="field-validation-valid text-danger" data-valmsg-for="POH_Name" data-valmsg-replace="true"></span>
+                                        </div>
+                                    </div>
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.RoleId, htmlAttributes: new { @class = "control-label col-md-11" })
+                                            <div class="col-md-12">
+                                                <select class="form-control" data-container="body" data-live-search="true" data-style="border bg-white" data-val="true" data-val-number="The field RoleId must be a number." data-val-required="The RoleId field is required." data-width="100%" id="UserRoleName" name="RoleId" placeholder="Select Role">
+                                                    @if (Model.MasterAreaId != 0 && Model.MasterBranchId == 0)
+                                                    {
+                                                        <option value="1" @(Model.RoleId == 1 ? "selected" : "")>Level 1</option>
+                                                        <option value="2" @(Model.RoleId == 2 ? "selected" : "")>Level 2</option>
+                                                        <option value="3" @(Model.RoleId == 3 ? "selected" : "")>TC Area</option>
+                                                    }
+                                                    else if (Model.MasterAreaId != 0 && Model.MasterBranchId != 0)
+                                                    {
+                                                        <option value="1" @(Model.RoleId == 1 ? "selected" : "")>Level 1</option>
+                                                        <option value="2" @(Model.RoleId == 2 ? "selected" : "")>Level 2</option>
+                                                    }
+                                                    else if (Model.MasterAreaId == 0 && Model.MasterBranchId == 0)
+                                                    {
+                                                        <option value="1" @(Model.RoleId == 1 ? "selected" : "")>Level 1</option>
+                                                        <option value="2" @(Model.RoleId == 2 ? "selected" : "")>Level 2</option>
+                                                        <option value="4" @(Model.RoleId == 4 ? "selected" : "")>TC HO</option>
+                                                    }
+                                                </select>
+                                            </div>
+                                            </div>
+                                        <div class="form-group">
+                                             @Html.LabelFor(model => model.RoleDescription, htmlAttributes: new { @class = "control-label col-md-11" })
+                                            <div class="col-md-12">
+                                                @Html.EditorFor(model => model.RoleDescription, new { htmlAttributes = new { @class = "form-control" } })
+                                                @Html.ValidationMessageFor(model => model.RoleDescription, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.TechnicalJobExperienceDuration, htmlAttributes: new { @class = "control-label col-md-11" })
+                                            <div class="col-md-12">
+                                                @Html.EditorFor(model => model.TechnicalJobExperienceDuration, new { htmlAttributes = new { @class = "form-control" } })
+                                                @Html.ValidationMessageFor(model => model.TechnicalJobExperienceDuration, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.TechnicalJobTitle, htmlAttributes: new { @class = "control-label col-md-11" })
+                                            <div class="col-md-12">
+                                                @Html.EditorFor(model => model.TechnicalJobTitle, new { htmlAttributes = new { @class = "form-control" } })
+                                                @Html.ValidationMessageFor(model => model.TechnicalJobTitle, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label col-md-11" })
+                                            <div class="col-md-12">
+                                                @Html.DropDownListFor(model => model.Status, listStatus, new { @required = "", @class = "selectpicker", placeholder = "Select", data_style = "border bg-white", data_width = "100%", data_live_search = "false", data_container = "body" })
+                                                @*@Html.EditorFor(model => model.Status, new { htmlAttributes = new { @class = "form-control" } })*@
+                                                @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="control-label col-md-11" for="MobilePassword">Mobile Password</label>
+                                            <div class="col-md-12 mx-auto input-group">
+                                                <input class="form-control" id="MobilePassword" name="MobilePassword" type="password" value="@ViewBag.MobilePassword">
+                                                <div class="input-group-append">
+                                                    <button type="button" class="btn btn-secondary" id="toggle-password" data-toggle="button" aria-pressed="false">
+                                                        <i class="fa fa-fw fa-eye field_icon mx-1"></i><span>Show</span>
+                                                    </button>
+
+                                                </div>
+                                                <span class="field-validation-valid text-danger" data-valmsg-for="MobilePassword" data-valmsg-replace="true"></span>
+                                            </div>
+
+                                        </div>
+
+
+                                        @*<div class="form-group">
+                                    @Html.LabelFor(model => model.IsAdmin, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @Html.DropDownListFor(model => model.IsAdmin, listIsAdmin, new { @required = "", @class = "selectpicker", placeholder = "Select", data_style = "border bg-white", data_width = "100%", data_live_search = "false", data_container = "body" })
+                                        @Html.ValidationMessageFor(model => model.IsAdmin, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>*@
+
+
+
+                                        <div class="form-group mt-lg-6">
+                                            <div class="col-md-offset-3 float-right">
+                                                <input type="submit" value="Save Changes" class="btn btn-warning" />
+                                            </div>
+                                            <div class="col-md-offset-3 col-md-2 float-left">
+                                                <a href="@Url.Action("Index", "User")" class="fab-item btn btn-light border-warning shadow-sm">Cancel</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+            </div>
+    </div>
+</main>
+
+@section ScriptBottom {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#toggle-password').on('click', function () {
+                $('#toggle-password i ').toggleClass();
+                var input = $('#MobilePassword');
+
+                if (input.attr('type') === 'password') {
+                    $('#MobilePassword').attr('type', 'text');
+                    $('#toggle-password i').attr('class', 'fa fa-fw fa-eye-slash field_icon mx-1' );
+                    $('#toggle-password span').html('Hide');
+                }
+                else if (input.attr('type') === 'text') {
+                    $('#MobilePassword').attr('type', 'password');
+                    $('#toggle-password i').attr('class', 'fa fa-fw fa-eye field_icon mx-1');
+                    $('#toggle-password span').html('Show');
+                }
+            });
+            $("#MasterBranchId").change(function () {
+                var SelectedArea = $("#MasterAreaId").val();
+                var SelectedBranch = $("#MasterBranchId").val();
+                if (!SelectedBranch.trim()) {
+                    console.log(SelectedBranch);
+                    $("#UserRoleName").empty();
+                    $("#UserRoleName").append('<option value="1">Level 1</option>');
+                    $("#UserRoleName").append('<option value="2">Level 2</option>');
+
+                    $("#UserRoleName").append('<option value="3">TC Area</option>');
+                }
+                else {
+                    console.log(SelectedBranch);
+                    $("#UserRoleName").empty();
+                    $("#UserRoleName").append('<option value="1">Level 1</option>');
+                    $("#UserRoleName").append('<option value="2">Level 2</option>');
+                }
+                $("#UserRoleName").select2('destroy'); 
+            });
+
+            $("#MasterAreaId").change(function () {
+                var SelectedArea = $("#MasterAreaId").val();
+                var SelectedBranch = $("#MasterBranchId").val();
+
+                if (!SelectedArea.trim()) {
+                    console.log(SelectedArea);
+                    $("#UserRoleName").empty();
+                    $("#UserRoleName").append('<option value="1">Level 1</option>');
+                    $("#UserRoleName").append('<option value="2">Level 2</option>');
+                    $("#UserRoleName").append('<option value="4">TC HO</option>');
+                }
+                else {
+                    console.log(SelectedArea);
+                    $("#UserRoleName").empty();
+                    $("#UserRoleName").append('<option value="1">Level 1</option>');
+                    $("#UserRoleName").append('<option value="2">Level 2</option>');
+                    $("#UserRoleName").append('<option value="3">TC Area</option>');
+                }
+               
+                $("#MasterBranchId").empty();
+                $("#MasterBranchId").append('<option value="0">No Choose</option>');
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("GetBranchs")',
+                    dataType: 'json',
+                    data: { id: $("#MasterAreaId").val() },
+                    success: function (mems) {
+                        // states contains the JSON formatted list
+                        // of states passed from the controller
+                        $.each(mems, function (i, member) {
+                            $("#MasterBranchId").append('<option value="' + member.Value + '">' + member.Text + '</option>');
+                        });
+                    },
+                    error: function (ex) {
+
+                    }
+                });
+                
+                
+                return false;
+            })
+        });
+</script>
+}
+

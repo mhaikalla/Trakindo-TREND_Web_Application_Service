@@ -1,0 +1,189 @@
+﻿@using Com.Trakindo.TSICS.Data.Model
+
+<style>
+    main#sidebar {
+       position : sticky;
+        height: calc(100vh - 4rem);
+    }
+</style>
+<main id="sidebar" class="mb-3">
+    <div data-active_page="the-technical-request" class="content-wrap flex-fill">
+        @if (Convert.ToInt32(Session["status"]) == 7)
+        {
+            <section class="sidebar-nav mb-5">
+                <div class="card bg-transparent border-0">
+                    <div class="card-body bg-transparent p-0">
+                        <ul class="nav d-flex flex-column">
+                            <li class="nav-item">
+                                <a data-active_nav="summary" href="@Url.Action("Summary", "TechnicalRequest")" class="nav-link d-flex justify-content-between align-items-center text-muted px-0">
+                                    <span>Summary</span>
+                                </a>
+                            </li>
+                            <li class="nav-item"><a data-active_nav="all-technical-request" href="@Url.Action("Index", "TechnicalRequest")" class="nav-link d-flex justify-content-between align-items-center text-muted px-0"><span>All Technical Request</span></a></li>
+                            <li class="nav-item">
+                                <a data-active_nav="my-technical-request" href="@Url.Action("Index", "MyTechnicalRequest")" class="nav-link d-flex justify-content-between align-items-center text-muted px-0">
+                                    <span>My Technical Request</span>
+                                    @*<div class="badge bg-dark rounded-pill text-white">88</div>*@
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+        }
+        <section class="sidebar-nav mb-5">
+            <div class="card bg-transparent border-0">
+                <div class="card-header bg-transparent border-dark px-0">
+                    <script>console.log("Delegation Status in Session : " + @Convert.ToInt32(Session["DelegateStatus"]))</script>
+                    @if (Convert.ToInt32(Session["DelegateStatus"]) == 1)
+                    {
+                        <h4 class="font-secondary card-title mb-0">Can't Create Technical request during Delegation Period</h4>
+                    }
+                    else if (Convert.ToInt32(Session["DelegateStatus"]) != 1)
+                    {
+                        if (Convert.ToInt32(Session["status"]) == 7)
+                        {
+                            <h4 class="font-secondary card-title mb-0">CATEGORY </h4>
+                        }
+                        else
+                        {
+                            <h4 class="font-secondary card-title mb-0">Your Account isn't Activated Yet</h4>
+                        }
+                    }
+                </div>
+                @if (Convert.ToInt32(Session["DelegateStatus"]) != 1)
+                {
+                    if (Convert.ToInt32(Session["status"]) == 7)
+                    {
+                        <div class="card-body bg-transparent p-0">
+                            <ul id="sidebar-nav" class="nav d-flex flex-column">
+                                <li class="nav-item">
+                                    <a data-active_nav="product-health" href="@Url.Action("ProductHealth", "TechnicalRequest")" class="nav-link d-flex justify-content-between align-items-center text-muted px-0">
+                                        <span>Product Health</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a data-active_nav="parts-technical" href="@Url.Action("PartsTechnical", "TechnicalRequest")" class="nav-link d-flex justify-content-between align-items-center text-muted px-0">
+                                        <span>Parts Technical</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a data-active_nav="dimension" href="@Url.Action("Dimension", "TechnicalRequest")" class="nav-link d-flex justify-content-between align-items-center text-muted px-0">
+                                        <span>Dimension</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a data-active_nav="reference" href="@Url.Action("Reference", "TechnicalRequest")" class="nav-link d-flex justify-content-between align-items-center text-muted px-0">
+                                        <span>References</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a data-active_nav="warranty-assistance" href="@Url.Action("WarrantyAssistance", "TechnicalRequest")" class="nav-link d-flex justify-content-between align-items-center text-muted px-0">
+                                        <span>Warranty Assistance</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a data-active_nav="goodwill-assistance" href="@Url.Action("GoodwillAssistance", "TechnicalRequest")" class="nav-link d-flex justify-content-between align-items-center text-muted px-0">
+                                        <span>Goodwill Assistance</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a data-active_nav="password" href="@Url.Action("Password", "TechnicalRequest")" class="nav-link d-flex justify-content-between align-items-center text-muted px-0">
+                                        <span>Password</span>
+                                    </a>
+                                </li>
+                                @*<li class="nav-item">
+                                    <a data-active_nav="telematics" href="@Url.Action("Telematics", "TechnicalRequest")" class="nav-link d-flex justify-content-between align-items-center text-muted px-0">
+                                        <span>Telematics</span>
+                                    </a>
+                                </li>*@
+                                <li class="nav-item">
+                                    <a data-active_nav="condition-monitoring" href="@Url.Action("ConditionMonitoring", "TechnicalRequest")" class="nav-link d-flex justify-content-between align-items-center text-muted px-0">
+                                        <span>Condition Monitoring</span>
+                                    </a>
+                                </li>
+                            </ul>
+
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="card-body bg-transparent p-0">
+                            <ul id="sidebar-nav" class="nav d-flex flex-column">
+                                <li class="nav-item">
+                                    <a data-active_nav="HelpDesk" href="@Url.Action("HelpDesk", "TechnicalRequest")" class="nav-link d-flex justify-content-between align-items-center text-muted px-0">
+                                        <span>Help Desk</span>
+                                    </a>
+                                    <a data-active_nav="my-technical-request" href="@Url.Action("Index", "MyTechnicalRequest")" class="nav-link d-flex justify-content-between align-items-center text-muted px-0">
+                                        <span>My Technical Request</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    }
+                }
+
+            </div>
+        </section>
+        @if (Convert.ToInt32(Session["status"]) == 7)
+        {
+            <section class="sidebar-recent mb-5 hide">
+                <div class="card bg-transparent border-0">
+                    <div class="card-header bg-transparent border-dark px-0">
+                        @if (ViewBag.Recent.Count > 0)
+                        {
+                            <h4 class="font-secondary card-title mb-0">RECENT</h4>
+                        }
+                        else
+                        {
+                            <h4 class="font-secondary card-title mb-0">NO RECENT TECHNICAL REQUEST</h4>
+                        }
+                    </div>
+                    <div class="card-body bg-transparent p-0">
+                        <div class="list-group list-group-flush">
+                            @{
+                                if (ViewBag.Recent.Count > 0)
+                                {
+                                    foreach (Ticket technicalRequest in ViewBag.Recent)
+                                    {
+                                        <a href="@Url.Action("Details/" + technicalRequest.TicketId, "TechnicalRequest")" class="list-group-item list-group-item-action bg-transparent text-warning d-flex justify-content-between align-items-center px-0">
+                                            <span>@technicalRequest.TicketNo - @technicalRequest.Title</span>
+                                        </a>
+                                    }
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+            </section>
+        }
+        <section id="sidebar" class="sidebar-recent mt-3 mb-5 hide">
+            <div class="card bg-transparent border-0">
+                <div class="card-header bg-transparent border-dark px-0">
+                    @if (ViewBag.UseFullLink != null)
+                    {
+                        <h4 class="font-secondary card-title mb-0">USEFULL LINK</h4>
+                    }
+                    else
+                    {
+                        <h4 class="font-secondary card-title mb-0">NO USEFULL LINK RECENTLY</h4>
+                    }
+                </div>
+                @if (ViewBag.UseFullLink != null)
+                {
+                    <div class="card-body bg-transparent p-0" style="overflow:auto; height:300px;">
+                        <div class="list-group list-group-flush">
+                            @foreach (Article usefull in ViewBag.UseFullLink)
+                            {
+                                <a href="@usefull.Description" target="_blank" class="list-group-item list-group-item-action bg-transparent text-warning d-flex justify-content-between align-items-center px-0 py-sm-2" target="_blank">
+                                    <span><div class="text-dark" style="font-size:12.5px">@usefull.Title</div></span>
+                                </a>
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+        </section>
+    </div>
+
+</main>

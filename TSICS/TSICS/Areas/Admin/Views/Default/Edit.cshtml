@@ -1,0 +1,92 @@
+﻿@model Com.Trakindo.TSICS.Data.Model.User
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<main class="body position-relative d-flex flex-column">
+    <div data-active_page="" class="content-wrap flex-fill">
+        <section class="position-relative mt-5">
+            <div class="container-fluid">
+                <div class="row no-gutters mb-5">
+                    <div class="col-lg-12 position-relative">
+                        <section class="position-relative mt-1">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-lg-12 position-relative">
+                                        <section class="card bg-white shadow-sm border-0 mb-5">
+                                            <div class="card-header bg-transparent border-0">
+                                                <div class="row">
+                                                    <div class="col-lg-6 d-flex align-items-center width9_4cols">
+                                                        <div class="h3 text-center font-secondary card-title mb-0">
+                                                            <span class="text-muted">EDIT ACCOUNT</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card-body">
+                                            @using (Html.BeginForm("Edit", "Default", FormMethod.Post, new { enctype = "multipart/form-data", novalidate = "", Class = "needs-validation" }))
+                                            {
+                                                @Html.AntiForgeryToken()
+                                                @Html.HiddenFor(model => model.UserId)
+                                                <div class="row justify-content-center">
+                                                    <div class="card border-0">
+                                                        <div class="position-relative">
+                                                            <picture class="d-block atc-prev-wrap text-center ">
+                                                                @if (Model.PhotoProfile == null)
+                                                                {
+                                                                    <img style="border-width: 3px !important; width: 120px; height: 120px;" src="@Url.Content("~/assets/images/repository/avatar-default.jpg")" alt="" class="object-fit-cover rounded-circle border border-secondary img-thumbnail mr-3">
+                                                                }
+                                                                else
+                                                                {
+                                                                    <img style="border-width: 3px !important; width: 120px; height: 120px;" src="@Url.Content("~/Upload/UserProfile/" + Model.PhotoProfile)" onerror="this.onerror=null;this.src='@Url.Content("~/assets/images/repository/avatar-default.jpg")';" alt="" class="object-fit-cover rounded-circle border border-secondary img-thumbnail mr-3">
+                                                                }
+
+                                                            </picture> @*FIxed PhotoProfile*@
+                                                            <div class="my-md-4">
+                                                                <input type="file" name="PhotoProfile" accept=".jpg,.jpeg,.bmp,.png">
+                                                            </div>
+                                                        </div>
+                                                        @if (Model.PhotoProfile != null)
+                                                        {
+                                                            <a href="@Url.Action("RemovePhoto", "Default")" class="fab-item btn btn-light border-warning shadow-sm"><i class="fa fa-times mr-4 fa-1x"></i>Remove</a>
+                                                        }
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-11" })
+                                                    <div class="col-md-12">
+                                                        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                                                    </div>
+                                                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                                                </div>
+                                                <div class="form-group">
+                                                    @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-11" })
+                                                    <div class="col-md-12">
+                                                        @Html.EditorFor(model => model.Email ,new { htmlAttributes = new { @class = "form-control" } })
+                                                    </div>
+                                                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                                                </div>
+                                                <div class="form-group mt-lg-6">
+                                                    <div class="float-left">
+                                                        <a href="javascript:history.go(-1);" class="fab-item btn btn-light border-warning shadow-sm">Cancel</a>
+                                                    </div>
+                                                    <div class="float-right">
+                                                        <input type="submit" value="Save Changes" class="btn btn-warning" />
+                                                    </div>
+                                                    
+                                                </div>
+                                            }
+                                            </div>
+                                        </section>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </div>
+</main>

@@ -1,0 +1,110 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="d:\vs2017\team tools\static analysis tools\fxcop\Xml\CodeAnalysisReport.xsl"?>
+<FxCopReport Version="15.0">
+ <Targets>
+  <Target Name="D:\Project\Trakindo\TSCIS\TFS\tsics\Development\TSICS\TSICS\bin\TSICS.dll">
+   <Modules>
+    <Module Name="tsics.dll">
+     <Namespaces>
+      <Namespace Name="TSICS.Controllers">
+       <Types>
+        <Type Name="LiterationController" Kind="Class" Accessibility="Public" ExternallyVisible="True">
+         <Members>
+          <Member Name="#SaveFile(System.Int32)" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="Do not dispose objects multiple times" Category="Microsoft.Usage" CheckId="CA2202" Status="Active" Created="2021-02-26 08:44:19Z" FixCategory="DependsOnFix">
+             <Issue Certainty="75" Level="Warning" Path="D:\Project\Trakindo\TSCIS\TFS\tsics\Development\TSICS\TSICS\Controllers" File="LiterationController.cs" Line="233">Object 'File.Create(this.Server.MapPath("~/Upload/Article/Attachments/") + FileName)' can be disposed more than once in method 'LiterationController.SaveFile(int)'. To avoid generating a System.ObjectDisposedException you should not call Dispose more than one time on an object.: Lines: 233</Issue>
+             <Issue Certainty="75" Level="Warning" Path="D:\Project\Trakindo\TSCIS\TFS\tsics\Development\TSICS\TSICS\Controllers" File="LiterationController.cs" Line="233">Object 'zipOutputStream' can be disposed more than once in method 'LiterationController.SaveFile(int)'. To avoid generating a System.ObjectDisposedException you should not call Dispose more than one time on an object.: Lines: 233</Issue>
+            </Message>
+           </Messages>
+          </Member>
+         </Members>
+        </Type>
+       </Types>
+      </Namespace>
+      <Namespace Name="TSICS.Helper">
+       <Types>
+        <Type Name="Common" Kind="Class" Accessibility="Public" ExternallyVisible="True">
+         <Members>
+          <Member Name="#Base64Decode(System.String)" Kind="Method" Static="True" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="Do not dispose objects multiple times" Category="Microsoft.Usage" CheckId="CA2202" Status="Active" Created="2021-02-26 08:44:19Z" FixCategory="DependsOnFix">
+             <Issue Certainty="75" Level="Warning" Path="D:\Project\Trakindo\TSCIS\TFS\tsics\Development\TSICS\TSICS\Helper" File="Common.cs" Line="237">Object 'cs' can be disposed more than once in method 'Common.Base64Decode(string)'. To avoid generating a System.ObjectDisposedException you should not call Dispose more than one time on an object.: Lines: 237</Issue>
+             <Issue Certainty="75" Level="Warning" Path="D:\Project\Trakindo\TSCIS\TFS\tsics\Development\TSICS\TSICS\Helper" File="Common.cs" Line="237">Object 'ms' can be disposed more than once in method 'Common.Base64Decode(string)'. To avoid generating a System.ObjectDisposedException you should not call Dispose more than one time on an object.: Lines: 237, 239</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#Base64Encode(System.String)" Kind="Method" Static="True" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="Do not dispose objects multiple times" Category="Microsoft.Usage" CheckId="CA2202" Status="Active" Created="2021-02-26 08:44:19Z" FixCategory="DependsOnFix">
+             <Issue Certainty="75" Level="Warning" Path="D:\Project\Trakindo\TSCIS\TFS\tsics\Development\TSICS\TSICS\Helper" File="Common.cs" Line="195">Object 'cs' can be disposed more than once in method 'Common.Base64Encode(string)'. To avoid generating a System.ObjectDisposedException you should not call Dispose more than one time on an object.: Lines: 195</Issue>
+             <Issue Certainty="75" Level="Warning" Path="D:\Project\Trakindo\TSCIS\TFS\tsics\Development\TSICS\TSICS\Helper" File="Common.cs" Line="195">Object 'ms' can be disposed more than once in method 'Common.Base64Encode(string)'. To avoid generating a System.ObjectDisposedException you should not call Dispose more than one time on an object.: Lines: 195, 197</Issue>
+            </Message>
+           </Messages>
+          </Member>
+         </Members>
+        </Type>
+        <Type Name="SharepointHelper" Kind="Class" Accessibility="Public" ExternallyVisible="True">
+         <Members>
+          <Member Name="#DecryptStringFromBytes(System.Byte[],System.Byte[],System.Byte[],System.Int32)" Kind="Method" Static="True" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="Do not dispose objects multiple times" Category="Microsoft.Usage" CheckId="CA2202" Status="Active" Created="2021-02-26 08:44:19Z" FixCategory="DependsOnFix">
+             <Issue Certainty="75" Level="Warning" Path="D:\Project\Trakindo\TSCIS\TFS\tsics\Development\TSICS\TSICS\Helper" File="SharepointHelper.cs" Line="249">Object 'csDecrypt' can be disposed more than once in method 'SharepointHelper.DecryptStringFromBytes(byte[], byte[], byte[], int)'. To avoid generating a System.ObjectDisposedException you should not call Dispose more than one time on an object.: Lines: 249</Issue>
+             <Issue Certainty="75" Level="Warning" Path="D:\Project\Trakindo\TSCIS\TFS\tsics\Development\TSICS\TSICS\Helper" File="SharepointHelper.cs" Line="249">Object 'msDecrypt' can be disposed more than once in method 'SharepointHelper.DecryptStringFromBytes(byte[], byte[], byte[], int)'. To avoid generating a System.ObjectDisposedException you should not call Dispose more than one time on an object.: Lines: 249, 250</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#GetXDoc(System.String,System.String,System.Collections.Generic.List`1&lt;System.Net.Cookie&gt;)" Kind="Method" Static="True" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="Do not dispose objects multiple times" Category="Microsoft.Usage" CheckId="CA2202" Status="Active" Created="2021-02-26 08:44:19Z" FixCategory="DependsOnFix">
+             <Issue Certainty="75" Level="Warning" Path="D:\Project\Trakindo\TSCIS\TFS\tsics\Development\TSICS\TSICS\Helper" File="SharepointHelper.cs" Line="45">Object 'readerUser' can be disposed more than once in method 'SharepointHelper.GetXDoc(string, string, List&lt;Cookie&gt;)'. To avoid generating a System.ObjectDisposedException you should not call Dispose more than one time on an object.: Lines: 45</Issue>
+             <Issue Certainty="75" Level="Warning" Path="D:\Project\Trakindo\TSCIS\TFS\tsics\Development\TSICS\TSICS\Helper" File="SharepointHelper.cs" Line="45">Object 'responseForUser.GetResponseStream()' can be disposed more than once in method 'SharepointHelper.GetXDoc(string, string, List&lt;Cookie&gt;)'. To avoid generating a System.ObjectDisposedException you should not call Dispose more than one time on an object.: Lines: 45</Issue>
+            </Message>
+           </Messages>
+          </Member>
+         </Members>
+        </Type>
+       </Types>
+      </Namespace>
+     </Namespaces>
+    </Module>
+   </Modules>
+  </Target>
+ </Targets>
+ <Rules>
+  <Rule TypeName="Do not dispose objects multiple times" Category="Microsoft.Usage" CheckId="CA2202">
+   <Name>Do not dispose objects multiple times</Name>
+   <Description>A correctly implemented Dispose method can be called multiple times without throwing an exception. However, this is not guaranteed and to avoid generating a System.ObjectDisposedException you should not call Dispose more than one time on an object.</Description>
+   <Resolution Name="Default">Object {0} can be disposed more than once in method {1}. To avoid generating a System.ObjectDisposedException you should not call Dispose more than one time on an object.: Lines: 233</Resolution>
+   <Owner>RuleOwner</Owner>
+   <Url>http://msdn.microsoft.com/library/ms182334.aspx</Url>
+   <Email />
+   <MessageLevel Certainty="75">Warning</MessageLevel>
+   <File Name="dataflowrules.dll" Version="15.0.0.0" />
+  </Rule>
+ </Rules>
+ <Localized>
+  <String Key="Category">Category</String>
+  <String Key="Certainty">Certainty</String>
+  <String Key="CollapseAll">Collapse All</String>
+  <String Key="CheckId">Check Id</String>
+  <String Key="Error">Error</String>
+  <String Key="Errors">error(s)</String>
+  <String Key="ExpandAll">Expand All</String>
+  <String Key="Help">Help</String>
+  <String Key="Line">Line</String>
+  <String Key="Messages">message(s)</String>
+  <String Key="LocationNotStoredInPdb">[Location not stored in Pdb]</String>
+  <String Key="Project">Project</String>
+  <String Key="Resolution">Resolution</String>
+  <String Key="Rule">Rule</String>
+  <String Key="RuleFile">Rule File</String>
+  <String Key="RuleDescription">Rule Description</String>
+  <String Key="Source">Source</String>
+  <String Key="Status">Status</String>
+  <String Key="Target">Target</String>
+  <String Key="Warning">Warning</String>
+  <String Key="Warnings">warning(s)</String>
+  <String Key="ReportTitle">Code Analysis Report</String>
+ </Localized>
+</FxCopReport>

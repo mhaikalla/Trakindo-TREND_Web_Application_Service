@@ -1,0 +1,303 @@
+﻿Error Description,Repairing Dealer,Work Order,Work Order Segment,Serial Number,Repair Date,Part Causing Failure,Part Causing Failure Description,Group Number,Group Description,Comment
+Invalid Serial Number.,J182,8500098882,1,OLY00000CLEL03753,2-Jul-20,No Part Number,No Part Number,7525,500 Service Hour Maint,00004782-Pm-500                                   
+Part Number Is Invalid.  See Sims Help And Support Link For Info.,J183,8500092180,1,APX01110,1-May-20,229-9872, ,229-9884,Suspension Gp -A,00006265-Leaks Oil                                
+Part Number Is Invalid.  See Sims Help And Support Link For Info.,J183,8500092185,1,FKR02406,1-May-20,224-9869, ,281-0803,Engine AR,00030600-Inspect &amp; Adjust                         
+Part Defect Code (Secondary Problem Description) Missing Or Invalid.,J183,8500093777,1,DNR00116,16-May-20,549-3131,Instl Gp-Field,549-3131,Instl Gp-Field,00013354-Install Pl542                            
+Part Defect Code (Secondary Problem Description) Missing Or Invalid.,J183,8500093778,1,DNR00117,16-May-20,549-3131,Instl Gp-Field,549-3131,Instl Gp-Field,00011434-Install Pl542                            
+Part Defect Code (Secondary Problem Description) Missing Or Invalid.,J183,8500093779,1,DNR00118,16-May-20,549-3131,Instl Gp-Field,549-3131,Instl Gp-Field,00046223-Install Pl542                            
+Part Number Is Invalid.  See Sims Help And Support Link For Info.,J183,8500095827,1,APX01110,8-Jun-20,229-9872, ,229-9884,Suspension Gp -A,00012297-Leaks Oil                                
+Part Is Missing Or Invalid.,J183,8600215929,1,ALLSNEQUIPMENT (Non-Cat),16-Jun-20,2000012383, ,1000,Engine,00023735-Fatigue Comp                             
+Part Number Is Invalid.  See Sims Help And Support Link For Info.,J183,8600226605,1,B9K00551,15-Jun-20,437-3872, ,266-3699,Mechanism Gp-V-D,00024743-Adjusting                                
+Group Number Is Missing Or Invalid.,J185,8500093874,1,38S25166,18-May-20,No Part Number,No Part Number,7597, ,00050233-Pm 6                                     
+Group Number Is Missing Or Invalid.,J185,8600224385,1,YBP00935,18-Jun-20,No Part Number,No Part Number,9575, ,00026326-Ta1                                      
+Group Number Is Missing Or Invalid.,J185,8600224385,1,YBP00935,18-Jun-20,No Part Number,No Part Number,9575, ,00026326-Ta1                                      
+Group Number Is Missing Or Invalid.,J185,8600225985,1,ZBT00718,29-Jun-20,510-8095,Fan As-Axial,489-4980, ,00026326-Replace                                  
+Group Number Is Missing Or Invalid.,J185,8600225985,1,ZBT00718,29-Jun-20,510-8095,Fan As-Axial,489-4980, ,00026326-Replace                                  
+Part Number Is Invalid.  See Sims Help And Support Link For Info.,J187,8500098855,1,ZBT00629,2-Jul-20,526-2037, ,511-5053,Filter Gp-Fuel-D,29958000-Pressure To Low                          
+Group Number Is Missing Or Invalid.,J19D,8600220260,1,ME404028,26-May-20,478-7051,Seal Kt,478-4076, ,00020699-Leaks Oil                                
+Group Number Is Missing Or Invalid.,J19U,8500083068,1,38S17347,19-Feb-20,No Part Number,No Part Number,0, ,00014597- Pm Scheduled                            
+Group Number Is Missing Or Invalid.,J19U,8500083219,1,38S17090,20-Feb-20,No Part Number,No Part Number,0, ,00014597- Pm Scheduled                            
+Invalid Serial Number.,J19U,8500085338,1,OLY00000KMMY01401,17-Jun-20,No Part Number,No Part Number,7524,250 Service Hour Maint,00019169-Pm Scheduled                             
+Invalid Serial Number.,J19U,8500085338,1,OLY00000KMMY01401,17-Jun-20,No Part Number,No Part Number,7524,250 Service Hour Maint,00019169-Pm Scheduled                             
+Group Number Needs Dt Code Assigned.  See Sims Support Link For Info.,J19U,8500085881,1,RJG04116,11-Jun-20,209-6935,Tank Gp-F1207,339-3373,Drive Gp,00013743-Leaking                                  
+Invalid Serial Number.,J19U,8500086906,1,OLY00000VMMY01399,27-Mar-20,No Part Number,No Part Number,7519,Svc Contr And Maint Pgms,19169-Inspection Machine                          
+Invalid Serial Number.,J19U,8500086907,1,OLY00000KMMY01401,27-Mar-20,No Part Number,No Part Number,7519,Svc Contr And Maint Pgms,19169-Inspection Machine                          
+Group Number Is Missing Or Invalid.,J19U,8500087211,1,73Z00561,21-Mar-20,No Part Number,No Part Number,0, ,00046237-Inspection                               
+Group Number Is Missing Or Invalid.,J19U,8500087212,1,73Z00562,21-Mar-20,No Part Number,No Part Number,0, ,00014954-Insepction                               
+Group Number Is Missing Or Invalid.,J19U,8500087213,1,73Z00565,21-Mar-20,No Part Number,No Part Number,0, ,00014597-Inspection                               
+Group Number Is Missing Or Invalid.,J19U,8500087214,1,73Z00604,21-Mar-20,No Part Number,No Part Number,0, ,00021173-Inspection                               
+Group Number Is Missing Or Invalid.,J19U,8500087215,1,73Z00605,21-Mar-20,No Part Number,No Part Number,0, ,00003791-Inspection                               
+Invalid Serial Number.,J19U,8500087455,1,OLY00000KMMY01401,21-Mar-20,No Part Number,No Part Number,7524,250 Service Hour Maint,00014597-250 Svc Hour Maintenance                 
+Invalid Serial Number.,J19U,8500087455,1,OLY00000KMMY01401,21-Mar-20,No Part Number,No Part Number,7524,250 Service Hour Maint,00014597-250 Svc Hour Maintenance                 
+Invalid Serial Number.,J19U,8500087456,1,OLY00000VMMY01399,18-Jun-20,No Part Number,No Part Number,7527,2000 Service Hour Maint,00019169-Pmschedued                               
+Invalid Serial Number.,J19U,8500087456,1,OLY00000VMMY01399,18-Jun-20,No Part Number,No Part Number,7527,2000 Service Hour Maint,00019169-Pmschedued                               
+Invalid Serial Number.,J19U,8500087901,1,OLY00000VMMY01399,18-Jun-20,320-3064,Sensor Gp-Press,1000,Engine,00019169-Leaks Oil                                
+Invalid Serial Number.,J19U,8500087901,1,OLY00000VMMY01399,18-Jun-20,320-3064,Sensor Gp-Press,1000,Engine,00019169-Leaks Oil                                
+Group Number Is Missing Or Invalid.,J19U,8500090467,1,38S17337,27-Apr-20,No Part Number,No Part Number,0, ,00046237-Inspection                               
+Group Number Is Missing Or Invalid.,J19U,8500090467,1,38S17337,27-Apr-20,No Part Number,No Part Number,0, ,00046237-Inspection                               
+Group Number Is Missing Or Invalid.,J19U,8500090468,1,38S17090,27-Apr-20,No Part Number,No Part Number,0, ,00003791-Inspection                               
+Group Number Is Missing Or Invalid.,J19U,8500090468,1,38S17090,27-Apr-20,No Part Number,No Part Number,0, ,00003791-Inspection                               
+Invalid Serial Number. &amp; Group Number Is Missing Or Invalid.,J19U,8500090475,1,OLY00000KMMY01401,27-Apr-20,No Part Number,No Part Number,0, ,00003791-Inspection                               
+Invalid Serial Number. &amp; Group Number Is Missing Or Invalid.,J19U,8500090475,1,OLY00000KMMY01401,27-Apr-20,No Part Number,No Part Number,0, ,00003791-Inspection                               
+Group Number Is Missing Or Invalid.,J19U,8500090476,1,38S17083,27-Apr-20,No Part Number,No Part Number,0, ,00046237-Inspection                               
+Group Number Is Missing Or Invalid.,J19U,8500090476,1,38S17083,27-Apr-20,No Part Number,No Part Number,0, ,00046237-Inspection                               
+Group Number Is Missing Or Invalid.,J19U,8500090478,1,38S17347,27-Apr-20,No Part Number,No Part Number,0, ,00046237-Inspection                               
+Group Number Is Missing Or Invalid.,J19U,8500090478,1,38S17347,27-Apr-20,No Part Number,No Part Number,0, ,00046237-Inspection                               
+Invalid Serial Number.,J19U,8500090498,1,OLY00000KMMY01401,18-Apr-20,No Part Number,No Part Number,7527,2000 Service Hour Maint,00019169-Pm Scheduled                             
+Invalid Serial Number.,J19U,8500090498,1,OLY00000KMMY01401,18-Apr-20,No Part Number,No Part Number,7527,2000 Service Hour Maint,00019169-Pm Scheduled                             
+Group Number Is Missing Or Invalid.,J19U,8500091360,1,9EW78004,24-Apr-20,No Part Number,No Part Number,292-7127, ,00013743-Core Radiator Leaking                    
+Group Number Is Missing Or Invalid.,J19U,8500091360,3,9EW78004,24-Apr-20,No Part Number,No Part Number,292-7127, ,00013743-Core Radiator Leaking                    
+Group Number Is Missing Or Invalid.,J19U,8500091360,4,9EW78004,24-Apr-20,No Part Number,No Part Number,292-7127, ,00013743-Core Radiator Leaking                    
+Group Number Is Missing Or Invalid.,J19U,8500091360,5,9EW78004,24-Apr-20,No Part Number,No Part Number,292-7127, ,00013743-Core Radiator Leaking                    
+Group Number Is Missing Or Invalid.,J19U,8500091360,6,9EW78004,24-Apr-20,No Part Number,No Part Number,292-7127, ,00013743-Core Radiator Leaking                    
+Invalid Serial Number.,J19U,8500091920,1,OLY00000VMMY01399,29-Apr-20,No Part Number,No Part Number,7524,250 Service Hour Maint,00003378-250 Svc Hours Maintenance                
+Invalid Serial Number.,J19U,8500091920,1,OLY00000VMMY01399,29-Apr-20,No Part Number,No Part Number,7524,250 Service Hour Maint,00003378-250 Svc Hours Maintenance                
+Part Is Missing Or Invalid.,J19U,8500093169,2,9SD00564,30-Jun-20,5P4479:AA, ,7760,Information Record Only,00018540-General Repair                           
+Part Is Missing Or Invalid.,J19U,8500093169,3,9SD00564,30-Jun-20,3B8489:AA, ,7760,Information Record Only,00018540-General Repair                           
+Part Is Missing Or Invalid.,J19U,8500093169,5,9SD00564,30-Jun-20,8T9383:AA, ,7760,Information Record Only,00018540-General Repair                           
+Part Is Missing Or Invalid.,J19U,8500093278,3,KT400190,26-May-20,1995808:AA, ,7760,Information Record Only,00021671-General Repair                           
+Part Is Missing Or Invalid.,J19U,8500093278,4,KT400190,26-May-20,2B0947:AA, ,7760,Information Record Only,00021671-General Repair                           
+Part Is Missing Or Invalid.,J19U,8500093278,5,KT400190,26-May-20,1571019:AA, ,7760,Information Record Only,00021671-General Repair                           
+Part Is Missing Or Invalid.,J19U,8500093278,6,KT400190,26-May-20,1241969:AA, ,7760,Information Record Only,00021671-General Repair                           
+Part Is Missing Or Invalid.,J19U,8500093278,8,KT400190,26-May-20,1995808:AA, ,7760,Information Record Only,00021671-General Repair                           
+Invalid Serial Number.,J19U,8500093315,1,OLY00000VMMY01399,13-May-20,No Part Number,No Part Number,7525,500 Service Hour Maint,00019169-500 Svc Hour Maintenance                 
+Invalid Serial Number.,J19U,8500093315,1,OLY00000VMMY01399,13-May-20,No Part Number,No Part Number,7525,500 Service Hour Maint,00019169-500 Svc Hour Maintenance                 
+Invalid Serial Number.,J19U,8500095253,1,OLY00000VMMY01399,3-Jun-20,No Part Number,No Part Number,753S,Ta1 Inspection,00019184-Ta1 - Technical Analysis                 
+Invalid Serial Number.,J19U,8500095253,1,OLY00000VMMY01399,3-Jun-20,No Part Number,No Part Number,753S,Ta1 Inspection,00019184-Ta1 - Technical Analysis                 
+Invalid Serial Number.,J19U,8500095253,2,OLY00000VMMY01399,3-Jun-20,No Part Number,No Part Number,753S,Ta1 Inspection,00004945-Ta1 - Technical Analysis                 
+Invalid Serial Number.,J19U,8500095253,2,OLY00000VMMY01399,3-Jun-20,No Part Number,No Part Number,753S,Ta1 Inspection,00004945-Ta1 - Technical Analysis                 
+Invalid Serial Number.,J19U,8500095253,3,OLY00000VMMY01399,3-Jun-20,No Part Number,No Part Number,753S,Ta1 Inspection,00019184-Ta1 - Technical Analysis                 
+Invalid Serial Number.,J19U,8500095253,3,OLY00000VMMY01399,3-Jun-20,No Part Number,No Part Number,753S,Ta1 Inspection,00019184-Ta1 - Technical Analysis                 
+Invalid Serial Number.,J19U,8500095253,4,OLY00000VMMY01399,3-Jun-20,No Part Number,No Part Number,753S,Ta1 Inspection,00004945-Ta1 - Technical Analysis                 
+Invalid Serial Number.,J19U,8500095253,4,OLY00000VMMY01399,3-Jun-20,No Part Number,No Part Number,753S,Ta1 Inspection,00004945-Ta1 - Technical Analysis                 
+Invalid Serial Number.,J19U,8500095253,5,OLY00000VMMY01399,3-Jun-20,No Part Number,No Part Number,1000,Engine,00019184-General Repair                           
+Invalid Serial Number.,J19U,8500095253,5,OLY00000VMMY01399,3-Jun-20,No Part Number,No Part Number,1000,Engine,00019184-General Repair                           
+Invalid Serial Number.,J19U,8500095257,1,OLY00000KMMY01401,3-Jun-20,No Part Number,No Part Number,753S,Ta1 Inspection,00023895-Ta1 - Technical Analysis                 
+Invalid Serial Number.,J19U,8500095257,1,OLY00000KMMY01401,3-Jun-20,No Part Number,No Part Number,753S,Ta1 Inspection,00023895-Ta1 - Technical Analysis                 
+Invalid Serial Number.,J19U,8500095257,2,OLY00000KMMY01401,3-Jun-20,No Part Number,No Part Number,753S,Ta1 Inspection,00023895-Ta1 - Technical Analysis                 
+Invalid Serial Number.,J19U,8500095257,2,OLY00000KMMY01401,3-Jun-20,No Part Number,No Part Number,753S,Ta1 Inspection,00023895-Ta1 - Technical Analysis                 
+Invalid Serial Number.,J19U,8500095257,3,OLY00000KMMY01401,3-Jun-20,No Part Number,No Part Number,753S,Ta1 Inspection,00023895-Ta1 - Technical Analysis                 
+Invalid Serial Number.,J19U,8500095257,3,OLY00000KMMY01401,3-Jun-20,No Part Number,No Part Number,753S,Ta1 Inspection,00023895-Ta1 - Technical Analysis                 
+Invalid Serial Number.,J19U,8500095257,4,OLY00000KMMY01401,3-Jun-20,No Part Number,No Part Number,753S,Ta1 Inspection,00023895-Ta1 - Technical Analysis                 
+Invalid Serial Number.,J19U,8500095257,4,OLY00000KMMY01401,3-Jun-20,No Part Number,No Part Number,753S,Ta1 Inspection,00023895-Ta1 - Technical Analysis                 
+Invalid Serial Number.,J19U,8500095257,5,OLY00000KMMY01401,3-Jun-20,No Part Number,No Part Number,1000,Engine,00023895-General Repair                           
+Invalid Serial Number.,J19U,8500095257,5,OLY00000KMMY01401,3-Jun-20,No Part Number,No Part Number,1000,Engine,00023895-General Repair                           
+Invalid Serial Number. &amp; Group Number Is Missing Or Invalid.,J19U,8500097125,1,OLY00000VMMY01399,19-Jun-20,No Part Number,No Part Number,0, ,00014597-Inspection                               
+Part Number Is Invalid.  See Sims Help And Support Link For Info.,J19U,8500097891,1,9YZ77009,24-Jun-20,227-6782, ,215-2149,Cab Gp -B,00025244-Rear Side                                
+Part Number Is Invalid.  See Sims Help And Support Link For Info.,J19U,8500099512,5,C5H00428,11-Jun-20,243-1560, ,272-9739,Engine AR-Complete,00024140-System Malfunction                       
+Group Number Is Missing Or Invalid. &amp; Part Number Is Invalid.  See Sims Help And Support Link For Info.,J19U,8600202311,1,3F600617,30-Mar-20,442799, ,48-1887, ,23898-Inspect Product Link Not Reporting          
+Group Number Is Missing Or Invalid.,J19U,8600214425,1,L4E01328,22-Jun-20,No Part Number,No Part Number,753 T, ,00014169-General Repair                           
+Part Is Missing Or Invalid.,J19U,8600216999,1,TAL01451,14-May-20,HYHIT04, ,SP-0450, ,14995-Broken                                      
+Part Number Is Invalid.  See Sims Help And Support Link For Info.,J19U,8600220453,1,L4E02170,22-Jun-20,332-6453, ,291-8858,Tank Gp-Hyd,00046996-Leak Oil                                 
+Part Number Is Invalid.  See Sims Help And Support Link For Info.,J19U,8600220453,1,L4E02170,22-Jun-20,332-6453, ,291-8858,Tank Gp-Hyd,00046996-Leak Oil                                 
+Group Number Is Missing Or Invalid.,J19U,8600222265,1,L4E77007,18-Jun-20,No Part Number,No Part Number,753 T, ,00016479-General Repair                           
+Group Number Is Missing Or Invalid.,J19U,8600222265,1,L4E77007,18-Jun-20,No Part Number,No Part Number,753 T, ,00016479-General Repair                           
+Group Number Is Missing Or Invalid.,J19U,8600227242,1,ALLSNEQUIPMENT (Non-Cat),16-Jun-20,No Part Number,No Part Number,735S, ,30938-Ta Inspection                               
+Group Number Is Missing Or Invalid.,J19U,8600227242,2,ALLSNEQUIPMENT (Non-Cat),16-Jun-20,No Part Number,No Part Number,735S, ,30938-Ta Inspection                               
+Group Number Is Missing Or Invalid.,J19U,8600227242,3,ALLSNEQUIPMENT (Non-Cat),16-Jun-20,No Part Number,No Part Number,735S, ,30938-Ta Inspection                               
+Group Number Is Missing Or Invalid.,J19U,8600227242,4,ALLSNEQUIPMENT (Non-Cat),16-Jun-20,No Part Number,No Part Number,735S, ,30938-Ta Inspection                               
+Group Number Is Missing Or Invalid.,J19U,8600227243,3,ALLSNEQUIPMENT (Non-Cat),16-Jun-20,No Part Number,No Part Number,735S, ,45959-Ta Inspection                               
+Part Is Missing Or Invalid.,J195,8600227061,1,CT51-10032 (Non-Cat),17-Jun-20,514301000, ,01-0406, ,00011205-Broken                                   
+Group Number Is Missing Or Invalid.,J196,8600215649,1,3F601248,11-May-20,566-5659,Belt Gp-Seat,537-2029, ,27133-Switch Broken                               
+Group Number Is Missing Or Invalid.,J196,8600215650,1,3F600461,11-May-20,566-5659,Belt Gp-Seat,537-2029, ,27133-Harness Broken                              
+Group Number Is Missing Or Invalid.,J196,8600216194,1,3F600439,12-May-20,566-5659,Belt Gp-Seat,537-2029, ,27133-Harness Broken                              
+Invalid Serial Number.,J197,8500095614,1,SYC03051,12-Jun-20,276-8307,Injector Gp-Fuel,261-0048,Pump Gp-Fuel Inj,00022096-Pressure Too Low                         
+Group Number Needs Dt Code Assigned.  See Sims Support Link For Info.,J197,8600217843,1,S1M08989,17-May-20,206-6909,Element,234-2589,Separator As,00029975-Fuel Leak                                
+Group Number Needs Dt Code Assigned.  See Sims Support Link For Info.,J197,8600217843,1,S1M08989,17-May-20,206-6909,Element,234-2589,Separator As,00029975-Fuel Leak                                
+Part Number Is Invalid.  See Sims Help And Support Link For Info.,J197,8600222146,1,REA02706,25-Jun-20,9L-5678, ,4P-9249,Cover Gp-V Mech,00047533-Loose Bolt                               
+Part Number Is Invalid.  See Sims Help And Support Link For Info.,J197,8600222147,1,REA02709,25-Jun-20,9L-5678, ,4P-9249,Cover Gp-V Mech,00047533-Loose Bolt                               
+Group Number Is Missing Or Invalid.,J197,8600225200,1,ZP200682,29-Jun-20,394-1398,Pump Gp-F Xfr -A,331-7468, ,00012786- Low Fuel Pressure                       
+Group Number Is Missing Or Invalid.,J197,8600225200,1,ZP200682,29-Jun-20,394-1398,Pump Gp-F Xfr -A,331-7468, ,00012786- Low Fuel Pressure                       
+Part Number Is Invalid.  See Sims Help And Support Link For Info.,J197,8600227812,1,XP500159,18-Jun-20,164-4637, ,164-4637,Manifold Gp-Exh,00030039-Leak Air/Gas                             
+Group Number Is Missing Or Invalid.,J201,8600222664,1,APX02139,2-Jun-20,No Part Number,No Part Number,1395, ,00050302-Refill Coolant                           
+Group Number Is Missing Or Invalid.,J201,8600222664,1,APX02139,2-Jun-20,No Part Number,No Part Number,1395, ,00050302-Refill Coolant                           
+Group Number Is Missing Or Invalid.,J201,8600227362,1,FKR01703,26-Jun-20,438-9145,Kit-Seal-H.Cyl-1,300-0279, ,00012470-Pcr                                      
+Group Number Is Missing Or Invalid.,J201,8600229688,1,FKR02031,24-Jun-20,123456, ,Dec-56, ,00004738-Replace Injector Gre                     
+Group Number Is Missing Or Invalid.,J201,8600230130,1,3PR00256,28-Jun-20,123456, ,Dec-56, ,4739-Loose                                        
+Part Number Is Invalid.  See Sims Help And Support Link For Info.,J201,8600230139,1,KDP01075,28-Jun-20,249-7080, ,249-7080,Cont Gp-Xmsn Hyd,9032 - General Repair                             
+Part Number Is Invalid.  See Sims Help And Support Link For Info.,J201,8600230495,1,FKR01702,27-Jun-20,123456, ,7540,Auto Lubrication System,9032-General Repair                               
+Part Number Is Invalid.  See Sims Help And Support Link For Info.,J201,8600230588,1,FKR02033,28-Jun-20,279-9108, ,279-9108,Radiator Gp   -D,9032 - General Repair                             
+Group Number Is Missing Or Invalid.,J201,8600230651,1,FKR01438,27-Jun-20,163-0001,Arm Gp-Wiper,584-0119, ,9032 - Loose                                      
+Part Number Is Invalid.  See Sims Help And Support Link For Info.,J201,8600230915,1,AGC00941,28-Jun-20,217-0616,Additive,1353,Radiator,00050240-Flushing                                 
+Group Number Is Missing Or Invalid.,J201,8600231596,1,FKR01521,30-Jun-20,365-8397,Coolant-Engine,365-8397, ,00006415-Low Level                                
+Group Number Is Missing Or Invalid.,J201,8600231596,1,FKR01521,30-Jun-20,365-8397,Coolant-Engine,365-8397, ,00006415-Low Level                                
+Group Number Is Missing Or Invalid.,J201,8600231792,1,3PR00828,30-Jun-20,123456, ,Dec-56, ,00022928-Open Circuit                             
+Group Number Is Missing Or Invalid.,J201,8600231792,1,3PR00828,30-Jun-20,123456, ,Dec-56, ,00022928-Open Circuit                             
+Group Number Is Missing Or Invalid.,J21G,8600213685,1,KDP01131,6-May-20,147-7975,Motor Gp-Compact,584-0119, ,00011681-Open Circuit                             
+Group Number Is Missing Or Invalid.,J21G,8600213685,1,KDP01131,6-May-20,147-7975,Motor Gp-Compact,584-0119, ,00011681-Open Circuit                             
+Group Number Is Missing Or Invalid.,J21G,8600220454,1,KDP01134,27-May-20,299-5433, ,505-4743, ,00004053-Leaks                                    
+Group Number Is Missing Or Invalid.,J21G,8600221136,1,KDP01128,29-May-20,5T-5761, ,545-4094, ,00014647-Manual Lubrication                       
+Group Number Is Missing Or Invalid.,J21G,8600221141,1,KDP01131,29-May-20,5T-5761, ,545-4094, ,00011682-Lack Lubrication                         
+Group Number Is Missing Or Invalid.,J21G,8600221230,1,KDP01108,4-Jun-20,HP427PI:LS, ,HP427PI:LS, ,00014647-Resample                                 
+Group Number Is Missing Or Invalid.,J21G,8600224399,1,KDP01128,13-Jun-20,5T-5761, ,545-4094, ,00014647-Lubrication                              
+Group Number Is Missing Or Invalid.,J21P,8500094094,1,ATY00671,20-May-20,No Part Number,No Part Number,1395, ,14809-Inspect &amp; Maintenance                       
+Group Number Is Missing Or Invalid. &amp; Part Number Is Invalid.  See Sims Help And Support Link For Info.,J21P,8500094414,1,XBA11126,22-May-20,347-6741, ,347-6792, ,00015849- Worn                                    
+Group Number Is Missing Or Invalid.,J21P,8500094741,1,ATY00600,16-Jun-20,No Part Number,No Part Number,1395, ,14809-Schedule Pm                                 
+Part Number Is Invalid.  See Sims Help And Support Link For Info.,J21P,8500095078,1,XBA11126,15-Jun-20,347-6741, ,347-6739,Bucket Gp-Adj&amp;,00023431-Worn                                     
+Group Number Is Missing Or Invalid.,J21P,8500095756,1,7KK00369,19-Jun-20,No Part Number,No Part Number,0, ,13997-Pm 2000 Hrs                                 
+Group Number Is Missing Or Invalid.,J21P,8500095942,1,3SJ00053,10-Jun-20,7C-7677,Tube As-Fuel,1112, ,00013814-Tube Fuel Lines Cyl #9 Crack             
+Part Number Is Invalid.  See Sims Help And Support Link For Info.,J21P,8600212261,1,WBY00297,29-Apr-20,480-6767, ,441-3011,Drive Gp-Final-D,26208-Worn                                        
+Group Number Is Missing Or Invalid.,J21P,8600213811,1,L4E02147,7-May-20,353-3508,Hose As,219-8835, ,00021680-Streched                                 
+Part Number Is Invalid.  See Sims Help And Support Link For Info.,J21P,8600217613,1,L4E01263,16-May-20,358-0730, ,358-0730,Hood Gp,12881-Cracked                                     
+Part Number Is Invalid.  See Sims Help And Support Link For Info.,J21P,8600217613,1,L4E01263,16-May-20,358-0730, ,358-0730,Hood Gp,12881-Cracked                                     
+Part Number Is Invalid.  See Sims Help And Support Link For Info.,J21P,8600217790,1,3F600473,17-May-20,272-0393, ,349-5296,Base Gp-V Cover,00016487-Leaks Oil                                
+Part Number Is Invalid.  See Sims Help And Support Link For Info.,J21P,8600217790,1,3F600473,17-May-20,272-0393, ,349-5296,Base Gp-V Cover,00016487-Leaks Oil                                
+Part Number Is Invalid.  See Sims Help And Support Link For Info.,J21P,8600218416,1,L4E02171,19-May-20,291-8940, ,330-9086,Chassis AR,00016487-Worn                                     
+Part Number Is Invalid.  See Sims Help And Support Link For Info.,J21P,8600218416,1,L4E02171,19-May-20,291-8940, ,330-9086,Chassis AR,00016487-Worn                                     
+Part Number Is Invalid.  See Sims Help And Support Link For Info.,J21P,8600218419,1,3F600910,19-May-20,291-8940, ,330-9086,Chassis AR,00023431-Worn                                     
+Part Number Is Invalid.  See Sims Help And Support Link For Info.,J21P,8600218419,1,3F600910,19-May-20,291-8940, ,330-9086,Chassis AR,00023431-Worn                                     
+Part Number Is Invalid.  See Sims Help And Support Link For Info.,J21P,8600219265,1,3F600633,21-May-20,484-5519, ,482-0374,Common AR,32204-Gen Repair                                  
+Part Number Is Invalid.  See Sims Help And Support Link For Info.,J21P,8600219266,1,XBA10917,21-May-20,142-3835, ,518-8160,Chassis AR,16483-Crack                                       
+Group Number Needs Dt Code Assigned.  See Sims Support Link For Info.,J21P,8600219777,1,L4E01352,23-May-20,430-9449,Sensor Gp-Level,228-4976,Tank As-Coolant,00016487-Malfunction                              
+Group Number Needs Dt Code Assigned.  See Sims Support Link For Info.,J21P,8600219777,1,L4E01352,23-May-20,430-9449,Sensor Gp-Level,228-4976,Tank As-Coolant,00016487-Malfunction                              
+Part Number Is Invalid.  See Sims Help And Support Link For Info.,J21P,8600219872,1,L4E01262,24-May-20,331-7265, ,291-8970,Tank Gp-Fuel  -A,00016487-Corroded                                 
+Part Number Is Invalid.  See Sims Help And Support Link For Info.,J21P,8600219872,1,L4E01262,24-May-20,331-7265, ,291-8970,Tank Gp-Fuel  -A,00016487-Corroded                                 
+Part Number Is Invalid.  See Sims Help And Support Link For Info.,J21P,8600219874,1,L4E01262,24-May-20,324-7417, ,324-7002,Cab AR,00026208-Dirty                                    
+Part Number Is Invalid.  See Sims Help And Support Link For Info.,J21P,8600219874,1,L4E01262,24-May-20,324-7417, ,324-7002,Cab AR,00026208-Dirty                                    
+Part Number Is Invalid.  See Sims Help And Support Link For Info.,J21P,8600219875,1,BJ602330,24-May-20,393-6512, ,393-8810,Electrical AR,00034016-Open Circuit                             
+Part Number Is Invalid.  See Sims Help And Support Link For Info.,J21P,8600219875,1,BJ602330,24-May-20,393-6512, ,393-8810,Electrical AR,00034016-Open Circuit                             
+Part Number Is Invalid.  See Sims Help And Support Link For Info.,J21P,8600220008,1,L4E01273,26-May-20,272-0393, ,349-5296,Base Gp-V Cover,00016487-Worn                                     
+Part Number Is Invalid.  See Sims Help And Support Link For Info.,J21P,8600220008,1,L4E01273,26-May-20,272-0393, ,349-5296,Base Gp-V Cover,00016487-Worn                                     
+Part Number Is Invalid.  See Sims Help And Support Link For Info.,J21P,8600220009,1,3F600629,26-May-20,502-2207, ,502-1976,Hood Gp,00016487-Opencircuit                              
+Part Number Is Invalid.  See Sims Help And Support Link For Info.,J21P,8600220009,1,3F600629,26-May-20,502-2207, ,502-1976,Hood Gp,00016487-Opencircuit                              
+Group Number Is Missing Or Invalid.,J21P,8600221571,1,L4E03057,30-May-20,No Part Number,No Part Number,956, ,00019854-Perform Ta2                              
+Group Number Is Missing Or Invalid.,J21P,8600221736,1,PRF01069,31-May-20,No Part Number,No Part Number,956, ,00003608-General Repair                           
+Part Number Is Invalid.  See Sims Help And Support Link For Info.,J21P,8600221760,1,WBY00297,31-May-20,480-6767, ,441-3011,Drive Gp-Final-D,00026208-Leaks Oil                                
+Part Number Is Invalid.  See Sims Help And Support Link For Info.,J21P,8600222026,1,ATY00517,2-Jun-20,126-3289, ,126-3289,Cont Gp-Start  -,13814-Start Up Machine                            
+Part Number Is Invalid.  See Sims Help And Support Link For Info.,J21P,8600222026,1,ATY00517,2-Jun-20,126-3289, ,126-3289,Cont Gp-Start  -,13814-Start Up Machine                            
+Part Number Is Invalid.  See Sims Help And Support Link For Info.,J21P,8600222057,1,4GZ00192,2-Jun-20,126-3289, ,126-3289,Cont Gp-Start  -,9424-Start Up Machine                             
+Part Number Is Invalid.  See Sims Help And Support Link For Info.,J21P,8600222057,1,4GZ00192,2-Jun-20,126-3289, ,126-3289,Cont Gp-Start  -,9424-Start Up Machine                             
+Part Number Is Invalid.  See Sims Help And Support Link For Info.,J21P,8600222155,1,1HL00153,2-Jun-20,126-3289, ,126-3289,Cont Gp-Start  -,26981- Start Up Machine                           
+Part Number Is Invalid.  See Sims Help And Support Link For Info.,J21P,8600222155,1,1HL00153,2-Jun-20,126-3289, ,126-3289,Cont Gp-Start  -,26981- Start Up Machine                           
+Part Number Is Invalid.  See Sims Help And Support Link For Info.,J21P,8600222156,1,4GZ00152,2-Jun-20,126-3289, ,126-3289,Cont Gp-Start  -,5430-Start Up Machine                             
+Part Number Is Invalid.  See Sims Help And Support Link For Info.,J21P,8600222156,1,4GZ00152,2-Jun-20,126-3289, ,126-3289,Cont Gp-Start  -,5430-Start Up Machine                             
+Part Number Is Invalid.  See Sims Help And Support Link For Info.,J21P,8600222710,1,L4E01352,3-Jun-20,341-3683, ,328-3983,Wiring Gp-Front,00023431-Opencircuit                              
+Part Is Missing Or Invalid.,J21P,8600222812,1,SZK10756,12-Jun-20,4911958T, ,4911958T, ,00015849-Worn                                     
+Group Number Is Missing Or Invalid.,J21P,8600223551,1,L4E01352,10-Jun-20,371-0565,Wheel Gp-Fdr,325-7003, ,32410-Gen-Repair                                  
+Group Number Is Missing Or Invalid.,J21P,8600223567,1,GAY00185,7-Jun-20,10R-9815,Motor Gp-Elec -C,422-9432, ,21181-Mulfunction                                 
+Group Number Is Missing Or Invalid.,J21P,8600223878,1,L4E01936,19-Jun-20,No Part Number,No Part Number,2343, ,00015050-Open Circuit                             
+Group Number Is Missing Or Invalid.,J21P,8600223885,1,L4E01936,8-Jun-20,269-1983,Sensor Gp-Posn,2343, ,00015050-Brekadown                                
+Part Number Is Invalid.  See Sims Help And Support Link For Info.,J21P,8600224945,1,L4E77005,10-Jun-20,344-9202, ,344-9196,Engine AR-Core,00026208-Blowby                                   
+Part Is Missing Or Invalid.,J21P,8600225872,1,SZK10756,13-Jun-20,4263C, ,1431,Beacon/Strobe Light,00012252-Shorted                                  
+Part Number Is Invalid.  See Sims Help And Support Link For Info.,J21P,8600227543,1,L4E01815,17-Jun-20,360-7849, ,376-1177,Chassis AR-Rear,00026208-Seats Poorly                             
+Group Number Is Missing Or Invalid.,J21P,8600230817,1,3F600910,28-Jun-20,491-8577, ,545-8878, ,00006056-Broken                                   
+Group Number Is Missing Or Invalid.,J21P,8600230817,1,3F600910,28-Jun-20,491-8577, ,545-8878, ,00006056-Broken                                   
+Group Number Needs Dt Code Assigned.  See Sims Support Link For Info.,J21Z,8600232423,1,KDP00748,1-Jul-20,6Y-1223,Disc-Thrust,238-9584,Boss As.,00017387-Broken                                   
+Part Is Missing Or Invalid.,J211,8500087663,1,7DB01218,27-Mar-20,2N3-9777, ,4P-2010,Carburetor Gp,00025048-Load Screw Leaks                         
+Part Is Missing Or Invalid.,J211,8600213672,1,CT28C-50803 (Non-Cat),19-Jun-20,91M2003130, ,1924,Eng Oil Pressure Sensor,00025048-Abnormal Rate                            
+Group Number Is Missing Or Invalid.,J211,8600227537,1,WBY00289,23-Jun-20,446-1895,Filter As-Fuel,446-5306, ,00021300-Short On Motor                           
+Group Number Is Missing Or Invalid.,J211,8600228315,1,WBY00289,23-Jun-20,446-1895,Filter As-Fuel,446-5306, ,00022536-Short On Motor                           
+Group Number Is Missing Or Invalid.,J214,8500098142,1,24Z08369,26-Jun-20,No Part Number,No Part Number,113-6350, ,00004782-Error                                    
+Part Number Is Invalid.  See Sims Help And Support Link For Info.,J218,8500093213,1,ZBA01370,4-May-20,4P-8352, ,4P-8352,Camshaft Gp-S,00023226-Replace Camshaft                         
+Part Number Is Invalid.  See Sims Help And Support Link For Info.,J218,8500093213,1,ZBA01370,4-May-20,4P-8352, ,4P-8352,Camshaft Gp-S,00023226-Replace Camshaft                         
+Group Number Is Missing Or Invalid.,J218,8500098064,1,BZP03003,26-Jun-20,No Part Number,No Part Number,286-3863, ,00014679-Install                                  
+Group Number Is Missing Or Invalid.,J218,8600227454,1,TJL05645,17-Jun-20,No Part Number,No Part Number,925-995R, ,00017398-Install Rdm Pl631                        
+Group Number Needs Dt Code Assigned.  See Sims Support Link For Info.,J22T,8600222877,1,DWJ00689,30-Jun-20,267-3059,Gage As.-Oil,267-3059,Gage As.-Oil,00027719-Replace                                  
+Group Number Is Missing Or Invalid.,J22U,8500092733,1,ATY00776,7-May-20,No Part Number,No Part Number,1301, ,11685 - General Repair                            
+Group Number Is Missing Or Invalid.,J22U,8500093437,1,7KK00352,27-Apr-20,No Part Number,No Part Number,42763, ,00016085-General Repair                           
+Group Number Is Missing Or Invalid.,J22U,8500096291,1,4AR00244,19-Jun-20,No Part Number,No Part Number,4621, ,00026194-General Repair                           
+Group Number Is Missing Or Invalid.,J22U,8500097274,1,T14E-12780 (Non-Cat),20-Jun-20,No Part Number,No Part Number,70000, ,00021734-Monthly Inspection                       
+Group Number Is Missing Or Invalid.,J22U,8500097274,1,T14E-12780 (Non-Cat),20-Jun-20,No Part Number,No Part Number,70000, ,00021734-Monthly Inspection                       
+Serial Number Body Is Invalid.,J22U,8600196230,1,ATY0GT05,11-Mar-20,1A-2029,Bolt,380-2698,Camshaft Gp-Sgl,00011767-Loose                                    
+Serial Number Body Is Invalid.,J22U,8600206566,1,ATY0GT03,13-Apr-20,385-4572,Seal Gp-Duo Cone,208-8786,Wheel Gp,25580-Worn                                        
+Serial Number Body Is Invalid.,J22U,8600206568,1,ATY0GT03,13-Apr-20,314-4130,Seal Gp-Duo Cone,208-8786,Wheel Gp,00014760-Leak                                     
+Group Number Is Missing Or Invalid.,J22U,8600209794,1,SZK11438,30-Apr-20,479419, ,470-6917, ,00013455-Inspect Pl                               
+Group Number Is Missing Or Invalid.,J22U,8600213881,1,KDP01106,6-May-20,460-6606, ,545-4094, ,00013453-Run Out Off Fuel                         
+Group Number Is Missing Or Invalid.,J22U,8600213881,1,KDP01106,6-May-20,460-6606, ,545-4094, ,00013453-Run Out Off Fuel                         
+Serial Number Body Is Invalid.,J22U,8600215441,1,ATY0GT05,8-May-20,No Part Number,No Part Number,4008,"Final Drive, Bk And Wheel",00013323-General Repair                           
+Serial Number Body Is Invalid.,J22U,8600215515,1,ATY0GT05,30-Jun-20,314-4130,Seal Gp-Duo Cone,208-8786,Wheel Gp,16084-Leaks                                       
+Group Number Is Missing Or Invalid.,J22U,8600218530,1,BRC00174,22-May-20,144-5692,Gasket-Plate,442-1340, ,14275-Oil Leaking                                 
+Group Number Is Missing Or Invalid.,J22U,8600218530,1,BRC00174,22-May-20,144-5692,Gasket-Plate,442-1340, ,14275-Oil Leaking                                 
+Serial Number Body Is Invalid.,J22U,8600219177,1,ATY0GT02,21-May-20,No Part Number,No Part Number,1359,Fan Drive,00011767-Replace Fan Drive Bearing Broken         
+Serial Number Body Is Invalid.,J22U,8600220269,1,ATY0GT07,26-Jun-20,436-2594,Bearing-Roller,219-2219,Final Drive As,14664-Spalling                                    
+Group Number Is Missing Or Invalid.,J22U,8600221938,1,KDP01107,1-Jun-20,299-5433, ,505-4743, ,00007164-Need Adjust                              
+Serial Number Body Is Invalid.,J22U,8600225436,1,ATY0GT06,12-Jun-20,No Part Number,No Part Number,1363,Aftercooler Water Pump,00014802-General Repair                           
+Group Number Is Missing Or Invalid.,J22U,8600226102,1,VEHICLES (Non-Cat),13-Jun-20,No Part Number,No Part Number,1464, ,00013385-Repair Clutch                            
+Group Number Is Missing Or Invalid.,J22U,8600226102,1,VEHICLES (Non-Cat),13-Jun-20,No Part Number,No Part Number,1464, ,00013385-Repair Clutch                            
+Serial Number Body Is Invalid.,J22U,8600228965,1,ATY0GT01,22-Jun-20,No Part Number,No Part Number,3030,Transmission,00014664-General Repair                           
+Group Number Is Missing Or Invalid.,J22X,8500094681,1,7MB05292,27-May-20,No Part Number,No Part Number,7680, ,00010739-Ta2                                      
+Group Number Needs Dt Code Assigned.  See Sims Support Link For Info.,J22X,8600185460,1,ZBT00743,7-Feb-20,309-6678,Valve-Inlet,460-7781,Arm Gp-Rocker,10739-Fatigue Crack                               
+Group Number Is Missing Or Invalid.,J22X,8600222757,1,RK800575,3-Jun-20,439-5039,Sensor As-Level,43-8776, ,00027011-Replace                                  
+Part Number Is Invalid.  See Sims Help And Support Link For Info.,J223,8500097489,1,AYT00390,23-Mar-20,211-3125, ,128-8510,Pump Gp-Fuel Inj,00012563-No Pressure                              
+Part Number Is Invalid.  See Sims Help And Support Link For Info.,J241,8500096308,1,HJF00390,12-Jun-20,373-7441, ,307-3077,Motor Gp Psv-115,00050284-Troubleshooting                          
+Group Number Is Missing Or Invalid.,J242,8500096983,1,E4B02511,18-Jun-20,258-9753,Engine-Module,258-9753, ,00025104-Short                                    
+Group Number Is Missing Or Invalid. &amp; Part Number Is Invalid.  See Sims Help And Support Link For Info.,J242,8500097708,1,D4K00602,24-Jun-20,622333, ,1000001032, ,00013933-System Malfunction                       
+Group Number Is Missing Or Invalid. &amp; Part Number Is Invalid.  See Sims Help And Support Link For Info.,J242,8500097708,1,D4K00602,24-Jun-20,622333, ,1000001032, ,00013933-System Malfunction                       
+Group Number Is Missing Or Invalid.,J244,8500095560,1,YAT00938,4-Jun-20,20R-1270,Injector Gp-Fuel,116 7010, ,00011232-Internal Leaks                           
+Part Number Is Invalid.  See Sims Help And Support Link For Info.,J360,8500096651,1,DFM00229,25-Jun-20,463-1676, ,396-4502,Pump Gp-Fuel Inj,00022927-Hard To Start                            
+Group Number Needs Dt Code Assigned.  See Sims Support Link For Info.,J361,8500096892,1,YBP01010,17-Jun-20,No Part Number,No Part Number,558-7999,Bucket Gp-Adj&amp;,00025102-General Repair                           
+Group Number Needs Dt Code Assigned.  See Sims Support Link For Info.,J361,8500096892,1,YBP01010,17-Jun-20,No Part Number,No Part Number,558-7999,Bucket Gp-Adj&amp;,00025102-General Repair                           
+Group Number Needs Dt Code Assigned.  See Sims Support Link For Info.,J361,8600107823,1,KW401494,25-Jun-19,487-6173,Kit-Valve Sol,487-6195,Pump Gp-Piston,High Resistance                                   
+Part Is Missing Or Invalid.,J361,8600214568,1,SZK10971,1-Jul-20,4877015A, ,227-0543,Lines Gp-Trk Mot,9912-Rubbing                                      
+Part Is Missing Or Invalid.,J361,8600214568,1,SZK10971,1-Jul-20,4877015A, ,227-0543,Lines Gp-Trk Mot,9912-Rubbing                                      
+Group Number Is Missing Or Invalid.,J361,8600215438,1,FKD00137,10-May-20,553-5924,Hose As,553-4082, ,00014833-Rubbing                                  
+Group Number Is Missing Or Invalid.,J361,8600215917,1,FKD00133,11-May-20,370-1561,Pump Gp-Gr A,411-6414, ,10185-Particle                                    
+Part Number Is Invalid.  See Sims Help And Support Link For Info.,J361,8600220210,1,SZK10971,26-May-20,612504, ,310-9668,Cleaner Gp-Air-B,00012906-Dirty                                    
+Part Number Is Invalid.  See Sims Help And Support Link For Info.,J361,8600220210,1,SZK10971,26-May-20,612504, ,310-9668,Cleaner Gp-Air-B,00012906-Dirty                                    
+Group Number Is Missing Or Invalid.,J362,8500089754,1,9PW00859,15-Jun-20,6T-1395,Alternator Gp,67-1395, ,00004231- Internal Problem                        
+Part Number Is Invalid.  See Sims Help And Support Link For Info.,J362,8500095799,2,XBA10267,27-Jun-20,11R-0488, ,396-4502,Pump Gp-Fuel Inj,00046787-No Fuel                                  
+Part Number Is Invalid.  See Sims Help And Support Link For Info.,J362,8500095799,2,XBA10267,27-Jun-20,11R-0488, ,396-4502,Pump Gp-Fuel Inj,00046787-No Fuel                                  
+Group Number Is Missing Or Invalid.,J362,8600205061,1,TTT00627,7-Apr-20,7X-2567,Bolt-Hex Head,389-6134, ,00046783-Loosen Bolt C-Frame                      
+Part Is Missing Or Invalid.,J362,8600214309,1,YBP00902,6-May-20,5527483A, ,575-0660,Lines Gp-Front,00004231-Leaks Oil Near Clamp Hose                
+Group Number Is Missing Or Invalid.,J362,8600217470,1,YBP00877,15-May-20,PS54317,Letter Is  After Failure,PS5-4317, ,00050277-Sl 21APR2020                             
+Group Number Is Missing Or Invalid.,J362,8600224041,1,ZBT00185,8-Jun-20,118-9901,Spacer,PS4-5993, ,00026983-Sl 28AUG2018 (Revised 22OCT2018)         
+Group Number Is Missing Or Invalid.,J362,8600227253,1,SZN02455,20-Jun-20,PI33112,Letter Is  Priority,SL 12DEC2019, ,00004231-Sl 12DEC2019                             
+Part Number Is Invalid.  See Sims Help And Support Link For Info.,J362,8600229463,1,81Z17670,30-Jun-20,0, ,753S,Ta1 Inspection,00050278-Inspection Level 1                       
+Part Number Is Invalid.  See Sims Help And Support Link For Info.,J367,8500080529,1,9SD00461,31-Jan-20,444-5306, ,444-5306,Brake Gp-Serv -L,Broken                                            
+Group Number Is Missing Or Invalid.,J367,8500080832,2,LJB01654,3-Feb-20,No Part Number,No Part Number,14-7305, ,Completing Plug And Play                          
+Group Number Is Missing Or Invalid.,J367,8500081764,3,DHM50113,10-Feb-20,No Part Number,No Part Number,366-6774, ,Brake Seal Scratches                              
+Group Number Is Missing Or Invalid.,J367,8500081950,4,DHM50113,11-Feb-20,533-8286,Brake,218-3193, ,Broken                                            
+Part Defect Code (Secondary Problem Description) Missing Or Invalid.,J367,8500082886,2,BTX01254,18-Feb-20,201-0737,Disc-Friction,161-9275,Brake Gp-Serv -E,Disc Excessive Worn Out                           
+Group Number Is Missing Or Invalid. &amp; Part Number Is Invalid.  See Sims Help And Support Link For Info.,J367,8500084747,2,DHM50088,3-Mar-20,600-2943, ,365-9242, ,Scratch By Contaminant                            
+Group Number Is Missing Or Invalid.,J367,8500085174,1,T39A-10668 (Non-Cat),26-Jun-20,9463200600, ,0, ,00018783-Leaks Oil                                
+Group Number Is Missing Or Invalid.,J367,8500089192,1,T39A-10668 (Non-Cat),26-Jun-20,94N1610088, ,0, ,00045360-Leaks Oil                                
+Group Number Is Missing Or Invalid.,J367,8500089913,2,RJG02962,13-Apr-20,4T-4143,Seal As,246-0648, ,00020043-Worn Out                                 
+Group Number Is Missing Or Invalid.,J367,8500090082,2,SBR77027,14-Apr-20,6V-8132,Bolt,23-5925, ,00048154-Rf Bolts For Mounting Tire To The Wheel  
+Part Number Is Invalid.  See Sims Help And Support Link For Info.,J367,8500091613,2,B1P06020,27-Apr-20,498215, ,141-6667,Cyl Gp-0140-2470,00048704-Worn                                     
+Group Number Needs Dt Code Assigned.  See Sims Support Link For Info.,J367,8500092115,2,KT400173,30-Apr-20,468-7897,Sensor Gp-Posn,459-7047,Cyl Gp-170 830 Y,00020041-Broken                                   
+Group Number Is Missing Or Invalid.,J367,8500092432,1,B9J01410,5-May-20,261-3644,Seal As,317-6058, ,00020043-Worn Out                                 
+Group Number Needs Dt Code Assigned.  See Sims Support Link For Info.,J367,8500093677,2,DHL30227,15-May-20,477-4411,Drive Gp,477-4411,Drive Gp,00007247-Broken                                   
+Part Number Is Invalid.  See Sims Help And Support Link For Info.,J367,8500094278,1,B9H00565,22-May-20,265370, ,249-6548,Lines Gp-Pto,45778-Leaks Oil                                   
+Part Number Is Invalid.  See Sims Help And Support Link For Info.,J367,8500094279,1,R9H00266,22-May-20,240-8461, ,241-0835,Arm Gp-V Rocker,24140-Adjust Valve Lash                           
+Part Is Missing Or Invalid.,J367,8500095300,1,CT14E-18850 (Non-Cat),24-Jun-20,91A5113500, ,Jan-04, ,00024140-Leaks                                    
+Part Is Missing Or Invalid.,J367,8500095300,1,CT14E-18850 (Non-Cat),24-Jun-20,91A5113500, ,Jan-04, ,00024140-Leaks                                    
+Group Number Needs Dt Code Assigned.  See Sims Support Link For Info.,J367,8500095569,1,DHL30227,29-Jun-20,528-0373,Bearing-Taper,477-4411,Drive Gp,00001208-Bearing Worn Out                         
+Group Number Needs Dt Code Assigned.  See Sims Support Link For Info.,J367,8500095569,1,DHL30227,29-Jun-20,528-0373,Bearing-Taper,477-4411,Drive Gp,00001208-Bearing Worn Out                         
+Group Number Needs Dt Code Assigned.  See Sims Support Link For Info.,J367,8500095569,2,DHL30227,29-Jun-20,528-0373,Bearing-Taper,477-4411,Drive Gp,00001208-Bearing Worn Out                         
+Group Number Needs Dt Code Assigned.  See Sims Support Link For Info.,J367,8500095569,2,DHL30227,29-Jun-20,528-0373,Bearing-Taper,477-4411,Drive Gp,00001208-Bearing Worn Out                         
+Group Number Needs Dt Code Assigned.  See Sims Support Link For Info.,J367,8500095569,3,DHL30227,29-Jun-20,528-0373,Bearing-Taper,477-4411,Drive Gp,00001208-Bearing Worn Out                         
+Group Number Needs Dt Code Assigned.  See Sims Support Link For Info.,J367,8500095569,3,DHL30227,29-Jun-20,528-0373,Bearing-Taper,477-4411,Drive Gp,00001208-Bearing Worn Out                         
+Group Number Needs Dt Code Assigned.  See Sims Support Link For Info.,J367,8500095569,4,DHL30227,29-Jun-20,528-0373,Bearing-Taper,477-4411,Drive Gp,00001208-Bearing Worn Out                         
+Group Number Needs Dt Code Assigned.  See Sims Support Link For Info.,J367,8500095569,4,DHL30227,29-Jun-20,528-0373,Bearing-Taper,477-4411,Drive Gp,00001208-Bearing Worn Out                         
+Group Number Needs Dt Code Assigned.  See Sims Support Link For Info.,J367,8500095569,5,DHL30227,29-Jun-20,528-0373,Bearing-Taper,477-4411,Drive Gp,00001208-Bearing Worn Out                         
+Group Number Needs Dt Code Assigned.  See Sims Support Link For Info.,J367,8500095569,5,DHL30227,29-Jun-20,528-0373,Bearing-Taper,477-4411,Drive Gp,00001208-Bearing Worn Out                         
+Group Number Needs Dt Code Assigned.  See Sims Support Link For Info.,J367,8500095569,6,DHL30227,29-Jun-20,528-0373,Bearing-Taper,477-4411,Drive Gp,00001208-Bearing Worn Out                         
+Group Number Needs Dt Code Assigned.  See Sims Support Link For Info.,J367,8500095569,6,DHL30227,29-Jun-20,528-0373,Bearing-Taper,477-4411,Drive Gp,00001208-Bearing Worn Out                         
+Group Number Needs Dt Code Assigned.  See Sims Support Link For Info.,J367,8500095569,7,DHL30227,29-Jun-20,528-0373,Bearing-Taper,477-4411,Drive Gp,00001208-Bearing Worn Out                         
+Group Number Needs Dt Code Assigned.  See Sims Support Link For Info.,J367,8500095569,7,DHL30227,29-Jun-20,528-0373,Bearing-Taper,477-4411,Drive Gp,00001208-Bearing Worn Out                         
+Group Number Is Missing Or Invalid.,J367,8500097573,1,CT28C-50947 (Non-Cat),23-Jun-20,91A5101120, ,91A5131100, ,00024140-Repair                                   
+Part Defect Code (Secondary Problem Description) Missing Or Invalid.,J367,8500097878,1,AZX00543,27-May-20,220-0190,Disc As-Friction,275-0080,Brake Gp-Serv -E,00030952-Discs And Plates Excessive Worn Out      
+Part Defect Code (Secondary Problem Description) Missing Or Invalid.,J367,8500097878,2,AZX00543,27-May-20,220-0190,Disc As-Friction,275-0080,Brake Gp-Serv -E,00030952-Discs And Plates Excessive Worn Out      
+Part Defect Code (Secondary Problem Description) Missing Or Invalid.,J367,8500097878,3,AZX00543,27-May-20,220-0190,Disc As-Friction,275-0080,Brake Gp-Serv -E,00030952-Discs And Plate Excessive Worn Out       
+Part Defect Code (Secondary Problem Description) Missing Or Invalid.,J367,8500097878,4,AZX00543,27-May-20,220-0190,Disc As-Friction,275-0080,Brake Gp-Serv -E,00030952-Discs And Plates Excessive Worn Out      
+Part Defect Code (Secondary Problem Description) Missing Or Invalid.,J367,8500097878,5,AZX00543,27-May-20,220-0190,Disc As-Friction,275-0080,Brake Gp-Serv -E,00030952-Discs And Plates Excessive Worn Out      
+Group Number Needs Dt Code Assigned.  See Sims Support Link For Info.,J367,8600182790,1,MLD00173,31-Jan-20,No Part Number,No Part Number,10000, ,Revisit                                           
+Group Number Is Missing Or Invalid.,J367,8600205081,2,L4E01343,7-Apr-20,9X-7269,Seal As,23-1335, ,Worn Out                                          
+Group Number Needs Dt Code Assigned.  See Sims Support Link For Info.,J367,8600212351,1,KT400173,30-Apr-20,468-7897,Sensor Gp-Posn,459-7047,Cyl Gp-170 830 Y,00020043-Malfunction                              
+Group Number Needs Dt Code Assigned.  See Sims Support Link For Info.,J367,8600213919,1,KT400173,6-May-20,468-7897,Sensor Gp-Posn,459-7047,Cyl Gp-170 830 Y,00003838-Malfunction                              
+Group Number Is Missing Or Invalid.,J367,8600220705,1,38S17347,28-May-20,No Part Number,No Part Number,0, ,45961-Ta1                                         
+Group Number Is Missing Or Invalid.,J367,8600220706,1,38S17333,28-May-20,No Part Number,No Part Number,0, ,45961-Ta1                                         
+Group Number Is Missing Or Invalid.,J367,8600220750,1,DPH04303,28-May-20,No Part Number,No Part Number,0, ,45961-Ta1                                         
+Group Number Is Missing Or Invalid.,J367,8600220754,1,RJG02239,28-May-20,No Part Number,No Part Number,0, ,45961-Ta1                                         
+Group Number Is Missing Or Invalid.,J367,8600220757,1,MCC00442,28-May-20,No Part Number,No Part Number,0, ,24234-Ta1                                         
+Group Number Is Missing Or Invalid.,J367,8600221110,1,PRF00638,29-May-20,No Part Number,No Part Number,0, ,24234-Ta1                                         
+Group Number Is Missing Or Invalid.,J367,8600221113,1,RJG02001,29-May-20,No Part Number,No Part Number,0, ,24234-Ta1                                         
+Group Number Is Missing Or Invalid.,J367,8600221114,1,RJG02031,29-May-20,No Part Number,No Part Number,0, ,24234-Ta1                                         
+Group Number Is Missing Or Invalid.,J367,8600221115,1,RJG02208,29-May-20,No Part Number,No Part Number,0, ,24234-Ta1                                         
+Group Number Is Missing Or Invalid.,J367,8600221116,1,SBE00330,29-May-20,No Part Number,No Part Number,0, ,24234-Ta1                                         
+Group Number Is Missing Or Invalid.,J367,8600221117,1,SBE00347,29-May-20,No Part Number,No Part Number,0, ,24234-Ta1                                         
+Group Number Is Missing Or Invalid.,J367,8600221118,1,PRF00163,29-May-20,No Part Number,No Part Number,0, ,45961-Ta1                                         
+Group Number Is Missing Or Invalid.,J367,8600221119,1,DPH03373,29-May-20,No Part Number,No Part Number,0, ,45961-Ta1                                         
+Group Number Is Missing Or Invalid.,J367,8600221120,1,TAL02590,29-May-20,No Part Number,No Part Number,0, ,45961-Ta1                                         
+Group Number Is Missing Or Invalid.,J367,8600222703,1,BXY04233,3-Jun-20,No Part Number,No Part Number,49, ,00034592-Test                                     
+Group Number Is Missing Or Invalid.,J368,8600227705,1,BZP01306,18-Jun-20,No Part Number,No Part Number,7565, ,30040-Ta1                                         

@@ -1,0 +1,24 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Error</title>
+</head>
+<body>
+    <center>
+        <h2>Please Contact Your Administration</h2>
+    </center>
+</body>
+</html>
+@if (HttpContext.Current.Request.Url.AbsolutePath.Contains("/Admin/"))
+{
+    <script>
+        window.location.replace("@Url.Action("Index", "Default")");
+    </script>
+}
+else
+{
+    <script>
+         window.location.replace("@Url.Action("Index", "Library")");
+    </script>
+}

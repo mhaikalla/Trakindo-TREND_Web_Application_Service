@@ -1,0 +1,735 @@
+﻿@using  Com.Trakindo.TSICS.Data.Model
+@{
+    ViewBag.Title = "Dashboard";
+    Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
+    var getDataFC = (GetFormCollectionPSLCompletionPip)ViewBag.ModelFormCollectionPSLCompletionPip;
+    var urlGet = "?dateRangeFrom=" + getDataFC.DateRangeFrom + "&dateRangeEnd=" + getDataFC.DateRangeEnd + "&inventory=" + getDataFC.Inventory + "&rental=" + getDataFC.Rental + "&hid=" + getDataFC.HID + "&others=" + getDataFC.Others + "&area=" + getDataFC.Area + "&storeName=" + getDataFC.StoreName + "&pslId=" + getDataFC.PSLId + "&pslType=" + getDataFC.PSLType;
+    var urlGetSalesOffice = "&dateRangeFrom=" + getDataFC.DateRangeFrom + "&dateRangeEnd=" + getDataFC.DateRangeEnd + "&inventory=" + getDataFC.Inventory + "&rental=" + getDataFC.Rental + "&hid=" + getDataFC.HID + "&others=" + getDataFC.Others + "&area=" + getDataFC.Area + "&storeName=" + getDataFC.StoreName + "&pslId=" + getDataFC.PSLId + "&pslType=" + getDataFC.PSLType;
+    var averageElement = ViewBag.GetDataElementSafetyCompletion + ViewBag.GetDataElementPriority + ViewBag.GetDataElementSafetyLegacy;
+    var date = "";
+    if (ViewBag.DateFrom == "" && ViewBag.DateEnd == "")
+    {
+        date = "";
+    }
+    else if (ViewBag.DateFrom != "" && ViewBag.DateEnd == "")
+    {
+        date = ViewBag.DateFrom;
+    }
+    else if (ViewBag.DateFrom != "" && ViewBag.DateEnd != "")
+    {
+        date = ViewBag.DateFrom + " to " + ViewBag.DateEnd;
+    }
+    var dateTimeNow = DateTime.Now.Year;
+
+}
+ 
+<main class="body position-relative d-flex flex-column">
+    <div data-active_page="admin--dashboard--psl-completion" class="content-wrap flex-fill">
+        <section class="position-relative mt-5">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12 position-relative">
+                        <section class="mb-3">
+                            <div class="d-sm-flex justify-content-between align-items-center mb-3">
+                                <h2 class="h4-size">PSL Dashboard / PSL Completion</h2>
+                                <div class="small text-muted"><i class="far fa-clock mr-2"></i><span>Edited 1w ago</span></div>
+                            </div>
+                            <div class="d-sm-flex justify-content-between align-items-center mb-3">
+                                <div class="d-flex">
+                                    <nav class="nav nav-pills nav-btn-warning"><a href="@Url.Action("DashboardCompletionPip", "Dashboard")" class="text-sm-center nav-link active mb-2 mr-2">SEP PIP Completion</a><a href="@Url.Action("DashboardCompletionPsp", "Dashboard")" class="text-sm-center nav-link mb-2 mr-2">OTIF PSP Completion</a><a href="@Url.Action("DashboardCompletionSummary", "Dashboard")" class="text-sm-center nav-link mb-2 mr-2">Completion Summary</a></nav>
+                                </div>
+                            </div>
+                        </section>
+                        <form id="form--dashboard--psl-completion-pip" method="POST">
+                            <section>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="card bg-white shadow-sm border-0 mb-3">
+                                            <nav class="card-navbar navbar navbar-dark bg-warning text-white">
+                                                <div class="left d-flex align-items-center">
+                                                    <div class="h4 font-secondary mb-0">Filters</div>
+                                                </div>
+                                                <div class="right">
+                                                    <button data-toggle="collapse" data-target="#collapse-target-1" type="button" class="btn btn-sm bg-transparent rounded-pill text-white btn-toggle-arrow"><i class="fa fa-chevron-right"></i></button>
+                                                </div>
+                                            </nav>
+                                            <fieldset id="collapse-target-1" class="collapse show">
+                                                <div class="card-body">
+                                                    <div class="row mb-3">
+                                                        <div class="col-md-12">
+                                                            <div class="form-group form-inline">
+                                                                <label class="small">ISSUED DATE RANGE (For PIP Overall Completion Estimation Only)</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <div class="form-group">
+                                                                <label class="small">Date Range:</label>
+                                                                <div class="input-group">
+                                                                    <input id="issueDate" type="text" name="dateRange" readonly="readonly" class="form-control bg-white rounded-0 border-right-0 datepicker-range">
+                                                                    <div class="input-group-append">
+                                                                        <label class="btn border-left-0 input-group-text bg-white rounded-0 d-table"><i class="fa fa-calendar"></i></label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <div>Issue Date: <strong>@date</strong></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mb-3">
+                                                        <div class="col-md-3">
+                                                            <div class="form-group mr-3">
+                                                                <label class="custom-checkbox form-check">
+                                                                    <input id="cb1" type="checkbox" data-checkbox-toggle-disable="{'target': '#select-filter-1'}" class="form-check-input">
+                                                                    <div class="form-check-label custom-label"><i class="icon fa fa-check"></i><span class="text">PSL Type</span></div>
+                                                                </label>
+                                                                <div class="input-group">
+                                                                    <select data-title="Choose fields" data-style="border bg-white rounded-0" data-width="100%" data-size="5" multiple id="select-filter-1" name="PSLType[]" class="selectpicker">
+                                                                        <option value="S">PIP Safety</option>
+                                                                        <option value="P">PIP Priority</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mb-3">
+                                                        <div class="col-md-12">
+                                                            <div class="form-group form-inline">
+                                                                @if (getDataFC.Inventory == "on")
+                                                                {
+                                                                    <label class="custom-checkbox form-check mr-4">
+                                                                        <input id="cbinventory" type="checkbox" checked name="inventory" class="form-check-input activating-others">
+                                                                        <div class="form-check-label custom-label"><i class="icon fa fa-check"></i><span class="text">Inventory</span></div>
+                                                                    </label>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <label class="custom-checkbox form-check mr-4">
+                                                                        <input id="cbinventory" type="checkbox" name="inventory" class="form-check-input activating-others">
+                                                                        <div class="form-check-label custom-label"><i class="icon fa fa-check"></i><span class="text">Inventory</span></div>
+                                                                    </label>
+                                                                }
+
+                                                                @if (getDataFC.Rental == "on")
+                                                                {
+                                                                    <label class="custom-checkbox form-check mr-4">
+                                                                        <input id="cbrental" type="checkbox" checked name="rental" class="form-check-input activating-others">
+                                                                        <div class="form-check-label custom-label"><i class="icon fa fa-check"></i><span class="text">Rental</span></div>
+                                                                    </label>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <label class="custom-checkbox form-check mr-4">
+                                                                        <input id="cbrental" type="checkbox" name="rental" class="form-check-input activating-others">
+                                                                        <div class="form-check-label custom-label"><i class="icon fa fa-check"></i><span class="text">Rental</span></div>
+                                                                    </label>
+                                                                }
+
+                                                                @if (getDataFC.HID == "on")
+                                                                {
+                                                                    <label class="custom-checkbox form-check mr-4">
+                                                                        <input id="cbhid" type="checkbox" checked name="hid" class="form-check-input activating-others">
+                                                                        <div class="form-check-label custom-label"><i class="icon fa fa-check"></i><span class="text">HID</span></div>
+                                                                    </label>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <label class="custom-checkbox form-check mr-4">
+                                                                        <input id="cbhid" type="checkbox" name="hid" class="form-check-input activating-others">
+                                                                        <div class="form-check-label custom-label"><i class="icon fa fa-check"></i><span class="text">HID</span></div>
+                                                                    </label>
+                                                                }
+
+                                                                @if (getDataFC.Others == "on")
+                                                                {
+                                                                    <label class="custom-checkbox form-check mr-4">
+                                                                        <input id="cbothers" type="checkbox" checked name="others" data-enable-if=".activating-others" class="form-check-input">
+                                                                        <div class="form-check-label custom-label"><i class="icon fa fa-check"></i><span class="text">Others</span></div>
+                                                                    </label>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <label class="custom-checkbox form-check mr-4">
+                                                                        <input id="cbothers" type="checkbox" name="others" data-enable-if=".activating-others" class="form-check-input">
+                                                                        <div class="form-check-label custom-label"><i class="icon fa fa-check"></i><span class="text">Others</span></div>
+                                                                    </label>
+                                                                }
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mb-3">
+                                                        <div class="col-md-3">
+                                                            <div class="form-group mr-3">
+                                                                <label class="custom-checkbox form-check">
+                                                                    <input id="cb2" type="checkbox" data-checkbox-toggle-disable="{'target': '#select-filter-2'}" class="form-check-input">
+                                                                    <div class="form-check-label custom-label"><i class="icon fa fa-check"></i><span class="text">Area</span></div>
+                                                                </label>
+                                                                <div class="input-group">
+                                                                    <select data-title="Choose fields" data-style="border bg-white rounded-0" data-width="100%" data-size="5" name="Area[]" disabled multiple id="select-filter-2">
+                                                                        <option value="0">Choose Fields</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <div class="form-group mr-3">
+                                                                <label class="custom-checkbox form-check">
+                                                                    <input id="cb3" type="checkbox" data-checkbox-toggle-disable="{'target': '#select-filter-3'}" class="form-check-input">
+                                                                    <div class="form-check-label custom-label"><i class="icon fa fa-check"></i><span class="text">Store Name</span></div>
+                                                                </label>
+                                                                <div class="input-group">
+                                                                    <select data-title="Choose fields" data-style="border bg-white rounded-0" data-width="100%" data-size="5" name="storeName[]" disabled multiple id="select-filter-3">
+                                                                        <option value="0">Choose Fields</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        @if (getDataFC.Area != "" || getDataFC.StoreName != "" || getDataFC.PSLType != "")
+                                                        {
+                                                            <p>Filter :</p>
+                                                        }
+                                                        <div class="col-md-12">
+                                                            @if (getDataFC.PSLType != "")
+                                                            {
+                                                                var data = "";
+                                                                if (getDataFC.PSLType.Contains("S"))
+                                                                {
+                                                                    data += "PIP Safety, ";
+                                                                }
+                                                                if (getDataFC.PSLType.Contains("P"))
+                                                                {
+                                                                    data += " PIP Priority, ";
+                                                                }
+                                                                string var = data.Substring(0, data.LastIndexOf(','));
+                                                                <div class="form-group mr-3">
+                                                                    <p>PSL Type : @var</p>
+                                                                </div>
+                                                            }
+                                                            @if (getDataFC.Area != "")
+                                                            {
+                                                                <div class="form-group mr-3">
+                                                                    <p>Area : @getDataFC.Area</p>
+                                                                </div>
+                                                            }
+                                                            @if (getDataFC.StoreName != "")
+                                                            {
+                                                                <div class="form-group mr-3">
+                                                                    <p>Store Name : @getDataFC.StoreName</p>
+                                                                </div>
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="text-center">
+                                                                <button type="submit" class="btn btn-warning btn-show-result px-4 py-2">Show Result</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </fieldset>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                            <section>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="card bg-white shadow-sm border-0 mb-3">
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <div class="card bg-warning lighter shadow-sm mb-3">
+                                                            <div class="card-body">
+                                                                <div class="d-flex justify-content-between">
+                                                                    <div>&nbsp;</div>
+                                                                    <div class="h5 m-0">PIP Overall Completion Score</div>
+                                                                    <div class="h4 m-0">@ViewBag.AverageScore</div>
+                                                                    <div>&nbsp;</div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row justify-content-center">
+                                                    <div class="col-sm-6 col-md-4">
+                                                        <div id="pip-safety-completion" class="card bg-warning lighter shadow-sm mb-3">
+                                                            <div class="card-header bg-transparent border-0 text-center pb-0"><small>PIP Safety Completion PSL Age &lt; 365 days</small></div>
+                                                            <div class="card-body">
+                                                                <div class="data-check mb-3">
+                                                                    <div class="data-check--false">
+                                                                        <div class="title">Data Not Found</div>
+                                                                    </div>
+                                                                    <div class="data-check--true">
+                                                                        <div class="table-responsive">
+                                                                            <div class="chart doughnut my-0">
+                                                                                <div data-chart-doughnut="{'api': '@Url.Action("ChartCompletionDoughnut", "Dashboard")@urlGet', 'form_data_source': '#form--dashboard--psl-completion-pip', 'params': []}" id="chart-bar-pip-safety" class="canvas-wrap">
+                                                                                    <canvas width="120" height="120"></canvas>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="d-flex justify-content-between"><small>ELEMENT 1 SCORE </small><strong>@ViewBag.ScorePipSafety</strong></div>
+                                                            </div>
+                                                            <div class="card-footer text-right">
+                                                                <button data-img-target="#pip-safety-completion" data-img-filename="pip-safety-completion" type="button" class="btn-img-download btn btn-outline-secondary btn-sm ml-3"><small>Save as image</small></button>
+                                                            </div>
+                                                        </div>
+                                                        <div id="pip-safety-defective" class="card bg-white shadow-sm mb-3">
+                                                            <div class="card-header bg-transparent border-0 pb-0">
+                                                                <div>List Of Defective Items for PIP Safety (@ViewBag.CountPendingData)</div>
+                                                            </div>
+                                                            <div class="card-body">
+                                                                <div style="height: 15rem;" class="overflow-auto">
+                                                                    <ul id="sidebar-nav" class="nav d-flex flex-column accordion-nav">
+                                                                        @{
+                                                                                int i = 0;
+                                                                                foreach (var item in ViewBag.GetDataAreaSafetyCompletion)
+                                                                                {
+                                                                                <li class="nav-item">
+                                                                                    <div class="nav-link d-flex justify-content-between">
+                                                                                        <div class="d-flex align-items-center">
+                                                                                            <a href="#child-@i" class="btn-toggle-nav_child collapsed"><i class="fa fa-plus icon-left"></i>&nbsp;&nbsp;@item</a>
+                                                                                            <a href="javascript:;" data-api-nav_child="{'api': '@ViewBag.Domain/Dashboard/GetSalesOfficePIPSafety?parent=@item@urlGetSalesOffice', 'target': '#child-@i'}">&nbsp;&nbsp;</a>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div id="child-@i" class="is-child show"></div>
+                                                                                </li>
+                                                                                i++;
+                                                                            }
+                                                                        }     
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                            <div class="card-footer text-right">
+                                                                <button data-img-target="#pip-safety-defective" data-img-filename="pip-safety-defective" type="button" class="btn-img-download btn btn-outline-secondary btn-sm ml-3"><small>Save as image</small></button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6 col-md-4">
+                                                        <div id="pip-safety-legacy" class="card bg-warning lighter shadow-sm mb-3">
+                                                            <div class="card-header bg-transparent border-0 text-center pb-0"><small>PIP Safety Legacy PSL Age > 365 days</small></div>
+                                                            <div class="card-body">
+                                                                <div class="data-check mb-3">
+                                                                    <div class="data-check--false">
+                                                                        <div class="title">Data Not Found</div>
+                                                                    </div>
+                                                                    <div class="data-check--true">
+                                                                        <div class="table-responsive">
+                                                                            <div class="chart doughnut my-0">
+                                                                                <div data-chart-doughnut="{'api': '@Url.Action("ChartCompletionDoughnutFilterSafetyLegacy","Dashboard")@urlGet', 'form_data_source': '#form--dashboard--psl-completion-pip', 'params': []}" id="chart-bar-pip-safety" class="canvas-wrap">
+                                                                                    <canvas width="120" height="120"></canvas>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="d-flex justify-content-between"><small>ELEMENT 2 SCORE </small><strong>@ViewBag.ScoreSafetyLegacy</strong></div>
+                                                            </div>
+                                                            <div class="card-footer text-right">
+                                                                <button data-img-target="#pip-safety-legacy" data-img-filename="pip-safety-legacy" type="button" class="btn-img-download btn btn-outline-secondary btn-sm ml-3"><small>Save as image</small></button>
+                                                            </div>
+                                                        </div>
+                                                        <div id="pip-safety-defective-next" class="card bg-white shadow-sm mb-3">
+                                                            <div class="card-header bg-transparent border-0 pb-0">
+                                                                <div>List Of Defective Items for PIP Safety Legacy (@ViewBag.CountDataPendingLegacy)</div>
+                                                            </div>
+                                                            <div class="card-body">
+                                                                <div style="height: 15rem;" class="overflow-auto">
+                                                                    <ul id="sidebar-nav-priority" class="nav d-flex flex-column accordion-nav">
+                                                                        @{
+                                                                            int j = 0;
+                                                                            foreach (var item in ViewBag.GetDataAreaSafetyLegacy)
+                                                                            {
+                                                                                <li class="nav-item">
+                                                                                    <div class="nav-link d-flex justify-content-between">
+                                                                                        <div class="d-flex align-items-center">
+                                                                                            <a href="#childSafetyLegacy-@j" class="btn-toggle-nav_child collapsed"><i class="fa fa-plus icon-left"></i>&nbsp;&nbsp;@item</a>
+                                                                                            <a href="javascript:;" data-api-nav_child="{'api': '@ViewBag.Domain/Dashboard/GetSalesOfficePIPSafetyLegacy?parent=@item@urlGetSalesOffice', 'target': '#childSafetyLegacy-@j'}">&nbsp;&nbsp;</a>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div id="childSafetyLegacy-@j" class="is-child show"></div>
+                                                                                </li>
+                                                                                j++;
+                                                                            }
+                                                                        }
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                            <div class="card-footer text-right">
+                                                                <button data-img-target="#pip-safety-defective-next" data-img-filename="pip-safety-defective-next" type="button" class="btn-img-download btn btn-outline-secondary btn-sm ml-3"><small>Save as image</small></button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6 col-md-4">
+                                                        <div id="pip-priority" class="card bg-warning lighter shadow-sm mb-3">
+                                                            <div class="card-header bg-transparent border-0 text-center pb-0"><small>PIP Priority Completion PSL Age &lt; 365 days</small></div>
+                                                            <div class="card-body">
+                                                                <div class="data-check mb-3">
+                                                                    <div class="data-check--false">
+                                                                        <div class="title">Data Not Found</div>
+                                                                    </div>
+                                                                    <div class="data-check--true">
+                                                                        <div class="table-responsive">
+                                                                            <div class="chart doughnut my-0">
+                                                                                <div data-chart-doughnut="{'api': '@Url.Action("ChartCompletionDoughnutFilterPriority","Dashboard")@urlGet', 'form_data_source': '#form--dashboard--psl-completion-pip', 'params': []}" id="chart-bar-pip-priority" class="canvas-wrap">
+                                                                                    <canvas width="120" height="120"></canvas>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="d-flex justify-content-between"><small>ELEMENT 3 SCORE </small><strong>@ViewBag.ScorePriority</strong></div>
+                                                            </div>
+                                                            <div class="card-footer text-right">
+                                                                <button data-img-target="#pip-priority" data-img-filename="pip-priority" type="button" class="btn-img-download btn btn-outline-secondary btn-sm ml-3"><small>Save as image</small></button>
+                                                            </div>
+                                                        </div>
+                                                        <div id="pip-priority-defective-next" class="card bg-white shadow-sm mb-3">
+                                                            <div  class="card-header bg-transparent border-0 pb-0">
+                                                                <div>List Of Defective Items for PIP Priority (@ViewBag.CountPendingPriority)</div>
+                                                            </div>
+                                                            <div class="card-body">
+                                                                <div style="height: 15rem;" class="overflow-auto">
+                                                                    <ul id="sidebar-nav-priority" class="nav d-flex flex-column accordion-nav">
+                                                                        @{
+                                                                            int k = 0;
+                                                                            foreach (var item in ViewBag.GetDataAreaPriority)
+                                                                            {
+                                                                                <li class="nav-item">
+                                                                                    <div class="nav-link d-flex justify-content-between">
+                                                                                        <div class="d-flex align-items-center">
+                                                                                            <a href="#childPriority-@k" class="btn-toggle-nav_child collapsed"><i class="fa fa-plus icon-left"></i>&nbsp;&nbsp;@item</a>
+                                                                                            <a href="javascript:;" data-api-nav_child="{'api': '@ViewBag.Domain/Dashboard/GetSalesOfficePIPPriority?parent=@item@urlGetSalesOffice', 'target': '#childPriority-@k'}">&nbsp;&nbsp;</a>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div id="childPriority-@k" class="is-child show"></div>
+                                                                                </li>
+                                                                                k++;
+                                                                            }
+                                                                        }
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="card-footer text-right">
+                                                            <button data-img-target="#pip-priority-defective-next" data-img-filename="pip-priority-defective-next" type="button" class="btn-img-download btn btn-outline-secondary btn-sm ml-3"><small>Save as image</small></button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card-body">
+                                                <div id="pip-completion">
+                                                    <div class="text-center">@dateTimeNow PIP COMPLETION</div>
+                                                    <div class="data-check">
+                                                        <div class="data-check--false">
+                                                            <div class="title">Data Not Found</div>
+                                                        </div>
+                                                        <div class="data-check--true">
+                                                            <div class="float-right">
+                                                                <button data-img-target="#pip-completion" data-img-filename="pip-completion" type="button" class="btn-img-download btn btn-outline-secondary btn-sm ml-3"><small>Save as image</small></button>
+                                                            </div>
+                                                            <div class="table-responsive">
+                                                                <div class="chart vertical-bar-stacked">
+                                                                    <div data-chart-vert-bar-stacked="{'api': '@Url.Action("ChartCompletionPip","Dashboard")@urlGet', 'form_data_source': '#form--dashboard--psl-completion-pip', 'params': []}" id="chart-bar-pip" class="canvas-wrap">
+                                                                        <canvas style="width: 600px; height: 300px" class="mx-auto"></canvas>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div id="table--psl-completion-pip" style="display: none;" data-dt-api="@Url.Action("TablePSLCompletionPIP", "Dashboard")@urlGet" class="table-responsive border p-3">
+                                                    <div class="button-group">
+                                                        <input type="text" name="month" id="pip-month" style="display: none;">
+                                                        <nav class="nav nav-tabs mb-3">
+                                                            <a href="javascript:;" name="completed" data-table-update="{'api': '@Url.Action("TablePSLCompletionPIP", "Dashboard")@urlGet'}" class="nav-item nav-link update-table-type">Completed</a><a href="javascript:;" name="outstanding" data-table-update="{'api': '@Url.Action("TablePSLCompletionPIP", "Dashboard")@urlGet'}" class="nav-item nav-link update-table-type">Outstanding</a>
+                                                        </nav>
+                                                    </div>
+                                                    <table class="table table-dt small">
+                                                        <thead>
+                                                            <tr class="text-center">
+                                                                <th><span class="text-nowrap">Area</span></th>
+                                                                <th><span class="text-nowrap">Store Name</span></th>
+                                                                <th><span class="text-nowrap">PSL No</span></th>
+                                                                <th><span class="text-nowrap">Model</span></th>
+                                                                <th><span class="text-nowrap">Serial No</span></th>
+                                                                <th><span class="text-nowrap">SR No</span></th>
+                                                                <th><span class="text-nowrap">Quotation No</span></th>
+                                                                <th><span class="text-nowrap">SO No</span></th>
+                                                                <th><span class="text-nowrap">CAT PSL Status</span></th>
+                                                                <th><span class="text-nowrap">SAP PSL Status</span></th>
+                                                                <th><span class="text-nowrap">Issue Date</span></th>
+                                                                <th><span class="text-nowrap">Termination Date</span></th>
+                                                            </tr>
+                                                        </thead>
+                                                    </table>
+                                                    <script>
+                                  var column_dt_table = [
+                                  	{
+                                  		data    : 'area',
+                                  		render  : function (data,type,row) {
+                                  			var html = ''
+                                  			html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                  			return html
+                                  		}
+                                      },
+                                    {
+                                        data: 'store_name',
+                                        render: function (data, type, row) {
+                                            var html = ''
+                                            html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                            return html
+                                        }
+                                    },
+                                  	{
+                                  		data    : 'psl_no',
+                                  		render  : function (data,type,row) {
+                                  			var html = ''
+                                  			html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                  			return html
+                                  		}
+                                  	},
+                                  	{
+                                  		data    : 'model',
+                                  		render  : function (data,type,row) {
+                                  			var html = ''
+                                  			html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                  			return html
+                                  		}
+                                  	},
+                                  	{
+                                  		data    : 'serial_no',
+                                  		render  : function (data,type,row) {
+                                  			var html = ''
+                                  			html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                  			return html
+                                  		}
+                                  	},
+                                  	{
+                                  		data    : 'sr_no',
+                                  		render  : function (data,type,row) {
+                                  			var html = ''
+                                  			html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                  			return html
+                                  		}
+                                  	},
+                                  	{
+                                  		data    : 'quot_no',
+                                  		render  : function (data,type,row) {
+                                  			var html = ''
+                                  			html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                  			return html
+                                  		}
+                                  	},
+                                  	{
+                                  		data    : 'so_no',
+                                  		render  : function (data,type,row) {
+                                  			var html = ''
+                                  			html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                  			return html
+                                  		}
+                                    },
+                                    {
+                                        data: 'cat_psl_status',
+                                        render: function (data, type, row) {
+                                            var html = ''
+                                            html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                            return html
+                                        }
+                                    },
+                                  	{
+                                  		data    : 'psl_stat',
+                                  		render  : function (data,type,row) {
+                                  			var html = ''
+                                  			html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                  			return html
+                                  		}
+                                    },
+                                    {
+                                        data: 'issue_date',
+                                        render: function (data, type, row) {
+                                            var html = ''
+                                            html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                            return html
+                                        }
+                                    }, {
+                                        data: 'termination_date',
+                                        render: function (data, type, row) {
+                                            var html = ''
+                                            html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                            return html
+                                        }
+                                    },
+                                  ]
+                                                    </script>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</main>
+@section ScriptBottom {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var inventory = "";
+            var rental = "";
+            var hid = "";
+            var others = "";
+            $("#cbinventory").on('click', function () {
+                var that = $(this);
+                if (that.prop("checked") == true) {
+                    inventory = "on";
+                } else {
+                    inventory = "";
+                }
+            });
+            $("#cbrental").on('click', function () {
+                var that = $(this);
+                if (that.prop("checked") == true) {
+                    rental = "on";
+                } else {
+                    rental = "";
+                }
+            });
+            $("#cbhid").on('click', function () {
+                var that = $(this);
+                if (that.prop("checked") == true) {
+                    hid = "on";
+                } else {
+                    hid = "";
+                }
+            });
+            $("#cbothers").on('click', function () {
+                var that = $(this);
+                if (that.prop("checked") == true) {
+                    others = "on";
+                } else {
+                    others = "";
+                }
+            });
+            $("#select-filter-2").selectpicker();
+            $("#cb2").on('click', function () {
+                var that = $(this);
+                if (that.prop("checked") == true) {
+                    var selectFilter2 = $("#select-filter-2").val();
+                    if ($("#select-filter-3").val().length > 0 || $("#select-filter-1").val().length > 0 || inventory == "on" || rental == "on" || hid == "on" || others == "on" || $("#issueDate").length > 0) {
+                        $("#select-filter-2").empty();
+                        $.ajax({
+                            type: 'POST',
+                            url: '@Url.Action("GetAreaForPIP")',
+                            data: { storename: $("#select-filter-3").val(), psltype: $("#select-filter-1").val(), inventory: inventory, rental: rental, hid: hid, others: others, issueDate: $("#issueDate").val()},
+                        success: function (mems) {
+                            $.each(mems, function (i, member) {
+                                $("#select-filter-2").append('<option value="' + member.Value + '">' + member.Text + '</option>');
+                            });
+
+                            $("#select-filter-2").selectpicker('refresh');
+                        },
+                        error: function (ex) {
+
+                        }
+                    });
+                    } else {
+                        $("#select-filter-2").empty();
+                        $.ajax({
+                            type: 'POST',
+                            url: '@Url.Action("GetAreaForPIP")',
+                            data: { storename: $("#select-filter-3").val(), psltype: $("#select-filter-1").val(), inventory: inventory, rental: rental, hid: hid, others: others, issueDate: $("#issueDate").val()},
+                        success: function (mems) {
+                            $.each(mems, function (i, member) {
+                                $("#select-filter-2").append('<option value="' + member.Value + '">' + member.Text + '</option>');
+                            });
+
+                            $("#select-filter-2").selectpicker('refresh');
+                        },
+                        error: function (ex) {
+
+                        }
+                    });
+                    }
+                }
+                $("#select-filter-2").selectpicker('refresh');
+            });
+
+            $("#select-filter-3").selectpicker();
+            $("#cb3").on('click', function () {
+                var that = $(this);
+                if (that.prop("checked") == true) {
+                    var selectFilter3 = $("#select-filter-3").val();
+                    if ($("#select-filter-2").val().length > 0 || $("#select-filter-1").val().length > 0 || inventory == "on" || rental == "on" || hid == "on" || others == "on" || $("#issueDate").length > 0) {
+                        $("#select-filter-3").empty();
+                        $.ajax({
+                        type: 'POST',
+                        url: '@Url.Action("GetSalesOfficeForPIP")',
+                        data: { area: $("#select-filter-2").val(), psltype: $("#select-filter-1").val(), inventory: inventory, rental: rental, hid: hid, others: others, issueDate: $("#issueDate").val()},
+                        success: function (mems) {
+                            $.each(mems, function (i, member) {
+                                $("#select-filter-3").append('<option value="' + member.Value + '">' + member.Text + '</option>');
+                            });
+
+                            $("#select-filter-3").selectpicker('refresh');
+                        },
+                        error: function (ex) {
+
+                        }
+                    });
+                    } else {
+                         $("#select-filter-3").empty();
+                    $.ajax({
+                        type: 'POST',
+                        url: '@Url.Action("GetSalesOfficeForPIP")',
+                        data: { area: $("#select-filter-2").val(), psltype: $("#select-filter-1").val(), inventory: inventory, rental: rental, hid: hid, others: others, issueDate: $("#issueDate").val()},
+                        success: function (mems) {
+                            $.each(mems, function (i, member) {
+                                $("#select-filter-3").append('<option value="' + member.Value + '">' + member.Text + '</option>');
+                            });
+
+                            $("#select-filter-3").selectpicker('refresh');
+                        },
+                        error: function (ex) {
+
+                        }
+                    });
+                    }
+                }
+                $("#select-filter-3").selectpicker('refresh');
+            });
+
+            //$("#cbinventory").on('click', function () {
+            //    var that = $(this);
+            //    if (that.prop("checked") == true) {
+            //        $("#cbothers").attr("disabled", true);
+            //    } else {
+            //        $("#cbothers").removeAttr("disabled");
+            //    }
+            //});
+            //$("#cbrental").on('click', function () {
+            //    var that = $(this);
+            //    if (that.prop("checked") == true) {
+            //        $("#cbothers").attr("disabled", true);
+            //    } else {
+            //        $("#cbothers").removeAttr("disabled");
+            //    }
+            //});
+            //$("#cbhid").on('click', function () {
+            //    var that = $(this);
+            //    if (that.prop("checked") == true) {
+            //        $("#cbothers").attr("disabled", true);
+            //    } else {
+            //        $("#cbothers").removeAttr("disabled");
+            //    }
+            //});
+        });
+    </script>
+}

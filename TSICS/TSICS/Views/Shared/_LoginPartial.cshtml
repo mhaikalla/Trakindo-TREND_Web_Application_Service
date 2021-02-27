@@ -1,0 +1,154 @@
+@{string color = "";
+    if (Session["roleColor"] != null) {
+        if (Session["roleColor"].ToString().ToLower().Contains("yellow"))
+        {
+            color = "border border-warning  ";
+        }
+        else if (Session["roleColor"].ToString().ToLower().Contains("green"))
+        {
+            color = "border border-success";
+        }
+        else
+        {
+            color = "";
+        }
+    }
+}
+@if (Session["name"] != null)
+{
+
+    <div class="media-body"><span>Welcome, <strong>@Session["Name"].ToString()</strong></span>
+    @if (Convert.ToInt32(Session["DelegateStatus"]) == 1)
+    {
+    <span class="badge badge-pill mx-2 badge-warning">Delegated</span>
+    }
+    </div>
+
+    <div class="dropdown d-flex h-100 ml-2"> 
+        <a href="#" data-toggle="dropdown" class="d-flex align-items-center">
+            <picture style="width: 32px; height: 32px;" class="shadow-sm rounded-circle d-flex justify-content-center align-items-center position-relative">
+            @if (Session["photo"] != null)
+            {
+                if (Convert.ToInt32(Session["status"]) == 7)
+                {
+                        <img style="border-width: 2px !important; width: 32px; height: 32px;" src="@Url.Content("~/Upload/UserProfile/" + Session["photo"])" onerror="this.onerror=null;this.src='@Url.Content("~/assets/images/repository/avatar-default.jpg")';" class="object-fit-cover rounded-circle @color">
+                }
+                else
+                {
+                    <img src="@Url.Content("~/assets/images/repository/avatar-default.jpg")" alt="" style="width: 32px; height: 32px; border-width: 2px !important;" class="object-fit-cover rounded-circle">
+                }
+            }
+            else
+            {
+                <img src="@Url.Content("~/assets/images/repository/avatar-default.jpg")" alt="" style="width: 32px; height: 32px; border-width: 2px !important;" class="object-fit-cover @color rounded-circle">
+            }
+            </picture><small class="fa fa-chevron-down ml-1"></small>
+        </a>
+        <div style="top: 100%; border-radius: 0 0 .5rem .5rem" class="dropdown-menu dropdown-menu-right border-0 shadow mt-0">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item p-0">
+                @if (Convert.ToInt32(Session["status"]) == 7)
+                {
+                    if (Convert.ToInt32(Session["DelegateStatus"]) == 1)
+                    {
+                          <div class="card mx-1 bg-light">
+                            <div class="card-body">
+                                @{
+                                    TimeSpan Daydiff = DateTime.Now.Subtract(Convert.ToDateTime(Session["DelegateStart"]));
+                                    TimeSpan Daydiff2 = Convert.ToDateTime(Session["DelegateUntil"]).Subtract(DateTime.Now);
+                                    TimeSpan Daydiff3 = Convert.ToDateTime(Session["DelegateUntil"]).Subtract(Convert.ToDateTime(Session["DelegateStart"]));
+                                }
+                                @if (Daydiff3.Days == 0)
+                                            {
+                                                if (Daydiff.Hours < 12)
+                                                {
+                                            <h6 class="dropdown-header p-0 text-center text-success">Your Delegation has been <strong>Started</strong>@Daydiff2.Days </h6>
+                                                }
+                                                else if (Daydiff.Hours >= 12)
+                                                {
+                                            <h6 class="dropdown-header p-0 text-center">Your delegation will <strong>End</strong> today</h6>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                if (Daydiff.Days == 0)
+                                                {
+                                            <h6 class="dropdown-header p-0 text-center text-success">Your Delegation has been <strong>Started</strong></h6>
+                                                }
+                                                else if (Daydiff2.Days > 0 && Daydiff.Days > 0)
+                                                {
+                                            <h6 class="dropdown-header p-0 text-center text-warning">Your Delegation is <strong>On Going</strong></h6>
+                                                }
+                                                else if (Daydiff2.Days == 0)
+                                                {
+                                            <h6 class="dropdown-header p-0 text-center text-danger">Your delegation will <strong>end</strong> today</h6>
+                                                }
+                                            }
+                                <hr />
+                                <p class="dropdown-header p-0"> The Delegation has started from @Convert.ToDateTime(Session["DelegateStart"]).ToString("dd MMMM yyyy") <br />until @Convert.ToDateTime(Session["DelegateUntil"]).ToString("dd MMMM yyyy")</p>
+                                <p class="dropdown-header p-0"> Delegation to : @Session["DelegateTo"]</p>
+                            </div>
+                          </div>
+                    }
+                    else if (Convert.ToInt32(Session["DelegateStatus"]) == 3)
+                    {
+                          <div class="card mx-1 bg-light">
+                             <div class="card-body">
+                              <h6 class="dropdown-header p-0 text-center text-success">Your Delegation has been activated<br /> and will starting soon</h6>
+                            <hr />
+                            <p class="dropdown-header p-0">Starting Date @Convert.ToDateTime(Session["DelegateStart"]).ToString("dd MMMM yyyy") <br />until @Convert.ToDateTime(Session["DelegateUntil"]).ToString("dd MMMM yyyy")</p>
+                            <p class="dropdown-header p-0"> Delegation to : @Convert.ToString(Session["DelegateTo"])</p>
+                        </div>
+                          </div>
+                    }
+                }
+               </li>
+                <li class="list-group-item p-0">                    
+                    <a href="@ViewBag.Download" target ="_blank" class="dropdown-item d-flex justify-content-between py-3">
+                        <div><i class="fas fa-question-circle text-muted"></i><span class="ml-3">Help</span></div>
+                    </a>
+                </li>
+                @if (Convert.ToInt32(Session["status"]) == 7) {
+                        <li class="list-group-item p-0">
+                            <a href='@Url.Action("Index", "Account")' class="dropdown-item d-flex justify-content-between py-3">
+                                <div><i class="fas fa-user text-muted"></i><span class="ml-3">My Account</span></div>
+                            </a>
+                        </li>
+                    }else{
+                        <li class="list-group-item p-0">
+                        <a href='@Url.Action("Register", "Account")' class="dropdown-item d-flex justify-content-between py-3">
+                            <div><i class="fas fa-plus-circle text-muted"></i><span class="ml-3">Register</span></div>
+                        </a>
+                        </li>
+                    }
+                
+                @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+                {
+                    @Html.AntiForgeryToken()
+                    if (Session["loginPortal"] != null)
+                    {
+                        if (Session["loginPortal"].ToString() == "false")
+                        {
+                            <li class="list-group-item p-0"><a href="javascript:document.getElementById('logoutForm').submit()" class="dropdown-item text-dark text-muted text-right py-3">Log out</a></li>
+                        }
+                        else
+                        {
+                            <li class="list-group-item p-0"><a href="http://@System.Configuration.ConfigurationManager.AppSettings["Host"]" class="dropdown-item text-dark text-muted text-right py-3">Log out</a></li>
+                        }
+                    }
+                }
+            </ul>
+        </div>
+    </div>
+
+}
+else
+{
+    if (Session["loginPortal"] != null)
+    {
+        if (Session["loginPortal"].ToString() == "false")
+        {
+            <div class="media-body"><span><strong>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</strong></span></div>
+        }
+    }
+}

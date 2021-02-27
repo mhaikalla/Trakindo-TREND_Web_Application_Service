@@ -1,0 +1,192 @@
+﻿@model Com.Trakindo.TSICS.Data.Model.User
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+
+<main class="body position-relative d-flex flex-column">
+    <div data-active_page="user--manage" class="content-wrap flex-fill">
+        <section class="position-relative mt-5">
+            <div class="container-fluid">
+                <div class="row no-gutters mb-5">
+                    <div class="col-lg-12 position-relative">
+                        <section class="card bg-white shadow-sm border-0 rounded-0">
+                            <div class="card-header bg-transparent border-0 ">
+                                <div class="row">
+                                    <div class="col-lg-6 d-flex align-items-center">
+                                        <div class="h3 font-secondary card-title mb-0">
+                                            <span>DELETE</span> <span class="text-muted">USER DETAIL</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 d-flex align-items-center">
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <h4 class="mt-0 mb-4">Are You Sure To Want Delete This User Detail?</h4>
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="row no-gutters text-muted mb-5 mb-xl-0">
+                                            <div class="col-xl-4 mb-0 mb-xl-2 d-flex justify-content-between">Name<span class="d-none d-xl-inline mx-1">:</span></div>
+                                            <div class="col-xl-8 mb-3 mb-lg-2 text-dark">@(!String.IsNullOrEmpty(Model.Name) ? Model.Name : "-")</div>
+                                            <div class="col-xl-4 mb-0 mb-xl-2 d-flex justify-content-between">Username<span class="d-none d-xl-inline mx-1">:</span></div>
+                                            <div class="col-xl-8 mb-3 mb-lg-2 text-dark">@(!String.IsNullOrEmpty(Model.Username) ? Model.Username : "-")</div>
+                                            <div class="col-xl-4 mb-0 mb-xl-2 d-flex justify-content-between">ID Employee<span class="d-none d-xl-inline mx-1">:</span></div>
+                                            <div class="col-xl-8 mb-3 mb-lg-2 text-dark">@Model.EmployeeId</div>
+                                            <div class="col-xl-4 mb-0 mb-xl-2 d-flex justify-content-between">Date Of Birth<span class="d-none d-xl-inline mx-1">:</span></div>
+                                            @if (Model.Dob.HasValue)
+                                            {
+                                                <div class="col-xl-8 mb-3 mb-lg-2 text-dark">@Model.Dob.Value.ToString("dd MMM yyyy")</div>
+                                            }
+                                            else
+                                            {
+                                                <div class="col-xl-8 mb-3 mb-lg-2 text-dark">-</div>
+                                            }
+                                            <div class="col-xl-4 mb-0 mb-xl-2 d-flex justify-content-between">Position<span class="d-none d-xl-inline mx-1">:</span></div>
+                                            <div class="col-xl-8 mb-3 mb-lg-2 text-dark">@(!String.IsNullOrEmpty(Model.Position) ? Model.Position : "-")</div>
+                                            <div class="col-xl-4 mb-0 mb-xl-2 d-flex justify-content-between">User Email<span class="d-none d-xl-inline mx-1">:</span></div>
+                                            <div class="col-xl-8 mb-3 mb-lg-2 text-dark">@(!String.IsNullOrEmpty(Model.Email) ? Model.Email : "-")</div>
+                                            <div class="col-xl-4 mb-0 mb-xl-2 d-flex justify-content-between">Phone Number<span class="d-none d-xl-inline mx-1">:</span></div>
+                                            <div class="col-xl-8 mb-3 mb-lg-2 text-dark">@(!String.IsNullOrEmpty(Model.Phone) ? Model.Phone : "-")</div>
+                                            <div class="col-xl-4 mb-0 mb-xl-2 d-flex justify-content-between">Technical Job Experience Duration<span class="d-none d-xl-inline mx-1">:</span></div>
+                                            <div class="col-xl-8 mb-3 mb-lg-2 text-dark">@(!String.IsNullOrEmpty(Model.TechnicalJobExperienceDuration) ? Model.TechnicalJobExperienceDuration : "-")</div>
+                                            <div class="col-xl-4 mb-0 mb-xl-2 d-flex justify-content-between">Technical Job Title<span class="d-none d-xl-inline mx-1">:</span></div>
+                                            <div class="col-xl-8 mb-3 mb-lg-2 text-dark">@(!String.IsNullOrEmpty(Model.TechnicalJobTitle) ? Model.TechnicalJobTitle : "-")</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="row no-gutters text-muted mb-xl-0">
+                                            <div class="col-xl-4 mb-0 mb-xl-2 d-flex justify-content-between">Created At<span class="d-none d-xl-inline mx-1">:</span></div>
+                                            <div class="col-xl-8 mb-3 mb-lg-2 text-dark" id="_dateCreate">@(!String.IsNullOrEmpty(Model.CreatedAt.Value.ToString("dd MMMM yyyy")) ? Model.CreatedAt.Value.ToString("dd MMMM yyyy") : "-")</div>
+                                            <div class="col-xl-4 mb-0 mb-xl-2 d-flex justify-content-between">Area Code<span class="d-none d-xl-inline mx-1">:</span></div>
+                                            <div class="col-xl-8 mb-3 mb-lg-2 text-dark">@(!String.IsNullOrEmpty(Model.AreaCode) ? Model.AreaCode : "-")</div>
+                                            <div class="col-xl-4 mb-0 mb-xl-2 d-flex justify-content-between">Area Name<span class="d-none d-xl-inline mx-1">:</span></div>
+                                            <div class="col-xl-8 mb-3 mb-lg-2 text-dark">@(!String.IsNullOrEmpty(Model.AreaName) ? Model.AreaName : "-")</div>
+                                            <div class="col-xl-4 mb-0 mb-xl-2 d-flex justify-content-between">Branch Code<span class="d-none d-xl-inline mx-1">:</span></div>
+                                            <div class="col-xl-8 mb-3 mb-lg-2 text-dark">@(!String.IsNullOrEmpty(Model.BranchCode) ? Model.BranchCode : "-")</div>
+                                            <div class="col-xl-4 mb-0 mb-xl-2 d-flex justify-content-between">Branch Name<span class="d-none d-xl-inline mx-1">:</span></div>
+                                            <div class="col-xl-8 mb-3 mb-lg-2 text-dark">@(!String.IsNullOrEmpty(Model.BranchName) ? Model.BranchName : "-")</div>
+
+                                            <div class="col-xl-4 mb-0 mb-xl-2 d-flex justify-content-between">Role ID <span class="d-none d-xl-inline mx-1">:</span></div>
+                                           
+                                            @if (Model.RoleId ==0)
+                                            {
+                                                <div class="col-xl-8 mb-3 mb-lg-2 text-dark">Guest</div>
+                                            }
+                                            else if (Model.RoleId == 1)
+                                            {
+                                                <div class="col-xl-8 mb-3 mb-lg-2 text-dark">Level 1</div>
+                                            }
+                                            else if (Model.RoleId == 2)
+                                            {
+                                                <div class="col-xl-8 mb-3 mb-lg-2 text-dark">Level 2</div>
+                                            }
+                                            else if (Model.RoleId == 3)
+                                            {
+                                                <div class="col-xl-8 mb-3 mb-lg-2 text-dark">TC Area</div>
+                                            }
+                                            else if (Model.RoleId == 4)
+                                            {
+                                                <div class="col-xl-8 mb-3 mb-lg-2 text-dark">TC HO</div>
+                                            }
+
+                                            <div class="col-xl-4 mb-0 mb-xl-2 d-flex justify-content-between">Status<span class="d-none d-xl-inline mx-1">:</span></div>
+                                            @if (Model.Status == 0)
+                                            {
+                                                <div class="col-xl-8 mb-3 mb-lg-2 text-dark">Not Registered</div>
+                                            }
+                                            else if (Model.Status == 2)
+                                            {
+                                                <div class="col-xl-8 mb-3 mb-lg-2 text-dark">Registered</div>
+                                            }
+                                            else if (Model.RoleId == 3)
+                                            {
+                                                <div class="col-xl-8 mb-3 mb-lg-2 text-dark">Approved 1</div>
+                                            }
+                                            else if (Model.RoleId == 4)
+                                            {
+                                                <div class="col-xl-8 mb-3 mb-lg-2 text-dark">Rejected 1</div>
+                                            }
+                                            else if (Model.RoleId == 5)
+                                            {
+                                                <div class="col-xl-8 mb-3 mb-lg-2 text-dark">Approved 2</div>
+                                            }
+                                            else if (Model.RoleId == 6)
+                                            {
+                                                <div class="col-xl-8 mb-3 mb-lg-2 text-dark">Rejected 2</div>
+                                            }
+                                            else if (Model.RoleId == 7)
+                                            {
+                                                <div class="col-xl-8 mb-3 mb-lg-2 text-dark">Activated</div>
+                                            }
+                                          
+                                            <div class="col-xl-4 mb-0 mb-xl-2 d-flex justify-content-between">Approval 1<span class="d-none d-xl-inline mx-1">:</span></div>
+                                            @if (ViewBag.Approval1 != null)
+                                            {
+                                                <div class="col-xl-8 mb-3 mb-lg-2 text-dark">@ViewBag.Approval1</div>
+                                            }
+                                            else
+                                            {
+                                                <div class="col-xl-8 mb-3 mb-lg-2 text-dark">-</div>
+                                            }
+                                            <div class="col-xl-4 mb-0 mb-xl-2 d-flex justify-content-between">Approval 2<span class="d-none d-xl-inline mx-1">:</span></div>
+                                            @if (ViewBag.Approval2 != null)
+                                            {
+                                                <div class="col-xl-8 mb-3 mb-lg-2 text-dark">@ViewBag.Approval2</div>
+                                            }
+                                            else
+                                            {
+                                                <div class="col-xl-8 mb-3 mb-lg-2 text-dark">-</div>
+                                            }
+
+                                            <div class="col-xl-4 mb-0 mb-xl-2 d-flex justify-content-between">Is Admin ?<span class="d-none d-xl-inline mx-1">:</span></div>
+                                            @if (Model.IsAdmin == 0)
+                                            {
+                                                <div class="col-xl-8 mb-3 mb-lg-2 text-dark">No</div>
+                                            }
+                                            else if (Model.IsAdmin == 1)
+                                            {
+                                                <div class="col-xl-8 mb-3 mb-lg-2 text-dark">Yes</div>
+                                            }
+                                            else if (Model.IsAdmin == null)
+                                            {
+                                                <div class="col-xl-8 mb-3 mb-lg-2 text-dark">-</div>
+                                            }
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                        <section style="bottom: 0;" class="position-sticky bg-light py-3 sticky-submit-form z-index-10">
+                            <div class="container-fluid container-admin ml-0">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="d-none d-md-flex justify-content-between">
+                                            <div>
+                                                <a class="btn rounded-0 border-warning bg-light my-1" href="@Url.Action("index", "User")" role="button">Back to List</a>
+                                            </div>
+                                            <div>
+                                                @using (Html.BeginForm())
+                                                {
+                                                    @Html.AntiForgeryToken()
+                                                    <div class="form-actions no-color">
+                                                        <input type="submit" value="Delete" class="btn rounded-0 btn-danger my-1 ml-2" />
+                                                    </div>
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</main>
+

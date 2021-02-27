@@ -1,0 +1,202 @@
+﻿@model Com.Trakindo.TSICS.Data.Model.Article
+
+@{
+    ViewBag.Title = "Approve";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<main class="body position-relative d-flex flex-column">
+    <div data-active_page="library" class="content-wrap flex-fill">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.ArticleId)
+            <section class="position-relative mt-5">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-9 offset-lg-3">
+                            <h3 class="font-secondary">INBOX</h3>
+                        </div>
+                    </div>
+                    <div class="row pb-5">
+                        @Html.Partial("_LayoutArticle")
+
+                        <div class="col-lg-9 position-relative">
+                            <section class="card bg-white shadow-sm border-0 h-100">
+                                <div class="card-header bg-transparent border-0">
+                                    <div class="row">
+                                        <div class="col text-right">
+                                            <div class="h3 font-secondary card-title mb-0"> <span>TREND -  </span><span class="text-muted">NEED APPROVAL</span></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div>To: @ViewBag.App2.Email</div>
+                                    <div>Reply-to: @ViewBag.User.Email</div>
+                                </div>
+                                <hr>
+                                <fieldset class="card-body">
+                                    <legend></legend>
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="row no-gutters text-muted mb-1">
+                                                Dear Mr./Mrs. @ViewBag.App2.Employee_Name,
+                                            </div>
+                                            <div class="row no-gutters text-muted mb-4">
+                                                Mr. /Mrs. @ViewBag.User.Name has posted new article in to our Technical Request application has been Verified by Mr. / Mrs. @ViewBag.App1.Employee_Name decission with below comment
+                                                <div class="jumbotron my-5 p-3 col-12">
+                                                    <p class="lead text-center">"@ViewBag.MessageResponse.Message"</p>
+                                                    <p class="text-sm-right">@ViewBag.MessageResponse.CreatedAt</p>
+                                                </div>
+                                                Technical Request application is Trakindo’s Technical Community Discussion which each member are allowed to submit and obligated to response on Technical Request in timely and documented manner.  Your approval required before access request granted.
+                                            </div>
+                                            <div class="row no-gutters text-muted mb-4">
+                                                Here are some Article details:
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="row no-gutters text-muted mb-4">
+                                                <div class="col-xl-4 mb-0 mb-lg-2 d-flex justify-content-between">Title<span class="d-none d-xl-inline mx-1">:</span></div>
+                                                <div class="col-xl-8 mb-3 mb-lg-2">
+                                                    <div class="switch-field">
+                                                        <div class="prev">@Model.Title</div>
+
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-4 mb-0 mb-lg-2 d-flex justify-content-between">Created Date<span class="d-none d-xl-inline mx-1">:</span></div>
+                                                <div class="col-xl-8 mb-3 mb-lg-2">
+                                                    <div class="switch-field">
+                                                        <div class="prev">@Model.CreatedAt</div>
+
+                                                    </div>
+                                                </div>
+                                                <div class="row no-gutters text-muted mb-3">
+                                                    <a href="@ViewBag.DomainLink/Library/Detail/@Model.ArticleId" class="badge badge-secondary" target="_blank">Click Here to See More Detail Information</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <div class="row no-gutters text-muted mb-5">
+                                                But first you will be redirect to Trakindo Portal Login.
+                                            </div>
+                                            <div class="row no-gutters text-muted mb-5">
+                                                This is system generated email, please do not reply. Just click on Helpdesk button in our app if you need some help on this application.
+                                            </div>
+                                            <div class="row no-gutters text-muted mb-1">
+                                                But first you will be redirect to Trakindo Portal Login.
+                                            </div>
+                                            <div class="row no-gutters text-muted mb-3">
+                                                Your System Admin.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <fieldset class="card-body">
+                                    <legend></legend>
+                                    <div class="cust-fab d-inline-block d-md-none left">
+                                        <input id="fab-check" type="checkbox" name="" class="fab-check">
+                                        <label for="fab-check" class="btn btn-warning text-white rounded-circle btn-fab-trigger"><i class="fa fa-plus"></i></label>
+                                        <div class="fab-group">
+                                            <button type="button" data-toggle="modal" data-target="#modal--confirm-Approve" class="fab-item btn rounded-pill btn-light border-warning shadow-sm">Approve</button>
+
+                                            <button data-toggle="modal" data-target="#modal--confirm-reject" type="button" class="fab-item btn rounded-pill btn-light border-warning shadow-sm">Reject</button>
+                                        </div>
+                                    </div>
+                                    <div class="row d-none d-md-flex">
+
+                                        <div class="col-12 col-md-8 text-left text-md-right">
+                                            <button type="button" data-toggle="modal" data-target="#modal--confirm-reject" class="btn rounded-0 btn-danger ml-2">REJECT</button>
+                                            <button type="button" data-toggle="modal" data-target="#modal--confirm-Approve" class="btn rounded-0 btn-success ml-2">APPROVE</button>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </section>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        }
+
+
+        <div id="modal--confirm-reject" class="modal fade">
+            <div style="max-width: 25rem" class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-body pb-0">
+                        <button type="button" data-dismiss="modal" class="close"><span aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="modal-body">
+                        @using (Html.BeginForm("Reject2", "Library", FormMethod.Post))
+                        {
+                            @Html.AntiForgeryToken()
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                          
+                            <form action="" method="POST">
+                                <div class="form-group">
+                                    <h4>Reason reject this Approval</h4>
+                                </div>
+                               
+                                <div class="form-group">
+                                    <input type="text" name="EmployeeSPVId" class="form-control" value="@ViewBag.App1.Employee_Id" style="display:none;">
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" name="EmployeeSPV2Id" class="form-control" value="@ViewBag.App2.Employee_Id" style="display:none;">
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" name="ArticleId" class="form-control" value="@Model.ArticleId" style="display:none;">
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" name="EmployeeId" class="form-control" value="@ViewBag.User.EmployeeId" style="display:none;">
+                                </div>
+                                <div class="form-group">
+                                    <textarea rows="4" name="rejectMsg" class="form-control"></textarea>
+                                </div>
+                                <div class="form-group d-flex justify-content-end mb-0">
+
+                                    <button type="submit" class="btn rounded-0 btn-light border-warning ml-2" onClick="this.disabled=true; this.value='Sending…';">SUBMIT REJECTION</button>
+                                </div>
+                            </form>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="modal--confirm-Approve" class="modal fade">
+            <div style="max-width: 25rem" class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-body pb-0">
+                        <button type="button" data-dismiss="modal" class="close"><span aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="modal-body">
+                        @using (Html.BeginForm())
+                        {
+                            @Html.AntiForgeryToken()
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                            <div class="form-group">
+                                <h4>Comment Your Reason with this Approval</h4>
+                            </div>
+                                <div class="form-group">
+                                    <input type="text" name="EmployeeSPVId" class="form-control" value="@ViewBag.App1.Employee_Id" style="display:none;">
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" name="EmployeeSPV2Id" class="form-control" value="@ViewBag.App2.Employee_Id" style="display:none;">
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" name="ArticleId" class="form-control" value="@Model.ArticleId" style="display:none;">
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" name="EmployeeId" class="form-control" value="@ViewBag.User.EmployeeId" style="display:none;">
+                                </div>
+                                <div class="form-group">
+                                    <textarea rows="4" name="ApproveMsg" class="form-control"></textarea>
+                                </div>
+                                <div class="form-group d-flex justify-content-end mb-0">
+                                    <button type="submit" class="btn rounded-0 btn-light border-success ml-2" onClick="this.disabled=true; this.value='Sending…';">SUBMIT APPROVAL</button>
+                                </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>

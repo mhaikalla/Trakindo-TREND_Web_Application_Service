@@ -1,0 +1,745 @@
+﻿@using Com.Trakindo.TSICS.Data.Model
+@{
+    ViewBag.Title = "Product Health";
+    Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
+    var getDataFC = (GetFormCollectionDPPMPotential)ViewBag.ModelCollectionPPMPotential;
+    var urlGet = "?dateRangeFrom=" + getDataFC.DateRangeFrom + "&dateRangeEnd=" + getDataFC.DateRangeEnd + "&hid=" + getDataFC.HID + "&inventory=" + getDataFC.Inventory + "&rental=" + getDataFC.Rental + "&others=" + getDataFC.Others + "&PartNumber=" + getDataFC.PartNumber + "&PartDescription=" + getDataFC.PartDescription + "&Model=" + getDataFC.Model + "&PrefixSN=" + getDataFC.PrefixSN;
+    var date = "";
+    if (ViewBag.DateFrom == "" && ViewBag.DateEnd == "")
+    {
+        date = "";
+    }
+    else if (ViewBag.DateFrom != "" && ViewBag.DateEnd == "")
+    {
+        date = ViewBag.DateFrom;
+    }
+    else if (ViewBag.DateFrom != "" && ViewBag.DateEnd != "")
+    {
+        date = ViewBag.DateFrom + " to " + ViewBag.DateEnd;
+    }
+    }
+
+<main class="body position-relative d-flex flex-column">
+    <div data-active_page="admin--dashboard--ppm-potential" class="content-wrap flex-fill">
+        <section class="position-relative mt-5">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12 position-relative">
+                        <section class="mb-3">
+                            <div class="d-sm-flex justify-content-between align-items-center mb-3">
+                                <h2 class="h4-size">PPM Dashboard / DPPM Potential Product Problem Parts</h2>
+                                <div class="small text-muted"><i class="far fa-clock mr-2"></i><span>Edited 1w ago</span></div>
+                            </div>
+                        </section>
+                        <section>
+                            <form id="form--dashboard--ppm-potential" method="POST">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="card bg-white shadow-sm border-0 mb-3">
+                                            <nav class="card-navbar navbar navbar-dark bg-warning text-white">
+                                                <div class="left d-flex align-items-center">
+                                                    <div class="h4 font-secondary mb-0">Filters</div>
+                                                </div>
+                                                <div class="right">
+                                                    <button data-toggle="collapse" data-target="#collapse-target-1" type="button" class="btn btn-sm bg-transparent rounded-pill text-white btn-toggle-arrow"><i class="fa fa-chevron-right"></i></button>
+                                                </div>
+                                            </nav>
+                                            <fieldset id="collapse-target-1" class="collapse show">
+                                                <div class="card-body">
+                                                    <div class="row mb-3">
+                                                        <div class="col-md-12">
+                                                            <div class="form-group form-inline">
+                                                                <label>Part Number of Causing Failure Part Input</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-12">
+                                                            <div class="form-group form-inline">
+                                                                @if (getDataFC.Inventory == "on")
+                                                                {
+                                                                    <label class="custom-checkbox form-check mr-4">
+                                                                        <input id="cbinventory" type="checkbox" checked name="inventory" class="form-check-input activating-others">
+                                                                        <div class="form-check-label custom-label"><i class="icon fa fa-check"></i><span class="text">Inventory</span></div>
+                                                                    </label>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <label class="custom-checkbox form-check mr-4">
+                                                                        <input id="cbinventory" type="checkbox" name="inventory" class="form-check-input activating-others">
+                                                                        <div class="form-check-label custom-label"><i class="icon fa fa-check"></i><span class="text">Inventory</span></div>
+                                                                    </label>
+                                                                }
+
+                                                                @if (getDataFC.Rental == "on")
+                                                                {
+                                                                    <label class="custom-checkbox form-check mr-4">
+                                                                        <input id="cbrental" type="checkbox" checked name="rental" class="form-check-input activating-others">
+                                                                        <div class="form-check-label custom-label"><i class="icon fa fa-check"></i><span class="text">Rental</span></div>
+                                                                    </label>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <label class="custom-checkbox form-check mr-4">
+                                                                        <input id="cbrental" type="checkbox" name="rental" class="form-check-input activating-others">
+                                                                        <div class="form-check-label custom-label"><i class="icon fa fa-check"></i><span class="text">Rental</span></div>
+                                                                    </label>
+                                                                }
+
+                                                                @if (getDataFC.HID == "on")
+                                                                {
+                                                                    <label class="custom-checkbox form-check mr-4">
+                                                                        <input id="cbhid" type="checkbox" checked name="hid" class="form-check-input activating-others">
+                                                                        <div class="form-check-label custom-label"><i class="icon fa fa-check"></i><span class="text">HID</span></div>
+                                                                    </label>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <label class="custom-checkbox form-check mr-4">
+                                                                        <input id="cbhid" type="checkbox" name="hid" class="form-check-input activating-others">
+                                                                        <div class="form-check-label custom-label"><i class="icon fa fa-check"></i><span class="text">HID</span></div>
+                                                                    </label>
+                                                                }
+
+                                                                @if (getDataFC.Others == "on")
+                                                                {
+                                                                    <label class="custom-checkbox form-check mr-4">
+                                                                        <input id="cbothers" type="checkbox" checked name="others" data-enable-if=".activating-others" class="form-check-input">
+                                                                        <div class="form-check-label custom-label"><i class="icon fa fa-check"></i><span class="text">Others</span></div>
+                                                                    </label>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <label class="custom-checkbox form-check mr-4">
+                                                                        <input id="cbothers" type="checkbox" name="others" data-enable-if=".activating-others" class="form-check-input">
+                                                                        <div class="form-check-label custom-label"><i class="icon fa fa-check"></i><span class="text">Others</span></div>
+                                                                    </label>
+                                                                }
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mb-3">
+                                                        <div class="col-md-4">
+                                                            <div class="form-group">
+                                                                <label class="small">Date Range:</label>
+                                                                <div class="input-group">
+                                                                    <input type="text" name="dateRange" readonly="readonly" class="form-control bg-white rounded-0 border-right-0 datepicker-range">
+                                                                    <div class="input-group-append">
+                                                                        <label class="btn border-left-0 input-group-text bg-white rounded-0 d-table"><i class="fa fa-calendar"></i></label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <div>Repair Date: <strong>@date</strong></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mb-3">
+                                                        <div class="col-md-3">
+                                                            <div class="form-group">
+                                                                <label>Part Number</label>
+                                                                <input data-ajax-autosuggest="@Url.Action("AutoSuggestPartNumber","Dashboard")" data-onSelect="{'func_name': 'addTag', 'output': '#add-tag-list-1', 'input_name': 'part-number', 'css_class': 'tag-input','unique': true}" data-list="#datalist--part-number" type="text" class="clone-input-val rounded-0 form-control bg-white">
+                                                                <datalist id="datalist--part-number"></datalist>
+                                                                <div id="add-tag-list-1" data-selected="" class="d-flex flex-wrap"></div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <div class="form-group">
+                                                                <label>Part Description</label>
+                                                                <input data-ajax-autosuggest="@Url.Action("AutoSuggestPartDescription","Dashboard")" data-onSelect="{'func_name': 'addTag', 'output': '#add-tag-list-2', 'input_name': 'part-description', 'css_class': 'tag-input','unique': true}" data-list="#datalist--part-description" type="text" class="clone-input-val rounded-0 form-control bg-white">
+                                                                <datalist id="datalist--part-description"></datalist>
+                                                                <div id="add-tag-list-2" data-selected="" class="d-flex flex-wrap"></div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <div class="form-group">
+                                                                <label>Model</label>
+                                                                <input data-ajax-autosuggest="@Url.Action("AutoSuggestModel","Dashboard")" data-onSelect="{'func_name': 'addTag', 'output': '#add-tag-list-3', 'input_name': 'model', 'css_class': 'tag-input','unique': true}" data-list="#datalist--model" type="text" class="clone-input-val rounded-0 form-control bg-white">
+                                                                <datalist id="datalist--model"></datalist>
+                                                                <div id="add-tag-list-3" data-selected="" class="d-flex flex-wrap"></div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <div class="form-group">
+                                                                <label>Prefix SN</label>
+                                                                <input data-ajax-autosuggest="@Url.Action("AutoSuggestPrefixSN","Dashboard")" data-onSelect="{'func_name': 'addTag', 'output': '#add-tag-list-4', 'input_name': 'prefix-sn', 'css_class': 'tag-input','unique': true}" data-list="#datalist--prefix-sn" type="text" class="clone-input-val rounded-0 form-control bg-white">
+                                                                <datalist id="datalist--prefix-sn"></datalist>
+                                                                <div id="add-tag-list-4" data-selected="" class="d-flex flex-wrap"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        @if (getDataFC.Model != "" || getDataFC.PartNumber != "" || getDataFC.PartDescription != "" || getDataFC.PrefixSN != "")
+                                                        {
+                                                            <p>Filter :</p>
+                                                        }
+                                                        <div class="col-md-12">
+                                                            @if (getDataFC.PartNumber != "" && getDataFC.PartNumber != null)
+                                                            {
+                                                                <div class="form-group mr-3">
+                                                                    <p>Part Number : @getDataFC.PartNumber</p>
+                                                                </div>
+                                                            }
+                                                            @if (getDataFC.Model != "" && getDataFC.Model != null)
+                                                            {
+                                                                <div class="form-group mr-3">
+                                                                    <p>Model : @getDataFC.Model</p>
+                                                                </div>
+                                                            }
+                                                            @if (getDataFC.PartDescription != "" && getDataFC.PartDescription != null)
+                                                            {
+                                                                <div class="form-group mr-3">
+                                                                    <p>Part Description : @getDataFC.PartDescription</p>
+                                                                </div>
+                                                            }
+                                                            @if (getDataFC.PrefixSN != "" && getDataFC.PrefixSN != null)
+                                                            {
+                                                                <div class="form-group mr-3">
+                                                                    <p>Prefix SN : @getDataFC.PrefixSN</p>
+                                                                </div>
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="text-center">
+                                                                <button type="submit" class="btn btn-warning btn-show-result px-4 py-2">Show Result</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </fieldset>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </section>
+                        <section>
+                            <div class="card bg-white shadow-sm border-0 mb-3">
+                                <nav class="card-navbar navbar navbar-dark bg-warning text-white">
+                                    <div class="left d-flex align-items-center">
+                                        <div class="h4 font-secondary mb-0">By Cost / Financial Impact</div>
+                                    </div>
+                                    <div class="right">
+                                        <button data-toggle="collapse" data-target="#collapse-target-2" type="button" class="btn btn-sm bg-transparent rounded-pill text-white btn-toggle-arrow"><i class="fa fa-chevron-right"></i></button>
+                                    </div>
+                                </nav>
+                                <div id="collapse-target-2" class="collapse show">
+                                    <div class="card-body">
+                                        <div class="border p-3">
+                                            <div id="table-by-cost" data-dt-api="@Url.Action("TablePPMPotentialByCost","Dashboard")@urlGet" data-dt-params="{'fixedHeader': true, 'fixedColumns': { 'leftColumns': 0 }}" class="table-responsive tr-clickable">
+                                                <table class="table table-dt small">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Part No</th>
+                                                            <th>Part Desc</th>
+                                                            <th>Group No</th>
+                                                            <th>Group Desc</th>
+                                                            <th>Product Problem Description</th>
+                                                            <th>SO Cost</th>
+                                                            <th>SO Claim</th>
+                                                            <th>SO Settled</th>
+                                                            @*<th>Currency</th>*@
+                                                        </tr>
+                                                    </thead>
+                                                </table>
+                                                <script>
+                                var column_dt_1 = [
+                                	{
+                                        data: 'part_no',
+                                		render  : function (data,type,row) {
+                                			var html = ''
+                                			html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                			return html
+                                		}
+                                	},
+                                	{
+                                        data: 'part_desc',
+                                		render  : function (data,type,row) {
+                                			var html = ''
+                                			html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                			return html
+                                		}
+                                	},
+                                	{
+                                        data: 'group_no',
+                                		render  : function (data,type,row) {
+                                			var html = ''
+                                			html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                			return html
+                                		}
+                                	},
+                                	{
+                                        data: 'group_desc',
+                                		render  : function (data,type,row) {
+                                			var html = ''
+                                			html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                			return html
+                                		}
+                                	},
+                                	{
+                                        data: 'prob_desc',
+                                		render  : function (data,type,row) {
+                                			var html = ''
+                                			html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                			return html
+                                		}
+                                	},
+                                	{
+                                        data: 'so_cost',
+                                		render  : function (data,type,row) {
+                                			var html = ''
+                                			html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                			return html
+                                		}
+                                	},
+                                	{
+                                        data: 'so_claim',
+                                		render  : function (data,type,row) {
+                                			var html = ''
+                                			html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                			return html
+                                		}
+                                	},
+                                	{
+                                        data: 'so_settled',
+                                		render  : function (data,type,row) {
+                                			var html = ''
+                                			html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                			return html
+                                		}
+                                    },
+                                    //{
+                                    //    data: 'currency',
+                                    //    render: function (data, type, row) {
+                                    //        var html = ''
+                                    //        html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                    //        return html
+                                    //    }
+                                    //}
+                                ]
+                                                </script>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card bg-white shadow-sm border-0 mb-3">
+                                <nav class="card-navbar navbar navbar-dark bg-warning text-white">
+                                    <div class="left d-flex align-items-center">
+                                        <div class="h4 font-secondary mb-0">By Frequency / Product Availability Impact</div>
+                                    </div>
+                                    <div class="right">
+                                        <button data-toggle="collapse" data-target="#collapse-target-3" type="button" class="btn btn-sm bg-transparent rounded-pill text-white btn-toggle-arrow"><i class="fa fa-chevron-right"></i></button>
+                                    </div>
+                                </nav>
+                                <div id="collapse-target-3" class="collapse show">
+                                    <div class="card-body">
+                                        <div class="border p-3">
+                                            <div id="table-by-freq" data-dt-api="@Url.Action("TablePPMPotentialByFrequency","Dashboard")@urlGet" data-dt-params="{'fixedHeader': true, 'fixedColumns': { 'leftColumns': 1 }}" class="table-responsive tr-clickable">
+                                                <table class="table table-dt small">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Part No</th>
+                                                            <th>Part Desc</th>
+                                                            <th>Group No</th>
+                                                            <th>Group Desc</th>
+                                                            <th>Problem Description</th>
+                                                            <th>Count Of Repair</th>
+                                                        </tr>
+                                                    </thead>
+                                                </table>
+                                                <script>
+                                var column_dt_2 = [
+                                    {
+                                        data: 'part_no',
+                                        render: function (data, type, row) {
+                                            var html = ''
+                                            html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                            return html
+                                        }
+                                    },
+                                    {
+                                        data: 'part_desc',
+                                        render: function (data, type, row) {
+                                            var html = ''
+                                            html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                            return html
+                                        }
+                                    },
+                                    {
+                                        data: 'group_no',
+                                        render: function (data, type, row) {
+                                            var html = ''
+                                            html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                            return html
+                                        }
+                                    },
+                                    {
+                                        data: 'group_desc',
+                                        render: function (data, type, row) {
+                                            var html = ''
+                                            html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                            return html
+                                        }
+                                    },
+                                	{
+                                		data    : 'prod_prob_desc',
+                                		render  : function (data,type,row) {
+                                			var html = ''
+                                			html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                			return html
+                                		}
+                                	},
+                                    {
+                                        data: 'count_of_repair',
+                                        render: function (data, type, row) {
+                                            var html = ''
+                                            html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                            return html
+                                        }
+                                    },
+                                ]
+                                                </script>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="detail-row" style="display:none;" class="card bg-white shadow-sm border-0 mb-3">
+                                <div class="card-body">
+                                    <div class="row mb-4">
+                                        <div class="col-lg-12">
+                                            <div class="h4-size">Affected Units </div>
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    <div id="affected-units" data-api="@Url.Action("TableAffectedUnitDPPMFinancial","Dashboard")@urlGet" class="row no-gutters"></div>
+                                                    <script id="affected-units-tpl" type="text/x-handlebars-template">
+                                                        <div class="col-lg-2">
+                                                            <a data-toggle="collapse" href="{{toggle_href}}" class="btn btn-sm text-dark ">
+                                                                <i class="fas fa-chevron-down "></i>
+                                                                <small class="ml-2">{{title}} ({{total}})</small>
+                                                            </a>
+                                                            <div id="{{toggle_id}}" class="px-3 collapse small show" style="width:120px">
+                                                                <ul class="list-unstyled ml-2">
+                                                                    {{#each lists}}
+                                                                    <li>{{this}}</li>
+                                                                    {{/each}}
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </script>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-4">
+                                        <div class="col-lg-12">
+                                            <div class="h4-size">Related TR</div>
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    <div id="table-related-tr" data-dt-api="@Url.Action("TableRelateTRDPPMFinancial","Dashboard")@urlGet" data-dt-params="{'fixedHeader': true, 'fixedColumns': { 'leftColumns': 0 }}" class="table-responsive tr-clickable">
+                                                        <table class="table table-dt small">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Title</th>
+                                                                    <th>Desc</th>
+                                                                    <th>Resolution</th>
+                                                                    <th>Ticket No</th>
+                                                                    <th>Family</th>
+                                                                    <th>Model</th>
+                                                                    <th>Category</th>
+                                                                    <th>Date Created</th>
+                                                                    <th>Date Closed</th>
+                                                                    <th>Status TR</th>
+                                                                </tr>
+                                                            </thead>
+                                                        </table>
+                                                        <script>
+                                                            var column_dt_table_related_tr = [
+                                                                {
+                                                                    data: 'title',
+                                                                    render: function (data, type, row) {
+                                                                        var html = ''
+                                                                        html = '<span class="d-block ' + data.style + '"style="width:250px">' + data.value + '</span>'
+                                                                        return html
+                                                                    }
+                                                                },
+                                                                {
+                                                                    data: 'desc',
+                                                                    render: function (data, type, row) {
+                                                                        var html = ''
+                                                                        html = '<span class="d-block ' + data.style + '"style="width:250px">' + data.value + '</span>'
+                                                                        return html
+                                                                    }
+                                                                },
+                                                                {
+                                                                    data: 'resolution',
+                                                                    render: function (data, type, row) {
+                                                                        var html = ''
+                                                                        html = '<span class="d-block ' + data.style + '"style="width:250px">' + data.value + '</span>'
+                                                                        return html
+                                                                    }
+                                                                },
+                                                                {
+                                                                    data: 'ticketno',
+                                                                    render: function (data, type, row) {
+                                                                        var html = ''
+                                                                        html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                                                        return html
+                                                                    }
+                                                                },
+                                                                {
+                                                                    data: 'family',
+                                                                    render: function (data, type, row) {
+                                                                        var html = ''
+                                                                        html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                                                        return html
+                                                                    }
+                                                                },
+                                                                {
+                                                                    data: 'model',
+                                                                    render: function (data, type, row) {
+                                                                        var html = ''
+                                                                        html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                                                        return html
+                                                                    }
+                                                                },
+                                                                {
+                                                                    data: 'category',
+                                                                    render: function (data, type, row) {
+                                                                        var html = ''
+                                                                        html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                                                        return html
+                                                                    }
+                                                                },
+                                                                {
+                                                                    data: 'date_created',
+                                                                    render: function (data, type, row) {
+                                                                        var html = ''
+                                                                        html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                                                        return html
+                                                                    }
+                                                                },
+                                                                {
+                                                                    data: 'date_closed',
+                                                                    render: function (data, type, row) {
+                                                                        var html = ''
+                                                                        html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                                                        return html
+                                                                    }
+                                                                },
+                                                                {
+                                                                    data: 'status_ticket',
+                                                                    render: function (data, type, row) {
+                                                                        var html = ''
+                                                                        html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                                                        return html
+                                                                    }
+                                                                }
+                                                            ]
+
+
+                                                        </script>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-4">
+                                        <div class="col-lg-12">
+                                            <div class="h4-size">Related DPPM</div>
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    <div id="table-related-dppm" data-dt-api="@Url.Action("TableRelateDPPMDPPMFinancial","Dashboard")@urlGet" data-dt-params="{'fixedHeader': true, 'fixedColumns': { 'leftColumns': 0 }}" class="table-responsive tr-clickable">
+                                                        <table class="table table-dt small">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Title</th>
+                                                                    <th>Desc</th>
+                                                                    <th>ICA</th>
+                                                                    <th>PCA</th>
+                                                                    <th>DPPM No</th>
+                                                                    <th>Status</th>
+                                                                    <th>Submitter</th>
+                                                                    <th>Cat Rep</th>
+                                                                    <th>Date Created</th>
+                                                                    <th>Date Last Update</th>
+                                                                </tr>
+                                                            </thead>
+                                                        </table>
+                                                        <script>
+                                                            var column_dt_related_dppm = [
+                                                                {
+                                                                    data: 'title',
+                                                                    render: function (data, type, row) {
+                                                                        var html = ''
+                                                                        html = '<span class="d-block ' + data.style + '" style="width:250px">' + data.value + '</span>'
+                                                                        return html
+                                                                    }
+                                                                },
+                                                                {
+                                                                    data: 'desc',
+                                                                    render: function (data, type, row) {
+                                                                        var html = ''
+                                                                        html = '<span class="d-block ' + data.style + '" style="width:250px">' + data.value + '</span>'
+                                                                        return html
+                                                                    }
+                                                                },
+                                                                {
+                                                                    data: 'ica',
+                                                                    render: function (data, type, row) {
+                                                                        var html = ''
+                                                                        html = '<span class="d-block ' + data.style + '" style="width:250px">' + data.value + '</span>'
+                                                                        return html
+                                                                    }
+                                                                },
+                                                                {
+                                                                    data: 'pca',
+                                                                    render: function (data, type, row) {
+                                                                        var html = ''
+                                                                        html = '<span class="d-block ' + data.style + '" style="width:250px">' + data.value + '</span>'
+                                                                        return html
+                                                                    }
+                                                                },
+                                                                {
+                                                                    data: 'dppm_no',
+                                                                    render: function (data, type, row) {
+                                                                        var html = ''
+                                                                        html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                                                        return html
+                                                                    }
+                                                                },
+                                                                {
+                                                                    data: 'status',
+                                                                    render: function (data, type, row) {
+                                                                        var html = ''
+                                                                        html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                                                        return html
+                                                                    }
+                                                                },
+                                                                {
+                                                                    data: 'submitter',
+                                                                    render: function (data, type, row) {
+                                                                        var html = ''
+                                                                        html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                                                        return html
+                                                                    }
+                                                                },
+                                                                {
+                                                                    data: 'cat_rep',
+                                                                    render: function (data, type, row) {
+                                                                        var html = ''
+                                                                        html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                                                        return html
+                                                                    }
+                                                                },
+                                                                {
+                                                                    data: 'date_created',
+                                                                    render: function (data, type, row) {
+                                                                        var html = ''
+                                                                        html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                                                        return html
+                                                                    }
+                                                                },
+                                                                {
+                                                                    data: 'date_last_update',
+                                                                    render: function (data, type, row) {
+                                                                        var html = ''
+                                                                        html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                                                        return html
+                                                                    }
+                                                                }
+                                                            ]
+
+
+                                                        </script>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-4">
+                                        <div class="col-lg-12">
+                                            <div class="h4-size">Related PSL</div>
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    <div id="table-related-psl" data-dt-api="@Url.Action("TableRelatePSLDPPMFinancial", "Dashboard")@urlGet" data-dt-params="{'fixedHeader': true, 'fixedColumns': { 'leftColumns': 0 }}" class="table-responsive tr-clickable">
+                                                        <table class="table table-dt small">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>PSL ID</th>
+                                                                    <th>DESC.</th>
+                                                                    <th>PSL TYPE.</th>
+                                                                    <th>ISSUE DATE</th>
+                                                                    <th>TERMINATION DATE</th>
+                                                                    <th>COMPLETION</th>
+                                                                </tr>
+                                                            </thead>
+                                                        </table>
+                                                        <script>
+                                                            var column_dt_related_psl = [
+                                                                {
+                                                                    data: 'psl_no',
+                                                                    render: function (data, type, row) {
+                                                                        var html = ''
+                                                                        html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                                                        return html
+                                                                    }
+                                                                },
+                                                                {
+                                                                    data: 'desc',
+                                                                    render: function (data, type, row) {
+                                                                        var html = ''
+                                                                        html = '<span class="d-block ' + data.style + '" style="width:250px">' + data.value + '</span>'
+                                                                        return html
+                                                                    }
+                                                                },
+                                                                {
+                                                                    data: 'psl_type',
+                                                                    render: function (data, type, row) {
+                                                                        var html = ''
+                                                                        html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                                                        return html
+                                                                    }
+                                                                },
+                                                                {
+                                                                    data: 'issue_date',
+                                                                    render: function (data, type, row) {
+                                                                        var html = ''
+                                                                        html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                                                        return html
+                                                                    }
+                                                                },
+                                                                {
+                                                                    data: 'termination_date',
+                                                                    render: function (data, type, row) {
+                                                                        var html = ''
+                                                                        html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                                                        return html
+                                                                    }
+                                                                },
+                                                                {
+                                                                    data: 'completion',
+                                                                    render: function (data, type, row) {
+                                                                        var html = '<div class="progress">'
+                                                                        html += '<div style="width: ' + data.value + '%;" class="progress-bar bg-info text-primary">' + data.value + '%</div>'
+                                                                        html += '</div>'
+                                                                        return html
+                                                                    }
+                                                                }
+                                                                
+                                                            ]
+                                                        </script>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</main>

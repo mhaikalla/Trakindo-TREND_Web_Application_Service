@@ -1,0 +1,60 @@
+﻿
+@if (Session["namebackend"] != null)
+{ 
+    <div class="media-body"><span>Welcome, <strong>@Session["namebackend"].ToString()</strong></span></div>
+
+    <div class="dropdown d-flex h-100 ml-2">
+        <a href="#" data-toggle="dropdown" class="d-flex align-items-center">
+            <picture style="width: 32px; height: 32px;" class="shadow-sm rounded-circle d-flex justify-content-center align-items-center position-relative">
+                @if (Session["photobackend"] != null)
+                {
+                    <img style="border-width: 3px !important; width: 32px; height: 32px;" src="@Url.Content("~/Upload/UserProfile/" + Session["photobackend"])" onerror ="this.onerror=null;this.src='@Url.Content("~/assets/images/repository/avatar-default.jpg")';" alt="" class="object-fit-cover rounded-circle">
+                  
+                }
+                else
+                {
+                    <img src="@Url.Content("~/assets/images/repository/avatar-default.jpg")" alt="" style="width: 32px; height: 32px;" class="object-fit-cover rounded-circle">
+                }
+            </picture><small class="fa fa-chevron-down ml-1"></small>
+        </a> 
+        <div style="top: 100%; border-radius: 0 0 .5rem .5rem" class="dropdown-menu dropdown-menu-right border-0 shadow mt-0">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item p-0">
+                    <a data-target="#modal--upload-help" data-toggle="modal" href="javascrip:void(0);" class="dropdown-item d-flex justify-content-between py-3">
+                        <div><i class="fas fa-question-circle text-muted"></i><span class="ml-3">Upload User Guide</span></div>
+                    </a>
+                </li>
+
+                @if (Session["namebackend"] != null && (Session["rolebackend"].ToString() == "3" || Session["rolebackend"].ToString() == "2" || Session["rolebackend"].ToString() == "1"))
+                { 
+                    <li class="list-group-item p-0">
+                        <a href='@Url.Action("ApproveList", "Account")' class="dropdown-item d-flex justify-content-between py-3">
+                            <div><i class="fas fa-cog text-muted"></i><span class="ml-3">Need Approval</span></div>
+                        </a>
+                    </li>
+                }
+                <li class="list-group-item p-0">
+                    <a href='@Url.Action("Edit", "Default")' class="dropdown-item d-flex justify-content-between py-3">
+                        <div><i class="fas fa-cog text-muted"></i><span class="ml-3">Edit Account</span></div>
+                    </a>
+                </li>
+                <li class="list-group-item p-0">
+                    <a href='@Url.Action("MyAccount", "Default")' class="dropdown-item d-flex justify-content-between py-3">
+                        <div><i class="fas fa-user-alt text-muted"></i><span class="ml-3">My Account</span></div>
+                    </a>
+                </li>
+                @using (Html.BeginForm("LogOff", "Default", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <li class="list-group-item p-0"><a href="javascript:document.getElementById('logoutForm').submit()" class="dropdown-item text-dark text-muted text-right py-3">Log out</a></li>
+                }
+            </ul>
+        </div>
+    </div>
+
+}
+else
+{
+    <div class="media-body"><span><strong>@Html.ActionLink("Log in", "Login", "Default", routeValues: null, htmlAttributes: new { id = "loginLink" })</strong></span></div>
+}
+

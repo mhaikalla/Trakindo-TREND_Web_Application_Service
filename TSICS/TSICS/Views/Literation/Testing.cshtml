@@ -1,0 +1,19 @@
+
+@{
+    ViewBag.Title = "Testing";
+    Layout = "~/Views/Shared/_LayoutBlank.cshtml";
+    
+}<ul class="nav d-flex flex-column">
+    @foreach (var item in ViewBag.ListCategoryChild)
+    {
+        <li class="nav-item">
+            <div class="nav-link d-flex justify-content-between">
+                <div class="d-flex align-items-center">
+                    <a href="#child-@item.ArticleCategoryId" data-toggle="collapse" class="btn-toggle-nav_child collapsed"><i class="fa fa-plus icon-left"></i></a>
+                    <a href="javascript:;" data-api-nav_child="{'api': '@ViewBag.Domain/Literation/Testing?parent=@item.ArticleCategoryId', 'target': '#child-@item.ArticleCategoryId'}" data-api-replace_content="{'api': '@ViewBag.Domain/Literation/LiteratureTemplate?Category=@item.ArticleCategoryId', 'target': '#content-update'}">@item.Name <small>@(item.CountUsed != 0? "(" + item.CountUsed + ")" : "")</small></a>
+                </div>
+            </div>
+            <div id="child-@item.ArticleCategoryId" class="is-child show"></div>
+        </li>
+    }
+</ul>

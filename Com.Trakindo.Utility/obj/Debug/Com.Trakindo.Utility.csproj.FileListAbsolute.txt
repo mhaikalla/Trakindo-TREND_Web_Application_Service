@@ -1,0 +1,8 @@
+D:\Project\Trakindo\TSCIS\TFS\tsics\Development\TSICS\TSICS\Resources\Dlls\Com.Trakindo.Utility.dll.config
+D:\Project\Trakindo\TSCIS\TFS\tsics\Development\TSICS\TSICS\Resources\Dlls\Com.Trakindo.Utility.dll
+D:\Project\Trakindo\TSCIS\TFS\tsics\Development\TSICS\TSICS\Resources\Dlls\Com.Trakindo.Utility.pdb
+D:\Project\Trakindo\TSCIS\TFS\tsics\Development\Com.Trakindo.Utility\obj\Debug\Com.Trakindo.Utility.csprojAssemblyReference.cache
+D:\Project\Trakindo\TSCIS\TFS\tsics\Development\Com.Trakindo.Utility\obj\Debug\Com.Trakindo.Utility.csproj.CoreCompileInputs.cache
+D:\Project\Trakindo\TSCIS\TFS\tsics\Development\Com.Trakindo.Utility\obj\Debug\Com.Trakindo.Utility.csproj.CopyComplete
+D:\Project\Trakindo\TSCIS\TFS\tsics\Development\Com.Trakindo.Utility\obj\Debug\Com.Trakindo.Utility.dll
+D:\Project\Trakindo\TSCIS\TFS\tsics\Development\Com.Trakindo.Utility\obj\Debug\Com.Trakindo.Utility.pdb

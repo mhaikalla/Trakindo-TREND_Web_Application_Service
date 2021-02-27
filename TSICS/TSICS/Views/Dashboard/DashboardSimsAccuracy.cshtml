@@ -1,0 +1,303 @@
+﻿@{
+    ViewBag.Title = "Dashboard";
+    Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
+}
+
+<main class="body position-relative d-flex flex-column">
+    <div data-active_page="admin--dashboard--sims-accuracy" class="content-wrap flex-fill">
+        <section class="position-relative mt-5">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12 position-relative">
+                        <section class="mb-3">
+                            <div class="d-sm-flex justify-content-between align-items-center mb-3">
+                                <h2 class="h4-size">SIMS Dashboard / SIMS Accuracy</h2>
+                                <div class="small text-muted"><i class="far fa-clock mr-2"></i><span>Edited 1w ago</span></div>
+                            </div>
+                        </section>
+                        <section>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="card bg-white shadow-sm border-0 mb-3">
+                                        <div class="card-body">
+                                            <div class="text-center">SIMS Error Summary</div>
+                                            <div class="data-check">
+                                                <div class="data-check--false">
+                                                    <div class="title">Data Not Found</div>
+                                                </div>
+                                                <div class="data-check--true">
+                                                    <div class="table-responsive">
+                                                        <div class="chart vertical-bar">
+                                                            <div id="chart-sims-accuracy-bar" data-chart-params="{'api': 'assets/data/dashboard-sims/chart-sims-accuracy-bar.php'}" class="chart-wrap">
+                                                                <canvas style="width: 700px; height: 300px;" class="mx-auto"></canvas>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                        <section>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="card bg-white shadow-sm border-0 mb-3">
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <div data-dt-api="assets/data/dashboard-sims/table-dashboard-sims-small.php?type=1" data-dt-column="column_dashboard_sims_1" class="table-responsive dt--dashboard-sims-small mb-4">
+                                                        <table class="table table-dt table-bordered small w-100">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th><span class="text-nowrap">Error Description</span></th>
+                                                                    <th><span class="text-nowrap">Quantity</span></th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tfoot>
+                                                                <tr class="bg-warning light">
+                                                                    <th><span>GRAND TOTAL</span></th>
+                                                                    <th><span></span></th>
+                                                                </tr>
+                                                            </tfoot>
+                                                        </table>
+                                                        <script>
+                                    var column_dashboard_sims_1 = [
+                                    	{
+                                    		data    : 'error_desc',
+                                    		render  : function (data, type, row) {
+                                    			var html = ''
+                                    			html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                    			return html
+                                    		}
+                                    	},
+                                    	{
+                                    		data    : 'qty',
+                                    		render  : function (data, type, row) {
+                                    			var html = ''
+                                    			html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                    			return html
+                                    		}
+                                    	}
+                                    ]
+
+
+                                                        </script>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div data-dt-api="assets/data/dashboard-sims/table-dashboard-sims-small.php?type=2" data-dt-column="column_dashboard_sims_2" class="table-responsive dt--dashboard-sims-small mb-4">
+                                                        <table class="table table-dt table-bordered small w-100">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th><span class="text-nowrap">Error Description</span></th>
+                                                                    <th><span class="text-nowrap">Quantity</span></th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tfoot>
+                                                                <tr class="bg-warning light">
+                                                                    <th><span>GRAND TOTAL</span></th>
+                                                                    <th><span></span></th>
+                                                                </tr>
+                                                            </tfoot>
+                                                        </table>
+                                                        <script>
+                                    var column_dashboard_sims_2 = [
+                                    	{
+                                    		data    : 'error_desc',
+                                    		render  : function (data, type, row) {
+                                    			var html = ''
+                                    			html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                    			return html
+                                    		}
+                                    	},
+                                    	{
+                                    		data    : 'qty',
+                                    		render  : function (data, type, row) {
+                                    			var html = ''
+                                    			html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                    			return html
+                                    		}
+                                    	}
+                                    ]
+
+                                                        </script>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-12">
+                                                    <div id="dt--dashboard-sims" data-dt-api="assets/data/dashboard-sims/table-dashboard-sims.php" data-dt-params="{'fixedHeader': true, 'fixedColumns': { 'leftColumns': 1 }}" data-dt-column="column_dashboard_sims" class="table-responsive">
+                                                        <table class="table table-dt table-bordered small w-100">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th><span>Area</span></th>
+                                                                    <th><span>Location</span></th>
+                                                                    <th><span>Store</span></th>
+                                                                    <th><span>Repairing Dealer</span></th>
+                                                                    <th><span>Work Order</span></th>
+                                                                    <th><span>WO Segment</span></th>
+                                                                    <th><span>Employmee ID</span></th>
+                                                                    <th><span>Employmee Name</span></th>
+                                                                    <th><span>Serial Number</span></th>
+                                                                    <th><span>Repair Date</span></th>
+                                                                    <th><span>Error Desc.</span></th>
+                                                                    <th><span>Part No.</span></th>
+                                                                    <th><span>Part Desc.</span></th>
+                                                                    <th><span>Group No.</span></th>
+                                                                    <th><span>Group Desc.</span></th>
+                                                                    <th><span>Comment</span></th>
+                                                                </tr>
+                                                            </thead>
+                                                        </table>
+                                                        <script>
+                                    var column_dashboard_sims = [
+                                    	{
+                                    		data: 'area',
+                                    		render  : function (data, type, row) {
+                                    			var html = ''
+                                    			html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                    			return html
+                                    		}
+                                    	},
+                                    	{
+                                    		data: 'location',
+                                    		render  : function (data, type, row) {
+                                    			var html = ''
+                                    			html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                    			return html
+                                    		}
+                                    	},
+                                    	{
+                                    		data: 'store',
+                                    		render  : function (data, type, row) {
+                                    			var html = ''
+                                    			html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                    			return html
+                                    		}
+                                    	},
+                                    	{
+                                    		data: 'repairing_dealer',
+                                    		render  : function (data, type, row) {
+                                    			var html = ''
+                                    			html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                    			return html
+                                    		}
+                                    	},
+                                    	{
+                                    		data: 'work_order',
+                                    		render  : function (data, type, row) {
+                                    			var html = ''
+                                    			html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                    			return html
+                                    		}
+                                    	},
+                                    	{
+                                    		data: 'wo_segment',
+                                    		render  : function (data, type, row) {
+                                    			var html = ''
+                                    			html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                    			return html
+                                    		}
+                                    	},
+                                    	{
+                                    		data: 'employmee_id',
+                                    		render  : function (data, type, row) {
+                                    			var html = ''
+                                    			html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                    			return html
+                                    		}
+                                    	},
+                                    	{
+                                    		data: 'employmee_name',
+                                    		render  : function (data, type, row) {
+                                    			var html = ''
+                                    			html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                    			return html
+                                    		}
+                                    	},
+                                    	{
+                                    		data: 'serial_number',
+                                    		render  : function (data, type, row) {
+                                    			var html = ''
+                                    			html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                    			return html
+                                    		}
+                                    	},
+                                    	{
+                                    		data: 'repair_date',
+                                    		render  : function (data, type, row) {
+                                    			var html = ''
+                                    			html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                    			return html
+                                    		}
+                                    	},
+                                    	{
+                                    		data: 'error_desc',
+                                    		render  : function (data, type, row) {
+                                    			var html = ''
+                                    			html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                    			return html
+                                    		}
+                                    	},
+                                    	{
+                                    		data: 'part_no',
+                                    		render  : function (data, type, row) {
+                                    			var html = ''
+                                    			html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                    			return html
+                                    		}
+                                    	},
+                                    	{
+                                    		data: 'part_desc',
+                                    		render  : function (data, type, row) {
+                                    			var html = ''
+                                    			html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                    			return html
+                                    		}
+                                    	},
+                                    	{
+                                    		data: 'group_no',
+                                    		render  : function (data, type, row) {
+                                    			var html = ''
+                                    			html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                    			return html
+                                    		}
+                                    	},
+                                    	{
+                                    		data: 'group_desc',
+                                    		render  : function (data, type, row) {
+                                    			var html = ''
+                                    			html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                    			return html
+                                    		}
+                                    	},
+                                    	{
+                                    		data: 'comment',
+                                    		render  : function (data, type, row) {
+                                    			var html = ''
+                                    			html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                    			return html
+                                    		}
+                                    	},
+
+
+
+                                    ]
+
+
+
+                                                        </script>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</main>

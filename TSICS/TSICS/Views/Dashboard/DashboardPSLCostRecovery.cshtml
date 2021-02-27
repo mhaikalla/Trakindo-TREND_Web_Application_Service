@@ -1,0 +1,699 @@
+﻿@using Com.Trakindo.TSICS.Data.Model
+@{
+    ViewBag.Title = "Product Health";
+    Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
+    var getDataFC = (GetFormCollectionTablePSLCostRecovery)ViewBag.ModelFormCollectionPSLCostRecovery;
+    var urlGet = "?dateRangeFrom=" + getDataFC.DateRangeFrom + "&dateRangeEnd=" + getDataFC.DateRangeEnd + "&inventory=" + getDataFC.Inventory + "&rental=" + getDataFC.Rental + "&hid=" + getDataFC.HID + "&others=" + getDataFC.Others + "&area=" + getDataFC.Area + "&pslType=" + getDataFC.PSLType + "&pslStatus=" + getDataFC.PSLStatus + "&model=" + getDataFC.Model + "&salesOffice=" + getDataFC.SalesOffice;
+    var date = "";
+    if (ViewBag.GetDateFrom == "" && ViewBag.GetDateEnd == "")
+    {
+        date = "";
+    }
+    else if (ViewBag.GetDateFrom != "" && ViewBag.GetDateEnd == "")
+    {
+        date = ViewBag.GetDateFrom;
+    }
+    else if (ViewBag.GetDateFrom != "" && ViewBag.GetDateEnd != "")
+    {
+        date = ViewBag.GetDateFrom + " to " + ViewBag.GetDateEnd;
+    }
+}
+
+<main class="body position-relative d-flex flex-column">
+    <div data-active_page="admin--dashboard--psl-cost-recovery" class="content-wrap flex-fill">
+        <section class="position-relative mt-5">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12 position-relative">
+                        <section class="mb-3">
+                            <div class="d-sm-flex justify-content-between align-items-center mb-3">
+                                <h2 class="h4-size">PSL Dashboard / PSL Cost Recovery</h2> 
+                                <div class="small text-muted"><i class="far fa-clock mr-2"></i><span>Edited 1w ago</span></div>
+                            </div>
+                        </section>
+                        <form id="form--dashboard--psl-cost-recovery" method="POST"> 
+                            <section>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="card bg-white shadow-sm border-0 mb-3">
+                                            <nav class="card-navbar navbar navbar-dark bg-warning text-white">
+                                                <div class="left d-flex align-items-center">
+                                                    <div class="h4 font-secondary mb-0">Filters</div>
+                                                </div>
+                                                <div class="right">
+                                                    <button data-toggle="collapse" data-target="#collapse-target-1" type="button" class="btn btn-sm bg-transparent rounded-pill text-white btn-toggle-arrow"><i class="fa fa-chevron-right"></i></button>
+                                                </div>
+                                            </nav>
+                                            <fieldset id="collapse-target-1" class="collapse show">
+                                                <div class="card-body">
+                                                    <div class="row mb-3">
+                                                        <div class="col-md-12">
+                                                            <div class="form-group form-inline">
+                                                                <label class="small">TIME RANGE INPUT</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <div class="form-group">
+                                                                <label class="small">Date Range:</label>
+                                                                <div class="input-group">
+                                                                    <input id="termDate" type="text" readonly="readonly" class="form-control bg-white rounded-0 border-right-0 datepicker-range">
+                                                                    <div class="input-group-append">
+                                                                        <label class="btn border-left-0 input-group-text bg-white rounded-0 d-table"><i class="fa fa-calendar"></i></label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <div>Termination Date: <strong>@date</strong></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mb-3">
+                                                        <div class="col-md-12">
+                                                            <div class="form-group form-inline">
+                                                                @if (getDataFC.Inventory == "on")
+                                                                {
+                                                                    <label class="custom-checkbox form-check mr-4">
+                                                                        <input id="cbinventory" type="checkbox" checked name="inventory" class="form-check-input activating-others">
+                                                                        <div class="form-check-label custom-label"><i class="icon fa fa-check"></i><span class="text">Inventory</span></div>
+                                                                    </label>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <label class="custom-checkbox form-check mr-4">
+                                                                        <input id="cbinventory" type="checkbox" name="inventory" class="form-check-input activating-others">
+                                                                        <div class="form-check-label custom-label"><i class="icon fa fa-check"></i><span class="text">Inventory</span></div>
+                                                                    </label>
+                                                                }
+
+                                                                @if (getDataFC.Rental == "on")
+                                                                {
+                                                                    <label class="custom-checkbox form-check mr-4">
+                                                                        <input id="cbrental" type="checkbox" checked name="rental" class="form-check-input activating-others">
+                                                                        <div class="form-check-label custom-label"><i class="icon fa fa-check"></i><span class="text">Rental</span></div>
+                                                                    </label>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <label class="custom-checkbox form-check mr-4">
+                                                                        <input id="cbrental" type="checkbox" name="rental" class="form-check-input activating-others">
+                                                                        <div class="form-check-label custom-label"><i class="icon fa fa-check"></i><span class="text">Rental</span></div>
+                                                                    </label>
+                                                                }
+
+                                                                @if (getDataFC.HID == "on")
+                                                                {
+                                                                    <label class="custom-checkbox form-check mr-4">
+                                                                        <input id="cbhid" type="checkbox" checked name="hid" class="form-check-input activating-others">
+                                                                        <div class="form-check-label custom-label"><i class="icon fa fa-check"></i><span class="text">HID</span></div>
+                                                                    </label>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <label class="custom-checkbox form-check mr-4">
+                                                                        <input id="cbhid" type="checkbox" name="hid" class="form-check-input activating-others">
+                                                                        <div class="form-check-label custom-label"><i class="icon fa fa-check"></i><span class="text">HID</span></div>
+                                                                    </label>
+                                                                }
+
+                                                                @if (getDataFC.Others == "on")
+                                                                {
+                                                                    <label class="custom-checkbox form-check mr-4">
+                                                                        <input id="cbothers" type="checkbox" checked name="others" data-enable-if=".activating-others" class="form-check-input">
+                                                                        <div class="form-check-label custom-label"><i class="icon fa fa-check"></i><span class="text">Others</span></div>
+                                                                    </label>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <label class="custom-checkbox form-check mr-4">
+                                                                        <input id="cbothers" type="checkbox" name="others" data-enable-if=".activating-others" class="form-check-input">
+                                                                        <div class="form-check-label custom-label"><i class="icon fa fa-check"></i><span class="text">Others</span></div>
+                                                                    </label>
+                                                                }
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mb-3">
+                                                        <div class="col-md-3">
+                                                            <div class="form-group mr-3">
+                                                                <label class="custom-checkbox form-check">
+                                                                    <input id="cb1" type="checkbox" data-checkbox-toggle-disable="{'target': '#select-filter-1'}" class="form-check-input">
+                                                                    <div class="form-check-label custom-label"><i class="icon fa fa-check"></i><span class="text">PSL Type</span></div>
+                                                                </label>
+                                                                <div class="input-group">
+                                                                    <select data-title="Choose fields" data-style="border bg-white rounded-0" data-width="100%" disabled multiple data-size="5" id="select-filter-1" name="pslType[]">
+                                                                        <option value="S">PIP Safety</option>
+                                                                        <option value="P">PIP Priority</option>
+                                                                        <option value="A">PSP After Failure</option>
+                                                                        <option value="C">PSP Pro-Active</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <div class="form-group mr-3">
+                                                                <label class="custom-checkbox form-check">
+                                                                    <input id="cb2" type="checkbox" data-checkbox-toggle-disable="{'target': '#select-filter-2'}" class="form-check-input">
+                                                                    <div class="form-check-label custom-label"><i class="icon fa fa-check"></i><span class="text">PSL Status</span></div>
+                                                                </label>
+                                                                <div class="input-group">
+                                                                    <select data-title="Choose fields" data-style="border bg-white rounded-0" data-width="100%" multiple data-size="5" disabled id="select-filter-2" name="pslStatus[]">
+                                                                        <option value="0">Choose Fields</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mb-3">
+                                                        <div class="col-md-3">
+                                                            <div class="form-group mr-3">
+                                                                <label>Select Filter</label>
+                                                                <div class="input-group">
+                                                                    <select id="slsFilter" onchange="filter(this.value)" data-title="Choose fields" data-style="border bg-white rounded-0" data-width="100%" data-size="5" class="selectpicker">
+                                                                        <option value=1>Area</option>
+                                                                        <option value=2>Sales Office</option>
+                                                                        <option value=3>Model</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-md-3" style="display:none" id="valueArea">
+                                                            <div class="form-group mr-3">
+                                                                <label class="custom-checkbox form-check">
+                                                                    <input id="cb3" type="checkbox" data-checkbox-toggle-disable="{'target': '#select-filter-3'}" class="form-check-input">
+                                                                    <div class="form-check-label custom-label"><i class="icon fa fa-check"></i><span class="text">Area</span></div>
+                                                                </label>
+                                                                <div class="input-group">
+                                                                    <select data-title="Choose fields" data-style="border bg-white rounded-0" data-width="100%" multiple disabled id="select-filter-3" data-size="5" name="Area[]">
+                                                                        <option value="0">Choose Fields</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3" style="display:none" id="valueSalesOffice">
+                                                            <div class="form-group mr-3">
+                                                                <label class="custom-checkbox form-check">
+                                                                    <input id="cb4" type="checkbox" data-checkbox-toggle-disable="{'target': '#select-filter-4'}" class="form-check-input">
+                                                                    <div class="form-check-label custom-label"><i class="icon fa fa-check"></i><span class="text">Sales Office</span></div>
+                                                                </label>
+                                                                <div class="input-group">
+                                                                    <select data-title="Choose fields" data-style="border bg-white rounded-0" data-width="100%" multiple data-size="5" id="select-filter-4" disabled name="SalesOffice[]">
+                                                                        <option value="0">Choose Fields</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3" style="display:none" id="valueModel">
+                                                            <div class="form-group mr-3">
+                                                                <label class="custom-checkbox form-check">
+                                                                    <input id="cb5" type="checkbox" data-checkbox-toggle-disable="{'target': '#select-filter-5'}" class="form-check-input">
+                                                                    <div class="form-check-label custom-label"><i class="icon fa fa-check"></i><span class="text">Model</span></div>
+                                                                </label>
+                                                                <div class="input-group">
+                                                                    <select data-title="Choose fields" data-style="border bg-white rounded-0" data-width="100%" multiple disabled id="select-filter-5" data-size="5" name="Model[]">
+                                                                        <option value="0">Choose Fields</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        @if (getDataFC.PSLType != "" || getDataFC.Model != "" || getDataFC.Area != "" || getDataFC.SalesOffice != "")
+                                                        {
+                                                            <p>Filter :</p>
+                                                        }
+                                                        <div class="col-md-12">
+                                                            @if (getDataFC.PSLType != "")
+                                                            {
+                                                                var data = "";
+                                                                if (getDataFC.PSLType.Contains("S"))
+                                                                {
+                                                                    data += "PIP Safety, ";
+                                                                }
+                                                                if (getDataFC.PSLType.Contains("P"))
+                                                                {
+                                                                    data += " PIP Priority, ";
+                                                                }
+                                                                if (getDataFC.PSLType.Contains("C"))
+                                                                {
+                                                                    data += " PSP Pro Active, ";
+                                                                }
+                                                                if (getDataFC.PSLType.Contains("A"))
+                                                                {
+                                                                    data += " PSP After Failure, ";
+                                                                }
+                                                                string var = data.Substring(0, data.LastIndexOf(','));
+                                                                <div class="form-group mr-3">
+                                                                    <p>PSL Type : @var</p>
+                                                                </div>
+                                                            }
+                                                            @if (getDataFC.PSLStatus != "")
+                                                            {
+                                                                <div class="form-group mr-3">
+                                                                    <p>PSL Status : @getDataFC.PSLStatus</p>
+                                                                </div>
+                                                            }
+                                                            @if (getDataFC.Area != "")
+                                                            {
+                                                                <div class="form-group mr-3">
+                                                                    <p>Area : @getDataFC.Area</p>
+                                                                </div>
+                                                            }
+                                                            @if (getDataFC.Model != "")
+                                                            {
+                                                                <div class="form-group mr-3">
+                                                                    <p>Model : @getDataFC.Model</p>
+                                                                </div>
+                                                            }
+                                                            @if (getDataFC.SalesOffice != "")
+                                                            {
+                                                                <div class="form-group mr-3">
+                                                                    <p>Sales Office : @getDataFC.SalesOffice</p>
+                                                                </div>
+                                                            }
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="text-center">
+                                                                <button type="submit" class="btn btn-warning btn-show-result px-4 py-2">Show Result</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </fieldset>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                            <section>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="card bg-white shadow-sm border-0 mb-3">
+                                            <div class="card-body">
+                                                <div class="table-responsive">
+                                                    <table id="dt-psl-cost-recovery" data-dt-api="@Url.Action("TableDashboardPSLCostRecovery","Dashboard")@urlGet" data-dt-params="{'fixedHeader': true, 'fixedColumns': { 'leftColumns': 3 }}" class="table small table-dt align-text-top">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>AREA</th>
+                                                                <th>PSL ID</th>
+                                                                <th>MODEL</th>
+                                                                <th>UNIT QTY</th>
+                                                                <th>COMPLETED</th>
+                                                                <th>TOTAL SO Cost</th>
+                                                                <th>TOTAL CLAIM</th>
+                                                                <th>SETTLED</th>
+                                                                <th>RECOVERY</th>
+                                                            </tr>
+                                                        </thead>
+
+                                                    </table>
+                                                </div>
+                                                <script>
+                                                    var htmlDescList = function (resp) {
+                                                        var html = '<dl class="row no-gutters m-0">'
+
+                                                        resp.forEach((el, i) => {
+                                                            html += (el.divider && i > 0) ? '<dt class="col-6"><hr class="my-2"/></dt><dd class="col-6"><hr class="my-2"/></dd>' : ''
+                                                            //html += '<dt class="col-6">' + el.title + '</dt>'
+                                                            html += '<dd class="col-12">' + el.value + '</dd>'
+                                                        })
+
+                                                        html += '</dl>'
+
+                                                        return html
+                                                    }
+                                                    var htmlDescPercent = function (resp) {
+                                                        var html = '<div class="m-0">'
+
+                                                        resp.forEach((el, i) => {
+                                                            html += (el.divider && i > 0) ? '<hr class="my-2"/><div class="progress">' : '<div class="progress">'
+                                                            html += '<div style="width: ' + el.value + '%;" class="progress-bar bg-info text-primary">' + el.value + '%</div>'
+                                                            html += '</div>'
+                                                        })
+
+                                                        html += '</div>'
+
+                                                        return html
+                                                    }
+                                                     var column_dt_table = [
+                                	                {
+                                		                data    : 'area',
+                                		                render  : function (data,type,row) {
+                                			                var html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                			                return html
+                                		                }
+                                	                },
+                                	                {
+                                		                data    : 'psl_id',
+                                		                render  : function (data,type,row) {
+                                                            var html = htmlDescList(data.val_arr)
+                                			                return html
+                                		                }
+                                	                },
+                                	                {
+                                		                data    : 'model',
+                                		                render  : function (data,type,row) {
+                                                            var html = htmlDescList(data.val_arr)
+                                			                return html
+                                		                }
+                                	                },
+                                	                {
+                                		                data    : 'unit_qty',
+                                		                render  : function (data,type,row) {
+                                                            var html = htmlDescList(data.val_arr)
+                                			                return html
+                                		                }
+                                	                },
+                                	                {
+                                		                data    : 'completed',
+                                		                render  : function (data,type,row) {
+                                                            var html = htmlDescPercent(data.val_arr)
+                                                            return html
+                                		                }
+                                	                },
+                                	                {
+                                		                data    : 'total_amount',
+                                		                render  : function (data,type,row) {
+                                                            var html = htmlDescList(data.val_arr)
+                                			                return html
+                                		                }
+                                	                },
+                                	                {
+                                		                data    : 'total_claim',
+                                		                render  : function (data,type,row) {
+                                                            var html = htmlDescList(data.val_arr)
+                                			                return html
+                                		                }
+                                	                },
+                                	                {
+                                		                data    : 'settled',
+                                		                render  : function (data,type,row) {
+                                                            var html = htmlDescList(data.val_arr)
+                                			                return html
+                                		                }
+                                	                },
+                                	                {
+                                		                data    : 'recovery',
+                                		                render  : function (data,type,row) {
+                                                            var html = htmlDescPercent(data.val_arr)
+                                                            return html
+                                		                }
+                                	                },
+                                                ]
+                                                    
+
+                                                </script>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</main>
+@section ScriptBottom {
+    <script type="text/javascript">
+        function filter(id) {
+            if (id == 1) {
+                $("#valueArea").show();
+            } else if (id == 2) {
+                $("#valueSalesOffice").show();
+            } else {
+                $("#valueModel").show();
+            }
+        }
+        $(document).ready(function () {
+            var inventory = "";
+            var rental = "";
+            var hid = "";
+            var others = "";
+            $("#cbinventory").on('click', function () {
+                var that = $(this);
+                if (that.prop("checked") == true) {
+                    inventory = "on";
+                } else {
+                    inventory = "";
+                }
+            });
+            $("#cbrental").on('click', function () {
+                var that = $(this);
+                if (that.prop("checked") == true) {
+                    rental = "on";
+                } else {
+                    rental = "";
+                }
+            });
+            $("#cbhid").on('click', function () {
+                var that = $(this);
+                if (that.prop("checked") == true) {
+                    hid = "on";
+                } else {
+                    hid = "";
+                }
+            });
+            $("#cbothers").on('click', function () {
+                var that = $(this);
+                if (that.prop("checked") == true) {
+                    others = "on";
+                } else {
+                    others = "";
+                }
+            });
+            $("#select-filter-1").selectpicker();
+            $("#cb1").on('click', function () {
+                var that = $(this);
+                if (that.prop("checked") == true) {
+                    var selectFilter1 = $("#select-filter-1").val();
+                    if ($("#select-filter-2").val().length > 0 || $("#select-filter-3").val().length > 0 || $("#select-filter-4").val().length > 0 || inventory == "on" || rental == "on" || hid == "on" || others == "on" || $("#termDate").length > 0) {
+                        $("#select-filter-1").empty();
+                        $.ajax({
+                            type: 'POST',
+                            url: '@Url.Action("GetPSLTypeForSummary")',
+                            data: { area: $("#select-filter-3").val(), salesoffice: $("#select-filter-4").val(), model: $("#select-filter-5").val(), pslstatus: $("#select-filter-2").val(), inventory: inventory, rental: rental, hid: hid, others: others, termDate: $("#termDate").val()},
+                        success: function (mems) {
+                            $.each(mems, function (i, member) {
+                                $("#select-filter-1").append('<option value="' + member.Value + '">' + member.Text + '</option>');
+                            });
+
+                            $("#select-filter-1").selectpicker('refresh');
+                        },
+                        error: function (ex) {
+
+                        }
+                    });
+                    }
+                }
+                $("#select-filter-1").selectpicker('refresh');
+            });
+
+            $("#select-filter-2").selectpicker();
+            $("#cb2").on('click', function () {
+                var that = $(this);
+                if (that.prop("checked") == true) {
+                    var selectFilter2 = $("#select-filter-2").val();
+                    if ($("#select-filter-1").val().length > 0 || $("#select-filter-3").val().length > 0 || $("#select-filter-4").val().length > 0 || $("#select-filter-5").val().length > 0 || inventory == "on" || rental == "on" || hid == "on" || others == "on" || $("#termDate").length > 0) {
+                        $("#select-filter-2").empty();
+                        $.ajax({
+                        type: 'POST',
+                        url: '@Url.Action("GetPSLStatusForCostRecovery")',
+                        data: { area: $("#select-filter-3").val(), salesoffice: $("#select-filter-4").val(), model: $("#select-filter-5").val(), psltype: $("#select-filter-1").val(), inventory: inventory, rental: rental, hid: hid, others: others, termDate: $("#termDate").val()},
+                        success: function (mems) {
+                            $.each(mems, function (i, member) {
+                                $("#select-filter-2").append('<option value="' + member.Value + '">' + member.Text + '</option>');
+                            });
+
+                            $("#select-filter-2").selectpicker('refresh');
+                        },
+                        error: function (ex) {
+
+                        }
+                    });
+                    } else {
+                         $("#select-filter-2").empty();
+                    $.ajax({
+                        type: 'POST',
+                        url: '@Url.Action("GetPSLStatusForCostRecovery")',
+                        data: { area: $("#select-filter-3").val(), salesoffice: $("#select-filter-4").val(), model: $("#select-filter-5").val(), psltype: $("#select-filter-1").val(), inventory: inventory, rental: rental, hid: hid, others: others, termDate: $("#termDate").val()},
+                        success: function (mems) {
+                            $.each(mems, function (i, member) {
+                                $("#select-filter-2").append('<option value="' + member.Value + '">' + member.Text + '</option>');
+                            });
+
+                            $("#select-filter-2").selectpicker('refresh');
+                        },
+                        error: function (ex) {
+
+                        }
+                    });
+                    }
+                }
+                $("#select-filter-2").selectpicker('refresh');
+            });
+
+            $("#select-filter-3").selectpicker();
+            $("#cb3").on('click', function () {
+                var that = $(this);
+                if (that.prop("checked") == true) {
+                    var selectFilter3 = $("#select-filter-3").val();
+                    if ($("#select-filter-1").val().length > 0 || $("#select-filter-2").val().length > 0 || $("#select-filter-4").val().length > 0 || $("#select-filter-5").val().length > 0 || inventory == "on" || rental == "on" || hid == "on" || others == "on" || $("#termDate").length > 0) {
+                        $("#select-filter-3").empty();
+                        $.ajax({
+                        type: 'POST',
+                        url: '@Url.Action("GetAreaForCostRecovery")',
+                        data: { salesoffice: $("#select-filter-4").val(), model: $("#select-filter-5").val(), psltype: $("#select-filter-1").val(), pslstatus: $("#select-filter-2").val(), inventory: inventory, rental: rental, hid: hid, others: others, termDate: $("#termDate").val()},
+                        success: function (mems) {
+                            $.each(mems, function (i, member) {
+                                $("#select-filter-3").append('<option value="' + member.Value + '">' + member.Text + '</option>');
+                            });
+
+                            $("#select-filter-3").selectpicker('refresh');
+                        },
+                        error: function (ex) {
+
+                        }
+                    });
+                    } else {
+                         $("#select-filter-3").empty();
+                    $.ajax({
+                        type: 'POST',
+                        url: '@Url.Action("GetAreaForCostRecovery")',
+                        data: { salesoffice: $("#select-filter-4").val(), model: $("#select-filter-5").val(), psltype: $("#select-filter-1").val(), pslstatus: $("#select-filter-2").val(), inventory: inventory, rental: rental, hid: hid, others: others, termDate: $("#termDate").val()},
+                        success: function (mems) {
+                            $.each(mems, function (i, member) {
+                                $("#select-filter-3").append('<option value="' + member.Value + '">' + member.Text + '</option>');
+                            });
+
+                            $("#select-filter-3").selectpicker('refresh');
+                        },
+                        error: function (ex) {
+
+                        }
+                    });
+                    }
+                }
+                $("#select-filter-3").selectpicker('refresh');
+            });
+
+            $("#select-filter-4").selectpicker();
+            $("#cb4").on('click', function () {
+                var that = $(this);
+                if (that.prop("checked") == true) {
+                    var selectFilter4 = $("#select-filter-4").val();
+                    if ($("#select-filter-1").val().length > 0 || $("#select-filter-2").val().length > 0 || $("#select-filter-3").val().length > 0 || $("#select-filter-5").val().length > 0 || inventory == "on" || rental == "on" || hid == "on" || others == "on" || $("#termDate").length > 0) {
+                        $("#select-filter-4").empty();
+                        $.ajax({
+                        type: 'POST',
+                        url: '@Url.Action("GetSalesOfficeForCostRecovery")',
+                        data: { area: $("#select-filter-3").val(), model: $("#select-filter-5").val(), psltype: $("#select-filter-1").val(), pslstatus: $("#select-filter-2").val(), inventory: inventory, rental: rental, hid: hid, others: others, termDate: $("#termDate").val()},
+                        success: function (mems) {
+                            $.each(mems, function (i, member) {
+                                $("#select-filter-4").append('<option value="' + member.Value + '">' + member.Text + '</option>');
+                            });
+
+                            $("#select-filter-4").selectpicker('refresh');
+                        },
+                        error: function (ex) {
+
+                        }
+                    });
+                    } else {
+                         $("#select-filter-4").empty();
+                    $.ajax({
+                        type: 'POST',
+                        url: '@Url.Action("GetSalesOfficeForCostRecovery")',
+                        data: { area: $("#select-filter-3").val(), model: $("#select-filter-5").val(), psltype: $("#select-filter-1").val(), pslstatus: $("#select-filter-2").val(), inventory: inventory, rental: rental, hid: hid, others: others, termDate: $("#termDate").val()},
+                        success: function (mems) {
+                            $.each(mems, function (i, member) {
+                                $("#select-filter-4").append('<option value="' + member.Value + '">' + member.Text + '</option>');
+                            });
+
+                            $("#select-filter-4").selectpicker('refresh');
+                        },
+                        error: function (ex) {
+
+                        }
+                    });
+                    }
+                }
+                $("#select-filter-4").selectpicker('refresh');
+            });
+
+            $("#select-filter-5").selectpicker();
+            $("#cb5").on('click', function () {
+                var that = $(this);
+                if (that.prop("checked") == true) {
+                    var selectFilter5 = $("#select-filter-5").val();
+                    if ($("#select-filter-1").val().length > 0 || $("#select-filter-2").val().length > 0 || $("#select-filter-3").val().length > 0 || $("#select-filter-4").val().length > 0 || inventory == "on" || rental == "on" || hid == "on" || others == "on" || $("#termDate").length > 0) {
+                        $("#select-filter-5").empty();
+                        $.ajax({
+                        type: 'POST',
+                        url: '@Url.Action("GetModelForCostRecovery")',
+                        data: { area: $("#select-filter-3").val(), salesoffice: $("#select-filter-4").val(), psltype: $("#select-filter-1").val(), pslstatus: $("#select-filter-2").val(), inventory: inventory, rental: rental, hid: hid, others: others, termDate: $("#termDate").val()},
+                        success: function (mems) {
+                            $.each(mems, function (i, member) {
+                                $("#select-filter-5").append('<option value="' + member.Value + '">' + member.Text + '</option>');
+                            });
+
+                            $("#select-filter-5").selectpicker('refresh');
+                        },
+                        error: function (ex) {
+
+                        }
+                    });
+                    } else {
+                         $("#select-filter-5").empty();
+                    $.ajax({
+                        type: 'POST',
+                        url: '@Url.Action("GetModelForCostRecovery")',
+                        data: { area: $("#select-filter-3").val(), salesoffice: $("#select-filter-4").val(), psltype: $("#select-filter-1").val(), pslstatus: $("#select-filter-2").val(), inventory: inventory, rental: rental, hid: hid, others: others, termDate: $("#termDate").val()},
+                        success: function (mems) {
+                            $.each(mems, function (i, member) {
+                                $("#select-filter-5").append('<option value="' + member.Value + '">' + member.Text + '</option>');
+                            });
+
+                            $("#select-filter-5").selectpicker('refresh');
+                        },
+                        error: function (ex) {
+
+                        }
+                    });
+                    }
+                }
+                $("#select-filter-5").selectpicker('refresh');
+            });
+
+            $("#cbinventory").on('click', function () {
+                var that = $(this);
+                if (that.prop("checked") == true) {
+                    $("#cbothers").attr("disabled", true);
+                } else {
+                    $("#cbothers").removeAttr("disabled");
+                }
+            });
+            $("#cbrental").on('click', function () {
+                var that = $(this);
+                if (that.prop("checked") == true) {
+                    $("#cbothers").attr("disabled", true);
+                } else {
+                    $("#cbothers").removeAttr("disabled");
+                }
+            });
+            $("#cbhid").on('click', function () {
+                var that = $(this);
+                if (that.prop("checked") == true) {
+                    $("#cbothers").attr("disabled", true);
+                } else {
+                    $("#cbothers").removeAttr("disabled");
+                }
+            });
+
+        });
+    </script>
+}

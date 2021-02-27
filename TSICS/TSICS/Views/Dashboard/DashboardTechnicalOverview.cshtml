@@ -1,0 +1,2230 @@
+@using Com.Trakindo.TSICS.Data.Model
+@{
+   Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
+    ViewBag.Title = "Dashboard";
+    var getDataFC = (GetFormCollectionOverview)ViewBag.ModelFormCollectionOverview;
+    var urlGet = "?type=" + ViewBag.FilterType + "&Area=" + getDataFC.Area + "&SalesOffice=" + getDataFC.SalesOffice + "&Customer=" + getDataFC.Customer + "&Family=" + getDataFC.Family + "&Industry=" + getDataFC.Industry + "&Model=" + getDataFC.Model + "&SerialNumber=" + getDataFC.SerialNumber + "&SmuRangeFrom=" + getDataFC.SMURangeFrom + "&SmuRangeTo=" + getDataFC.SMURangeTo + "&PurchaseDateFrom=" + getDataFC.PurchaseDateFrom + "&PurchaseDateEnd=" + getDataFC.PurchaseDateEnd + "&DeliveryDateFrom=" + getDataFC.DeliveryDateFrom + "&DeliveryDateEnd=" + getDataFC.DeliveryDateEnd + "&RepairDateFrom=" + getDataFC.LastRepairDateFrom + "&RepairDateEnd=" + getDataFC.LastRepairDateEnd + "&Plant=" + getDataFC.Plant + "&Product=" + getDataFC.Product + "&Hid=" + getDataFC.HID + "&Rental=" + getDataFC.Rental + "&Others=" + getDataFC.Others + "&paramsModel=" + ViewBag.Model + "&paramsSerialNumber=" + ViewBag.SerialNumber + "&btnPOST=" + getDataFC.btnPOST;
+
+
+}
+<style>
+    .separatorVertical {
+        background-color: #7f8c8d;
+        height: 25px;
+        width: 1px;
+        margin-left: 15px;
+        margin-right: 15px;
+    }
+
+    .dataTables_scrollHeadInner {
+        width: 100% !important;
+    }
+</style>
+<main class="body position-relative d-flex flex-column">
+    <div data-active_page="admin--dashboard--overview" class="content-wrap flex-fill">
+        <section class="position-relative mt-5">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12 position-relative">
+                        <section class="mb-3">
+                            <div class="d-sm-flex justify-content-between align-items-center mb-3">
+                                <h2 class="h4-size">Technical Overview</h2>
+                                @*<div class="small text-muted"><i class="far fa-clock mr-2"></i><span>Edited 1w ago</span></div>*@
+                            </div>
+                        </section>
+                        <section>
+                            <form id="form--dashboard-overview" method="POST">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="card bg-white shadow-sm border-0 mb-3">
+                                            <nav class="card-navbar navbar navbar-dark bg-warning text-white">
+                                                <div class="left d-flex align-items-center">
+                                                    <div class="h4 font-secondary mb-0">Filters</div>
+                                                </div>
+                                                <div class="right">
+                                                    <button data-toggle="collapse" data-target="#collapse-target-1" type="button" class="btn btn-sm bg-transparent rounded-pill text-white btn-toggle-arrow"><i class="fa fa-chevron-right"></i></button>
+                                                </div>
+                                            </nav>
+                                            <fieldset id="collapse-target-1" class="collapse show">
+                                                <div class="card-body">
+                                                    <div class="alert alert-warning" @(ViewBag.FilterType == 0 ? "style=display:none;" : "") id="Message" role="alert">
+                                                        @(ViewBag.FilterType == 0 ? "" : ViewBag.FilterType == 1 ? "Inventory cant be selected simultaneously with Rental and HID" : "Rental and HID cant be selected simultaneously with Inventory")
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group form-inline">
+                                                            <label id="checkbox-inventory" class="custom-checkbox form-check mr-4" @(ViewBag.FilterType == 0 ? "" : ViewBag.FilterType == 1 ? "" : "style=display:none;")>
+                                                                <input type="checkbox" id="cb-inventory" name="inventory" @(ViewBag.FilterType == 1 ? "checked" : "") onchange="filter_checkbox(this.value)" value="1" class="form-check-input checkbox-filter-1 activating-others">
+                                                                <div class="form-check-label custom-label"><i class="icon fa fa-check"></i><span class="text">Inventory</span></div>
+                                                            </label>
+                                                            <div @(ViewBag.FilterType != 0 ? "style=display:none;" : "") class="separatorVertical"></div>
+                                                            <label id="checkbox-rental" class="custom-checkbox form-check mr-4" @(ViewBag.FilterType == 1 ? "style=display:none;" : "")>
+                                                                <input type="checkbox" id="cb-rental" name="rental" @(getDataFC.Rental == "2" ? "checked" : "") onchange="filter_checkbox(this.value)" value="2" class="form-check-input checkbox-filter-1 activating-others">
+                                                                <div class="form-check-label custom-label"><i class="icon fa fa-check"></i><span class="text">Rental</span></div>
+                                                            </label>
+                                                            <label id="checkbox-hid" class="custom-checkbox form-check mr-4" @(ViewBag.FilterType == 1 ? "style=display:none;" : "")>
+                                                                <input type="checkbox" id="cb-hid" name="hid" @(getDataFC.HID == "3" ? "checked" : "") onchange="filter_checkbox(this.value)" value="3" class="form-check-input checkbox-filter-1 activating-others">
+                                                                <div class="form-check-label custom-label"><i class="icon fa fa-check"></i><span class="text">HID</span></div>
+                                                            </label>
+                                                            <label id="checkbox-other" class="custom-checkbox form-check mr-4" @(ViewBag.FilterType == 1 ? "style=display:none;" : "")>
+                                                                <input type="checkbox" id="cb-other" name="other" @(getDataFC.Others == "4" ? "checked" : "") onchange="filter_checkbox(this.value)" value="4" data-enable-if=".activating-others" class="form-check-input checkbox-filter-1 ">
+                                                                <div class="form-check-label custom-label"><i class="icon fa fa-check"></i><span class="text">Others</span></div>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="row mb-3">
+                                                            <div class="col-md-6">
+                                                                <div class="form-group mr-3">
+                                                                    <label class="small">Select Filter by:</label>
+                                                                    <div class="input-group">
+                                                                        <select onchange="filter(this.value)" id="filter-1" data-title="Select Value" data-style="border bg-white rounded-0" data-width="100%" data-size="5" class="selectpicker">
+                                                                            @if (ViewBag.FilterType == 1)
+                                                                            {
+                                                                                <option style="display:none;" value="1">Area</option>
+                                                                                <option style="display:none;" value="2">Location / Sales Office</option>
+                                                                                <option style="display:none;" value="3">Customer</option>
+                                                                                <option style="display:none;" value="4">Industry</option>
+                                                                                <option style="display:none;" value="5">Family</option>
+                                                                                <option style="display:none;" value="6">Model</option>
+                                                                                <option style="display:none;" value="7">Serial Number</option>
+                                                                                <option style="display:none;" value="8">SMU Range</option>
+                                                                                <option style="display:none;" value="9">Purchase Date</option>
+                                                                                <option style="display:none;" value="10">Delivery Date</option>
+                                                                                <option style="display:none;" value="11">Last Repair Date</option>
+
+                                                                                 <!--==============Inventory================-->
+                                                                                <option value="12">Customer</option>
+                                                                                <option value="13">Model</option>
+                                                                                <option value="14">Serial Number</option>
+                                                                                <option value="15">Product</option>
+                                                                                <option value="16">Plant Description</option>
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <option value="1">Area</option>
+                                                                                <option value="2">Location / Sales Office</option>
+                                                                                <option value="3">Customer</option>
+                                                                                <option value="4">Industry</option>
+                                                                                <option value="5">Family</option>
+                                                                                <option value="6">Model</option>
+                                                                                <option value="7">Serial Number</option>
+                                                                                <option value="8">SMU Range</option>
+                                                                                <option value="9">Purchase Date</option>
+                                                                                <option value="10">Delivery Date</option>
+                                                                                <option value="11">Last Repair Date</option>
+                                                                                <!--==============Inventory================-->
+                                                                                <option style="display:none;" value="12">Customer</option>
+                                                                                <option style="display:none;" value="13">Model</option>
+                                                                                <option style="display:none;" value="14">Serial Number</option>
+                                                                                <option style="display:none;" value="15">Product</option>
+                                                                                <option style="display:none;" value="16">Plant Description</option>
+                                                                            }
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div id="dropdown-filter-2" class="col-md-6">
+                                                                <div id="cb-mep-value">
+                                                                    <div style="display:none" id="valueArea">
+                                                                        <div class="form-group mr-3">
+                                                                            <div class="row">
+                                                                                <div class="col-10">
+                                                                                    <label>Select Area Value</label>
+                                                                                </div>
+                                                                                <div class="col-2">
+                                                                                    <button type="button" onclick="hide(1)" class="btn btn-transparent btn-sm ml-4">
+                                                                                        <i class="fas fa-minus"></i>
+                                                                                    </button>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="add-tag-wrap rounded-lg border bg-light">
+                                                                                <input data-add_tag_input="#add-tag-list-1" data-add_tag_options="{'input_name': 'Area', 'prevent_input': true, 'is_unique': true, 'autocomplete_ajax': '@Url.Action("GetAreaOverview", "Dashboard")', 'fetch_onkeypress': 3 }" list="data-list-1" type="text" class="bg-white flex-fill form-control border-0 px-md-3">
+                                                                                <datalist id="data-list-1"></datalist>
+                                                                                <div id="add-tag-list-1" class="row no-gutters"></div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div style="display:none" id="valueSalesOffice">
+                                                                        <div class="form-group mr-3">
+                                                                            <div class="row">
+                                                                                <div class="col-10">
+                                                                                    <label>Select Sales Office Value</label>
+                                                                                </div>
+                                                                                <div class="col-2">
+                                                                                    <button type="button" onclick="hide(2)" class="btn btn-transparent btn-sm ml-4">
+                                                                                        <i class="fas fa-minus"></i>
+                                                                                    </button>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="add-tag-wrap rounded-lg border bg-light">
+                                                                                <input data-add_tag_input="#add-tag-list-2" data-add_tag_options="{'input_name': 'SalesOffice', 'prevent_input': true, 'is_unique': true, 'autocomplete_ajax': '@Url.Action("GetSalesOfficeOverview", "Dashboard")', 'fetch_onkeypress': 3 }" list="data-list-2" type="text" class="bg-white flex-fill form-control border-0 px-md-3">
+                                                                                <datalist id="data-list-2"></datalist>
+                                                                                <div id="add-tag-list-2" class="row no-gutters"></div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div style="display:none" id="valueCustomerMEP">
+                                                                        <div class="form-group mr-3">
+                                                                            <div class="row">
+                                                                                <div class="col-10">
+                                                                                    <label>Select Customer Value</label>
+                                                                                </div>
+                                                                                <div class="col-2">
+                                                                                    <button type="button" onclick="hide(3)" class="btn btn-transparent btn-sm ml-4">
+                                                                                        <i class="fas fa-minus"></i>
+                                                                                    </button>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="add-tag-wrap rounded-lg border bg-light">
+                                                                                <input data-add_tag_input="#add-tag-list-3" data-add_tag_options="{'input_name': 'CustomerMEP', 'prevent_input': true, 'is_unique': true, 'autocomplete_ajax': '@Url.Action("GetCustomerMEPOverview", "Dashboard")', 'fetch_onkeypress': 3 }" list="data-list-3" type="text" class="bg-white flex-fill form-control border-0 px-md-3">
+                                                                                <datalist id="data-list-3"></datalist>
+                                                                                <div id="add-tag-list-3" class="row no-gutters"></div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div style="display:none" id="valueIndustry">
+                                                                        <div class="form-group mr-3">
+                                                                            <div class="row">
+                                                                                <div class="col-10">
+                                                                                    <label>Select Industry Value</label>
+                                                                                </div>
+                                                                                <div class="col-2">
+                                                                                    <button type="button" onclick="hide(4)" class="btn btn-transparent btn-sm ml-4">
+                                                                                        <i class="fas fa-minus"></i>
+                                                                                    </button>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="add-tag-wrap rounded-lg border bg-light">
+                                                                                <input data-add_tag_input="#add-tag-list-4" data-add_tag_options="{'input_name': 'Industry', 'prevent_input': true, 'is_unique': true, 'autocomplete_ajax': '@Url.Action("GetIndustryOverview", "Dashboard")', 'fetch_onkeypress': 3 }" list="data-list-4" type="text" class="bg-white flex-fill form-control border-0 px-md-3">
+                                                                                <datalist id="data-list-4"></datalist>
+                                                                                <div id="add-tag-list-4" class="row no-gutters"></div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div style="display:none" id="valueFamily">
+                                                                        <div class="form-group mr-3">
+                                                                            <div class="row">
+                                                                                <div class="col-10">
+                                                                                    <label>Select Family Value</label>
+                                                                                </div>
+                                                                                <div class="col-2">
+                                                                                    <button type="button" onclick="hide(5)" class="btn btn-transparent btn-sm ml-4">
+                                                                                        <i class="fas fa-minus"></i>
+                                                                                    </button>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="add-tag-wrap rounded-lg border bg-light">
+                                                                                <input data-add_tag_input="#add-tag-list-5" data-add_tag_options="{'input_name': 'Family', 'prevent_input': true, 'is_unique': true, 'autocomplete_ajax': '@Url.Action("GetFamilyOverview", "Dashboard")', 'fetch_onkeypress': 3 }" list="data-list-5" type="text" class="bg-white flex-fill form-control border-0 px-md-3">
+                                                                                <datalist id="data-list-5"></datalist>
+                                                                                <div id="add-tag-list-5" class="row no-gutters"></div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div style="display:none" id="valueModelMEP">
+                                                                        <div class="form-group mr-3">
+                                                                            <div class="row">
+                                                                                <div class="col-10">
+                                                                                    <label>Select Model Value</label>
+                                                                                </div>
+                                                                                <div class="col-2">
+                                                                                    <button type="button" onclick="hide(6)" class="btn btn-transparent btn-sm ml-4">
+                                                                                        <i class="fas fa-minus"></i>
+                                                                                    </button>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="add-tag-wrap rounded-lg border bg-light">
+                                                                                <input data-add_tag_input="#add-tag-list-6" data-add_tag_options="{'input_name': 'ModelMEP', 'prevent_input': true, 'is_unique': true, 'autocomplete_ajax': '@Url.Action("GetModelMEPOverview", "Dashboard")', 'fetch_onkeypress': 1 }" list="data-list-6" type="text" class="bg-white flex-fill form-control border-0 px-md-3">
+                                                                                <datalist id="data-list-6"></datalist>
+                                                                                <div id="add-tag-list-6" class="row no-gutters"></div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div style="display:none" id="valueSerialNumberMEP">
+                                                                        <div class="form-group mr-3">
+                                                                            <div class="row">
+                                                                                <div class="col-10">
+                                                                                    <label>Select Serial Number Value</label>
+                                                                                </div>
+                                                                                <div class="col-2">
+                                                                                    <button type="button" onclick="hide(7)" class="btn btn-transparent btn-sm ml-4">
+                                                                                        <i class="fas fa-minus"></i>
+                                                                                    </button>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="add-tag-wrap rounded-lg border bg-light">
+                                                                                <input data-add_tag_input="#add-tag-list-7" data-add_tag_options="{'input_name': 'SerialNumberMEP', 'prevent_input': true, 'is_unique': true, 'autocomplete_ajax': '@Url.Action("GetSerialNumberMEPOverview", "Dashboard")', 'fetch_onkeypress': 3 }" list="data-list-7" type="text" class="bg-white flex-fill form-control border-0 px-md-3">
+                                                                                <datalist id="data-list-7"></datalist>
+                                                                                <div id="add-tag-list-7" class="row no-gutters"></div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-7" style="display:none" id="valueSMURange">
+                                                                        <div class="form-group mr-3">
+                                                                            <label class="custom-checkbox form-check" style="margin-top:5px; margin-bottom:9px;">
+                                                                                <div class="row">
+                                                                                    <div class="col-10">
+                                                                                        <input id="cb8" type="checkbox" data-checkbox-toggle-disable="{'target': '.select-filter-8'}" class="form-check-input mt-2">
+                                                                                        <div class="form-check-label custom-label"><i class="icon fa fa-check"></i><span class="text">SMU Range</span></div>
+                                                                                    </div>
+                                                                                    <div class="col-2">
+                                                                                        <button type="button" onclick="hide(8)" class="btn btn-transparent btn-sm ml-4">
+                                                                                            <i class="fas fa-minus"></i>
+                                                                                        </button>
+                                                                                    </div>
+                                                                                </div>
+                                                                                 </label>
+                                                                            <div class="input-group">
+                                                                                <div class="col">
+                                                                                    <div class="">From</div>
+                                                                                    <input name="SMURangeFrom" id="smu-from" class="form-control select-filter-8" type="number" minlength="0" value="0" disabled />
+                                                                                </div>
+                                                                                <div class="col">
+                                                                                    <div class="">To</div>
+                                                                                    <input name="SMURangeTo" id="smu-to" class="form-control select-filter-8" type="number" minlength="0" value="0" disabled />
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div style="display:none" id="valuePurchaseDate">
+                                                                        <div class="form-group mr-3">
+                                                                                <div class="row">
+                                                                                    <div class="col-10">
+                                                                                        <label>Choose Purchase Date</label>
+                                                                                    </div>
+                                                                                    <div class="col-2">
+                                                                                        <button type="button" onclick="hide(9)" class="btn btn-transparent btn-sm ml-4">
+                                                                                            <i class="fas fa-minus"></i>
+                                                                                        </button>
+                                                                                    </div>
+                                                                                </div>
+                                                                            <div class="input-group">
+                                                                                <input type="text" name="purchaseDate" readonly="readonly" class="form-control bg-white rounded-0 border-right-0 datepicker-range dropdown-item-1" id="select-filter-9">
+                                                                                <div class="input-group-append">
+                                                                                    <label class="btn border-left-0 input-group-text bg-white rounded-0 d-table"><i class="fa fa-calendar"></i></label>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div style="display:none" id="valueDeliveryDate">
+                                                                        <div class="form-group mr-3">
+                                                                            <div class="row">
+                                                                                <div class="col-10">
+                                                                                    <label>Choose Delivery Date</label>
+                                                                                </div>
+                                                                                <div class="col-2">
+                                                                                    <button type="button" onclick="hide(10)" class="btn btn-transparent btn-sm ml-4">
+                                                                                        <i class="fas fa-minus"></i>
+                                                                                    </button>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="input-group">
+                                                                                <input type="text" name="deliveryDate" readonly="readonly" class="form-control bg-white rounded-0 border-right-0 datepicker-range dropdown-item-1" id="select-filter-10">
+                                                                                <div class="input-group-append">
+                                                                                    <label class="btn border-left-0 input-group-text bg-white rounded-0 d-table"><i class="fa fa-calendar"></i></label>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div style="display:none" id="valueLastRepairDate">
+                                                                        <div class="form-group mr-3">
+                                                                            <div class="row">
+                                                                                <div class="col-10">
+                                                                                    <label>Choose Last Repair Date</label>
+                                                                                </div>
+                                                                                <div class="col-2">
+                                                                                    <button type="button" onclick="hide(11)" class="btn btn-transparent btn-sm ml-4">
+                                                                                        <i class="fas fa-minus"></i>
+                                                                                    </button>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="input-group">
+                                                                                <input type="text" name="repairDate" readonly="readonly" class="form-control bg-white rounded-0 border-right-0 datepicker-range dropdown-item-1" id="select-filter-11">
+                                                                                <div class="input-group-append">
+                                                                                    <label class="btn border-left-0 input-group-text bg-white rounded-0 d-table"><i class="fa fa-calendar"></i></label>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div id="cb-inventory-value">
+                                                                    <div style="display:none" id="valueCustomer">
+                                                                        <div class="form-group mr-3">
+                                                                            <div class="row">
+                                                                                <div class="col-10">
+                                                                                    <label>Select Customer Value</label>
+                                                                                </div>
+                                                                                <div class="col-2">
+                                                                                    <button type="button" onclick="hide(12)" class="btn btn-transparent btn-sm ml-4">
+                                                                                        <i class="fas fa-minus"></i>
+                                                                                    </button>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="add-tag-wrap rounded-lg border bg-light">
+                                                                                <input data-add_tag_input="#add-tag-list-11" data-add_tag_options="{'input_name': 'Customer', 'prevent_input': true, 'is_unique': true, 'autocomplete_ajax': '@Url.Action("GetCustomerOverview", "Dashboard")', 'fetch_onkeypress': 3 }" list="data-list-11" type="text" class="bg-white flex-fill form-control border-0 px-md-3">
+                                                                                <datalist id="data-list-11"></datalist>
+                                                                                <div id="add-tag-list-11" class="row no-gutters"></div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div style="display:none" id="valueModel">
+                                                                        <div class="form-group mr-3">
+                                                                            <div class="row">
+                                                                                <div class="col-10">
+                                                                                    <label>Select Model Value</label>
+                                                                                </div>
+                                                                                <div class="col-2">
+                                                                                    <button type="button" onclick="hide(13)" class="btn btn-transparent btn-sm ml-4">
+                                                                                        <i class="fas fa-minus"></i>
+                                                                                    </button>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="add-tag-wrap rounded-lg border bg-light">
+                                                                                <input data-add_tag_input="#add-tag-list-12" data-add_tag_options="{'input_name': 'Model', 'prevent_input': true, 'is_unique': true, 'autocomplete_ajax': '@Url.Action("GetModelOverview", "Dashboard")', 'fetch_onkeypress': 1 }" list="data-list-12" type="text" class="bg-white flex-fill form-control border-0 px-md-3">
+                                                                                <datalist id="data-list-12"></datalist>
+                                                                                <div id="add-tag-list-12" class="row no-gutters"></div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div style="display:none" id="valueSerialNumber">
+                                                                        <div class="form-group mr-3">
+                                                                            <div class="row">
+                                                                                <div class="col-10">
+                                                                                    <label>Select Serial Number Value</label>
+                                                                                </div>
+                                                                                <div class="col-2">
+                                                                                    <button type="button" onclick="hide(14)" class="btn btn-transparent btn-sm ml-4">
+                                                                                        <i class="fas fa-minus"></i>
+                                                                                    </button>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="add-tag-wrap rounded-lg border bg-light">
+                                                                                <input data-add_tag_input="#add-tag-list-13" data-add_tag_options="{'input_name': 'SerialNumber', 'prevent_input': true, 'is_unique': true, 'autocomplete_ajax': '@Url.Action("GetSNOverview", "Dashboard")', 'fetch_onkeypress': 3 }" list="data-list-13" type="text" class="bg-white flex-fill form-control border-0 px-md-3">
+                                                                                <datalist id="data-list-13"></datalist>
+                                                                                <div id="add-tag-list-13" class="row no-gutters"></div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div style="display:none" id="valueProduct">
+                                                                        <div class="form-group mr-3">
+                                                                            <div class="row">
+                                                                                <div class="col-10">
+                                                                                    <label>Select Product Value</label>
+                                                                                </div>
+                                                                                <div class="col-2">
+                                                                                    <button type="button" onclick="hide(15)" class="btn btn-transparent btn-sm ml-4">
+                                                                                        <i class="fas fa-minus"></i>
+                                                                                    </button>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="add-tag-wrap rounded-lg border bg-light">
+                                                                                <input data-add_tag_input="#add-tag-list-14" data-add_tag_options="{'input_name': 'Product', 'prevent_input': true, 'is_unique': true, 'autocomplete_ajax': '@Url.Action("GetProductOverview", "Dashboard")', 'fetch_onkeypress': 1 }" list="data-list-14" type="text" class="bg-white flex-fill form-control border-0 px-md-3">
+                                                                                <datalist id="data-list-14"></datalist>
+                                                                                <div id="add-tag-list-14" class="row no-gutters"></div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div style="display:none" id="valuePlant">
+                                                                        <div class="form-group mr-3">
+                                                                            <div class="row">
+                                                                                <div class="col-10">
+                                                                                    <label>Select Plant Description Value</label>
+                                                                                </div>
+                                                                                <div class="col-2">
+                                                                                    <button type="button" onclick="hide(16)" class="btn btn-transparent btn-sm ml-4">
+                                                                                        <i class="fas fa-minus"></i>
+                                                                                    </button>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="add-tag-wrap rounded-lg border bg-light">
+                                                                                <input data-add_tag_input="#add-tag-list-10" data-add_tag_options="{'input_name': 'PlantDescription', 'prevent_input': true, 'is_unique': true, 'autocomplete_ajax': '@Url.Action("GetPlantOverview", "Dashboard")', 'fetch_onkeypress': 3 }" list="data-list-15" type="text" class="bg-white flex-fill form-control border-0 px-md-3">
+                                                                                <datalist id="data-list-10"></datalist>
+                                                                                <div id="add-tag-list-10" class="row no-gutters"></div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        @if (getDataFC.Area != "" || getDataFC.SalesOffice != "" || getDataFC.Customer != "" || getDataFC.Family != "" || getDataFC.Industry != ""|| getDataFC.Model != "" || getDataFC.SerialNumber != "" || getDataFC.SMURangeFrom != 0 || getDataFC.SMURangeTo != 0 || getDataFC.PurchaseDateFrom != "" || getDataFC.PurchaseDateEnd != "" || getDataFC.DeliveryDateFrom != "" || getDataFC.DeliveryDateEnd != "" || getDataFC.LastRepairDateFrom != "" || getDataFC.LastRepairDateEnd != "" || !String.IsNullOrWhiteSpace(getDataFC.Plant) || !String.IsNullOrWhiteSpace(getDataFC.Product))
+                                                        {
+                                                               <div>Filter <p id="filterBy" class="badge badge-warning">@(ViewBag.FilterType != 1 ?  "By MEP Data": "By Inventory Data")</p> :</div>
+                                                        }
+                                                               <div class="col-md-12">
+                                                                   @if (!String.IsNullOrEmpty(getDataFC.Area))
+                                                                   {
+                                                                       <div class="form-group mr-3">
+                                                                           <p>Area : @getDataFC.Area</p>
+                                                                       </div>
+                                                                   }
+                                                                   @if (!String.IsNullOrEmpty(getDataFC.Customer))
+                                                                   {
+                                                                       <div class="form-group mr-3">
+                                                                           <p>Customer : @getDataFC.Customer</p>
+                                                                       </div>
+                                                                   }
+                                                                   @if (!String.IsNullOrEmpty(getDataFC.SalesOffice))
+                                                                   {
+                                                                       <div class="form-group mr-3">
+                                                                           <p>Sales Office : @getDataFC.SalesOffice</p>
+                                                                       </div>
+                                                                   }
+                                                                   @if (!String.IsNullOrEmpty(getDataFC.Family))
+                                                                   {
+                                                                       <div class="form-group mr-3">
+                                                                           <p>Family : @getDataFC.Family</p>
+                                                                       </div>
+                                                                   }
+                                                                   @if (!String.IsNullOrEmpty(getDataFC.Industry))
+                                                                   {
+                                                                       <div class="form-group mr-3">
+                                                                           <p>Industry : @getDataFC.Industry</p>
+                                                                       </div>
+                                                                   }
+                                                                   @if (!String.IsNullOrEmpty(getDataFC.Model))
+                                                                   {
+                                                                       <div class="form-group mr-3">
+                                                                           <p>Model :@getDataFC.Model</p>
+                                                                       </div>
+                                                                   }
+                                                                   @if (!String.IsNullOrEmpty(getDataFC.SerialNumber))
+                                                                   {
+                                                                       <div class="form-group mr-3">
+                                                                           <p>Serial Number : @getDataFC.SerialNumber</p>
+                                                                       </div>
+                                                                   }
+                                                                   @if (getDataFC.SMURangeFrom != 0 && getDataFC.SMURangeTo != 0)
+                                                                   {
+                                                                       <div class="form-group mr-3">
+                                                                           <p>SMU Range : @getDataFC.SMURangeFrom Until @getDataFC.SMURangeTo</p>
+                                                                       </div>
+                                                                   }
+                                                                   else if (getDataFC.SMURangeFrom != 0 && getDataFC.SMURangeTo == 0)
+                                                                   {
+                                                                       <div class="form-group mr-3">
+                                                                           <p>SMU Range : More Than @getDataFC.SMURangeFrom</p>
+                                                                       </div>
+                                                                   }
+                                                                   else if (getDataFC.SMURangeFrom == 0 && getDataFC.SMURangeTo != 0)
+                                                                   {
+                                                                       <div class="form-group mr-3">
+                                                                           <p>SMU Range : Less Than @getDataFC.SMURangeTo</p>
+                                                                       </div>
+                                                                   }
+                                                                   @if (!String.IsNullOrEmpty(getDataFC.DeliveryDateFrom) && !String.IsNullOrEmpty(getDataFC.DeliveryDateEnd))
+                                                                   {
+                                                                       <div class="form-group mr-3">
+                                                                           <p>Delivery Date : @getDataFC.DeliveryDateFrom until @getDataFC.DeliveryDateEnd</p>
+                                                                       </div>
+                                                                   }
+                                                                   @if (!String.IsNullOrEmpty(getDataFC.PurchaseDateFrom) && !String.IsNullOrEmpty(getDataFC.PurchaseDateEnd))
+                                                                   {
+                                                                       <div class="form-group mr-3">
+                                                                           <p>Purchase Date : @getDataFC.PurchaseDateFrom until @getDataFC.PurchaseDateEnd</p>
+                                                                       </div>
+                                                                   }
+                                                                   @if (!String.IsNullOrEmpty(getDataFC.LastRepairDateFrom) && !String.IsNullOrEmpty(getDataFC.LastRepairDateEnd))
+                                                                   {
+                                                                       <div class="form-group mr-3">
+                                                                           <p>Last Repair Date : @getDataFC.LastRepairDateFrom until @getDataFC.LastRepairDateEnd</p>
+                                                                       </div>
+                                                                   }
+                                                                   @if (!String.IsNullOrEmpty(getDataFC.Plant))
+                                                                   {
+                                                                       <div class="form-group mr-3">
+                                                                           <p>Plant Description : @getDataFC.Plant</p>
+                                                                       </div>
+                                                                   }
+                                                                   @if (!String.IsNullOrEmpty(getDataFC.Product))
+                                                                   {
+                                                                       <div class="form-group mr-3">
+                                                                           <p>Product : @getDataFC.Product</p>
+                                                                       </div>
+                                                                   }
+
+                                                               </div>
+                                                    </div>
+
+                                                    <div class="col-md-12">
+                                                        <div class="text-center">
+                                                            <input type="hidden" name="filterType" value="@ViewBag.FilterType" id="submit-filter" />
+                                                            <button type="submit" class="btn btn-warning btn-show-result px-4 py-2">Show Result</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </fieldset>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </section>
+                        <section>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="card bg-white shadow-sm border-0 mb-3">
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-12 d-flex justify-content-end">
+                                                    <button type="button" id="btn-reset-form" style="display: none;" class="btn btn-primary mb-4"><i class="fas fa-sync-alt"></i><span class="ml-2">Reset Form</span></button>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-9">
+                                                    <div data-map-indo="{'api': '@Url.Action("MapDistribution", "Dashboard")@urlGet'}" class="map-wrap position-relative z-index-10 mb-3">
+                                                        <div id="map" style="height: 460px; "></div>
+                                                        <input type="text" name="map-id" value="all" class="d-none">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div id="table--model-count" data-table_target="#table--model-count-init" data-dt-api="@Url.Action("TableModelOverview", "Dashboard")@urlGet" data-script-var="dt_model_count" class="table-responsive">
+                                                        <table id="table--model-count-init" class="table table-bordered small text-secondary table-dt w-100">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th style="width :auto;">Model</th>
+                                                                    <th style="width :auto;">Count</th>
+                                                                </tr>
+                                                            </thead>
+                                                        </table>
+                                                        <script>
+                                                            var dt_model_count = [
+                                                                {
+                                                                    data: 'model',
+                                                                    render: function (data, type, row) {
+                                                                        var html = data.style
+                                                                        html =  html + '<a href="@ViewBag.urlModel&paramsModel='+ data.value +'">' + data.value + '</a>'
+                                                                        return html
+                                                                    }
+                                                                },
+                                                                {
+                                                                    data: 'count',
+                                                                    render: function (data, type, row) {
+                                                                        var html = ''
+                                                                        html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                                                        return html
+                                                                    }
+                                                                },
+                                                            ]
+
+                                                        </script>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div id="table--map-wrap" class="card">
+                                                <div class="card-header justify-content-end">
+                                                <span style="font-size:14px;">Serial Number Table</span>
+                                                    
+                                                </div>
+                                                <div class="card-body">
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div id="table--map" data-table_target="#table--map-init" data-dt-params="{'model': 1, 'count': 1}" data-dt-api="@Url.Action("GetTicketOverview", "Dashboard")@urlGet" data-params-update="{'title':'serial_no', 'api_key' :'serial_number_disabled'}" class="table-responsive tr-clickable">
+
+                                                                <table id="table--map-init" class="table table-dt">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th><small>SERIAL NUMBER</small></th>
+                                                                            <th><small>SMU</small></th>
+                                                                            <th><small>SMU UPDATE</small></th>
+                                                                            <th><small>LAST SERVICED</small></th>
+                                                                            <th><small>DELIVERY DATE</small></th>
+                                                                            <th><small>PURCHASE DATE</small></th>
+                                                                            <th><small>INDUSTRY</small></th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                </table>
+                                                                <script>
+                                                                    var column_dt_table = [
+                                                                        {
+                                                                            data: 'serial_number',
+                                                                            render: function (data, type, row) {
+                                                                                var html = data.style
+                                                                                html = html +'<a href="@ViewBag.urlModel&paramsModel=@ViewBag.Model&paramsSerialNumber=' + data.value + '">' + data.value + '</span>'
+                                                                                return html
+                                                                            }
+                                                                        },
+                                                                        {
+                                                                            data: 'smu',
+                                                                            render: function (data, type, row) {
+                                                                                var html = ''
+                                                                                html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                                                                return html
+                                                                            }
+                                                                        },
+                                                                        {
+                                                                            data: 'smu_update',
+                                                                            render: function (data, type, row) {
+                                                                                var html = ''
+                                                                                html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                                                                return html
+                                                                            }
+                                                                        },
+                                                                        {
+                                                                            data: 'last_serviced',
+                                                                            render: function (data, type, row) {
+                                                                                var html = ''
+                                                                                html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                                                                return html
+                                                                            }
+                                                                        },
+                                                                        {
+                                                                            data: 'delivery_date',
+                                                                            render: function (data, type, row) {
+                                                                                var html = ''
+                                                                                html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                                                                return html
+                                                                            }
+                                                                        },
+                                                                        {
+                                                                            data: 'purchase_date',
+                                                                            render: function (data, type, row) {
+                                                                                var html = ''
+                                                                                html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                                                                return html
+                                                                            }
+                                                                        },
+                                                                        {
+                                                                            data: 'industry',
+                                                                            render: function (data, type, row) {
+                                                                                var html = ''
+                                                                                html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                                                                return html
+                                                                            }
+                                                                        }
+                                                                    ]
+                                                                </script>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div id="accordion-parent" class="accordion">
+                                        <div class="card bg-white shadow-sm border-0 mb-3">
+                                            <nav class="card-navbar navbar navbar-dark bg-warning text-white">
+                                                <div class="left d-flex align-items-center">
+                                                    <div class="h4 font-secondary mb-0">Related DPPM</div>
+                                                    <div class="small ml-3"><span>Total Data: @ViewBag.RelatedDPPMDataCount</span></div>
+                                                </div>
+                                                <div class="right">
+                                                    <button data-toggle="collapse" data-target="#collapse-target-RelatedDPPM" type="button" class="btn btn-sm bg-transparent rounded-pill text-white btn-toggle-arrow"><i class="fa fa-chevron-right"></i></button>
+                                                </div>
+                                            </nav>
+                                            <fieldset id="collapse-target-RelatedDPPM" class="collapse auto-close">
+                                                <div id="two-rel-dppm-append" class="card-body">
+
+                                                    @if (ViewBag.RelatedDPPMData.Count > 0)
+                                                    {
+                                                        foreach (var data in ViewBag.RelatedDPPMData)
+                                                        {
+                                                            <div class="card bg-white mb-3">
+                                                                <nav class="navbar d-flex justify-content-between small">
+                                                                    <div style="" class="d-flex align-items-center">
+                                                                        <div data-reinit="{'related_tr': '@data.SRNumber'}" data-exclude='twoRelatedTr' class="d-flex justify-content-between">
+                                                                            <span class="mr-1">@data.SRNumber</span>
+                                                                        </div>
+                                                                        <span class="ml-3">@data.Title</span>
+                                                                    </div>
+                                                                    <div class="d-flex align-items-center">
+                                                                        <div class="mr-3">@data.Status / @data.SubStatus</div>
+                                                                        <div class="mr-2">Age : @(DateTime.Today.Subtract(data.CreateOn).Days.ToString()) Days</div>
+                                                                        <button data-toggle="collapse" data-target="#collapse-@data.SRNumber" type="button" class="btn btn-sm bg-transparent rounded-pill btn-toggle-arrow">
+                                                                            <i class="fa fa-chevron-right small"></i>
+                                                                        </button>
+                                                                    </div>
+                                                                </nav>
+                                                                <fieldset id="collapse-@data.SRNumber" class="collapse auto-close" style="">
+                                                                    <div class="card-body small border-top">
+
+                                                                        <div class="row mb-3">
+                                                                            <div class="col-md-8">
+                                                                                <div class="text-primary" style="font-size:17px;">
+                                                                                    <strong>Problem Description</strong>
+                                                                                </div>
+                                                                                <div class="text-dark">@(!String.IsNullOrWhiteSpace(data.ProblemDescription) ? data.ProblemDescription : "N/A")</div>
+                                                                                <div class="text-primary mt-4" style="font-size:17px;">
+                                                                                    <strong>Interim Actions</strong>
+                                                                                </div>
+                                                                                <div class="text-dark">@(!String.IsNullOrWhiteSpace(data.ICA) ? data.ICA : "N/A")</div>
+                                                                                <div class="text-primary mt-4" style="font-size:17px;">
+                                                                                    <strong>Permanent Corrective Action</strong>
+                                                                                </div>
+                                                                                <div class="text-dark">@(!String.IsNullOrWhiteSpace(data.PCA) ? data.PCA : "N/A")</div>
+                                                                            </div>
+                                                                            <div class="col-md-4">
+                                                                                <div class="text-primary" style="font-size:17px;"><Strong>Dealer Contact</Strong></div>
+                                                                                <div class="text-dark">@(!String.IsNullOrWhiteSpace(data.DealerContactName) ? data.DealerContactName : "N/A") </div>
+                                                                                <div class="text-primary mt-4" style="font-size:17px;"><Strong>Tech Rep</Strong></div>
+                                                                                <div class="text-dark">@(!String.IsNullOrWhiteSpace(data.TechRep)? data.TechRep : "N/A" )</div>
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </div>
+                                                                </fieldset>
+                                                            </div>
+
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        <div class="text-center my-4">No Data Related DPPM Available</div>
+                                                    }
+                                                </div>
+                                                @*</script>*@
+
+                                            </fieldset>
+                                        </div>
+                                        <div class="card bg-white shadow-sm border-0 rounded-0 mb-3">
+                                            <nav class="card-navbar navbar navbar-dark bg-warning text-white">
+                                                <div class="left d-flex align-items-center">
+                                                    <div class="h4 font-secondary mb-0">PSL Update</div>
+                                                    <div class="small ml-3"><span>Total Data: </span><span id="table-PSL-total"></span></div>
+                                                </div>
+                                                <div class="right">
+                                                    <button data-toggle="collapse" data-target="#collapse-target-4" type="button" class="btn btn-sm bg-transparent rounded-pill text-white collapsed btn-toggle-arrow"><i class="fa fa-chevron-right"></i></button>
+                                                </div>
+                                            </nav>
+                                            <div id="collapse-target-4" data-parent="#accordion-parent" class="collapse  auto-close">
+                                                <div class="card-body">
+                                                    <div id="table--psl-update" data-table_target="#table--psl-update-init" data-dt-api="@Url.Action("TablePSLUpdateOverview", "Dashboard")@urlGet" data-script-var="dt_psl_update" data-params-update="{'title':'psl_id','api_key':'psl_id'}" data-show-total="#table-PSL-total" class="table-responsive">
+                                                        <table id="table--psl-update-init" class="table table-bordered small text-secondary table-dt">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>AREA</th>
+                                                                    <th>PSL ID</th>
+                                                                    <th>Description</th>
+                                                                    <th>MODEL</th>
+                                                                    <th>UNIT QTY</th>
+                                                                    <th>COMPLETED</th>
+                                                                    <th>TOTAL SO COST</th>
+                                                                    <th>TOTAL CLAIM</th>
+                                                                    <th>SETTLED</th>
+                                                                    <th>RECOVERY</th>
+                                                                </tr>
+                                                            </thead>
+                                                        </table>
+                                                    </div>
+                                                    <script>
+                                                        var psl_update_cols = {
+                                                            columnDefs: [{
+                                                                targets: 1,
+                                                                orderable: false
+                                                            }],
+                                                            aaSorting: [[0, 'asc']]
+                                                        }
+                                                        var htmlDescList = function (resp) {
+                                                            var html = '<dl class="row no-gutters m-0">'
+
+                                                            resp.forEach((el, i) => {
+                                                                html += (el.divider && i > 0) ? '<dt class="col-6"><hr class="my-2"/></dt><dd class="col-6"><hr class="my-2"/></dd>' : ''
+                                                                
+                                                                html += '<dd class="col-12">' + el.value + '</dd>'
+                                                            })
+
+                                                            html += '</dl>'
+
+                                                            return html
+                                                        }
+                                                        var htmlDescPercent = function (resp) {
+                                                            var html = '<div class="m-0">'
+
+                                                            resp.forEach((el, i) => {
+                                                                html += (el.divider && i > 0) ? '<hr class="my-2"/><div class="progress">' : '<div class="progress">'
+                                                                html += '<div style="width: ' + el.value + '%;" class="progress-bar bg-info text-primary">' + el.value + '%</div>'
+                                                                html += '</div>'
+                                                            })
+
+                                                            html += '</div>'
+
+                                                            return html
+                                                        }
+                                                        var dt_psl_update = [
+                                                            {
+                                                                data: 'area',
+                                                                render: function (data, type, row) {
+                                                                    var html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                                                    return html
+                                                                }
+                                                            },
+                                                            {
+                                                                data: 'psl_id',
+                                                                render: function (data, type, row) {
+                                                                    var html = htmlDescList(data.val_arr)
+                                                                    return html
+                                                                }
+                                                            },
+                                                            {
+                                                                data: 'PSLDescription',
+                                                                render: function (data, type, row) {
+                                                                    var html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                                                    return html
+                                                                }
+                                                            },
+                                                            {
+                                                                data: 'model',
+                                                                render: function (data, type, row) {
+                                                                    var html = htmlDescList(data.val_arr)
+                                                                    return html
+                                                                }
+                                                            },
+                                                            {
+                                                                data: 'unit_qty',
+                                                                render: function (data, type, row) {
+                                                                    var html = htmlDescList(data.val_arr)
+                                                                    return html
+                                                                }
+                                                            },
+                                                            {
+                                                                data: 'completed',
+                                                                render: function (data, type, row) {
+                                                                    var html = htmlDescPercent(data.val_arr)
+                                                                    return html
+                                                                }
+                                                            },
+                                                            {
+                                                                data: 'total_amount',
+                                                                render: function (data, type, row) {
+                                                                    var html = htmlDescList(data.val_arr)
+                                                                    return html
+                                                                }
+                                                            },
+                                                            {
+                                                                data: 'total_claim',
+                                                                render: function (data, type, row) {
+                                                                    var html = htmlDescList(data.val_arr)
+                                                                    return html
+                                                                }
+                                                            },
+                                                            {
+                                                                data: 'settled',
+                                                                render: function (data, type, row) {
+                                                                    var html = htmlDescList(data.val_arr)
+                                                                    return html
+                                                                }
+                                                            },
+                                                            {
+                                                                data: 'recovery',
+                                                                render: function (data, type, row) {
+                                                                    var html = htmlDescPercent(data.val_arr)
+                                                                    return html
+                                                                }
+                                                            },
+                                                        ]
+                                                    </script>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card bg-white shadow-sm border-0 rounded-0 mb-3">
+                                            <nav class="card-navbar navbar navbar-dark bg-warning text-white">
+                                                <div class="left d-flex align-items-center">
+                                                    <div class="h4 font-secondary mb-0">Related Customer</div>
+                                                    <div class="small ml-3"><span>Total Customer: </span><span id="table-relatedCustomer-total"></span></div>
+                                                </div>
+                                                <div class="right">
+                                                    <button data-toggle="collapse" data-target="#collapse-target-5" type="button" class="btn btn-sm bg-transparent rounded-pill text-white collapsed btn-toggle-arrow"><i class="fa fa-chevron-right"></i></button>
+                                                </div>
+                                            </nav>
+                                            <div id="collapse-target-5" data-parent="#accordion-parent" class="collapse auto-close">
+                                                <div class="card-body">
+                                                    <div id="table--related-customer" data-table_target="#table--related-customer-init" data-dt-api="@Url.Action("TableRelatedCustomerOverview", "Dashboard")@urlGet" data-script-var="dt_related_customer" data-params-update="{'title':'cust_id','api_key':'id'}" data-show-total="#table-relatedCustomer-total" class="table-responsive" style="width:100%;">
+                                                        <table id="table--related-customer-init" class="table table-bordered small text-secondary table-dt" style="width:100%;">
+                                                            <thead style="width:100%;">
+                                                                <tr style="width:100%;">
+                                                                    <th>Customer ID</th>
+                                                                    <th>Customer Name</th>
+                                                                    <th>Location</th>
+                                                                    <th>Model</th>
+                                                                    <th>Count of SN</th>
+                                                                </tr>
+                                                            </thead>
+                                                        </table>
+                                                    </div>
+                                                    <script>
+                                                        var related_customer_cols = {
+                                                            columnDefs: [{
+                                                                targets: 4,
+                                                                orderable: false
+                                                            }],
+                                                            aaSorting: [[0, 'asc']]
+                                                        }
+                                                        var dt_related_customer = [
+                                                            {
+                                                                data: 'id',
+                                                                render: function (data, type, row) {
+                                                                    var html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                                                    return html
+                                                                }
+                                                            },
+                                                            {
+                                                                data: 'customer_name',
+                                                                render: function (data, type, row) {
+                                                                    var html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                                                    return html
+                                                                }
+                                                            },
+                                                            {
+                                                                data: 'location',
+                                                                render: function (data, type, row) {
+                                                                    var html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                                                    return html
+                                                                }
+                                                            },
+                                                            {
+                                                                data: 'model',
+                                                                render: function (data, type, row) {
+                                                                    var html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                                                    return html
+                                                                }
+                                                            },
+                                                            {
+                                                                data: 'count',
+                                                                render: function (data, type, row) {
+                                                                    var html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                                                    return html
+                                                                }
+                                                            },
+                                                        ]
+
+                                                    </script>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card bg-white shadow-sm border-0 rounded-0 mb-3" style="display:none;">
+                                            <nav class="card-navbar navbar navbar-dark bg-warning text-white">
+                                                <div class="left d-flex align-items-center">
+                                                    <div class="h4 font-secondary mb-0">Top 5 Potential Product Problem Parts</div>
+                                                </div>
+                                                <div class="right">
+                                                    <button data-toggle="collapse" data-target="#collapse-target-6" type="button" class="btn btn-sm bg-transparent rounded-pill text-white collapsed btn-toggle-arrow"><i class="fa fa-chevron-right"></i></button>
+                                                </div>
+                                            </nav>
+                                            <div id="collapse-target-6" data-parent="#accordion-parent" class="collapse  auto-close">
+                                                <div class="card-body">
+                                                    <div class="small mb-3"><span>Total Data: </span><span id="table-TotalPotential1-total"></span></div>
+                                                    <div id="table--total-potential-1" data-table_target="#table--total-potential-1-init" data-dt-api="@Url.Action("getDataPotentialByCostOverview", "Dashboard")@urlGet" data-script-var="dt_total_potential_1" data-params-update="{'title':'potential_by_cost_id','api_key':'part_no'}" data-show-total="#table-TotalPotential1-total" class="table-responsive">
+                                                        <table id="table--total-potential-1-init" class="table table-bordered small text-secondary table-dt">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>PART NO</th>
+                                                                    <th>PART DESCRIPTION</th>
+                                                                    <th>GROUP NO</th>
+                                                                    <th>GROUP DESCRIPTION</th>
+                                                                    <th>PROBLEM DESCRIPTION</th>
+                                                                    <th>SO COST</th>
+                                                                    <th>SO CLAIM</th>
+                                                                    <th>SO SETTLED</th>
+                                                                    @*<th>CURRENCY</th>*@
+                                                                </tr>
+                                                            </thead>
+                                                        </table>
+                                                    </div>
+                                                    <script>
+
+                                                        var total_potential_1_cols = {
+                                                            columnDefs: [{
+                                                                targets: 4,
+                                                                orderable: false
+                                                            }],
+                                                            aaSorting: [[5, 'desc']]
+                                                        }
+                                                        var dt_total_potential_1 = [
+                                                            {
+                                                                data: 'part_no',
+                                                                render: function (data, type, row) {
+                                                                    var html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                                                    return html
+                                                                }
+                                                            },
+                                                            {
+                                                                data: 'part_desc',
+                                                                render: function (data, type, row) {
+                                                                    var html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                                                    return html
+                                                                }
+                                                            },
+                                                            {
+                                                                data: 'group_no',
+                                                                render: function (data, type, row) {
+                                                                    var html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                                                    return html
+                                                                }
+                                                            },
+                                                            {
+                                                                data: 'group_desc',
+                                                                render: function (data, type, row) {
+                                                                    var html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                                                    return html
+                                                                }
+                                                            },
+                                                            {
+                                                                data: 'prob_desc',
+                                                                render: function (data, type, row) {
+                                                                    var html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                                                    return html
+                                                                }
+                                                            },
+                                                            {
+                                                                data: 'so_cost',
+                                                                render: function (data, type, row) {
+                                                                    var html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                                                    return html
+                                                                }
+                                                            },
+                                                            {
+                                                                data: 'so_claim',
+                                                                render: function (data, type, row) {
+                                                                    var html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                                                    return html
+                                                                }
+                                                            },
+                                                            {
+                                                                data: 'so_settled',
+                                                                render: function (data, type, row) {
+                                                                    var html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                                                    return html
+                                                                }
+                                                            },
+                                                            //{
+                                                            //    data: 'currency',
+                                                            //    render: function (data, type, row) {
+                                                            //        var html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                                            //        return html
+                                                            //    }
+                                                            //},
+                                                        ]
+
+
+                                                    </script>
+                                                    <hr>
+                                                    <div class="small mb-3"><span>Total Data: </span><span id="table-TotalPotential2-total"></span></div>
+                                                    <div id="table--total-potential-2" data-table_target="#table--total-potential-2-init" data-dt-api="@Url.Action("getDataPotentialByFrequencyOverview", "Dashboard")@urlGet" data-script-var="dt_total_potential_2" data-params-update="{'title':'potential_by_freq_id','api_key':'part_no'}" data-show-total="#table-TotalPotential2-total" class="table-responsive">
+                                                        <table id="table--total-potential-2-init" class="table table-bordered small text-secondary table-dt">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>PART NO</th>
+                                                                    <th>PART DESCRIPTION</th>
+                                                                    <th>GROUP NO</th>
+                                                                    <th>GROUP DESCRIPTION</th>
+                                                                    <th>PROBLEM DESCRIPTION</th>
+                                                                    <th>COUNT OF REPAIR</th>
+
+                                                                </tr>
+                                                            </thead>
+                                                        </table>
+                                                    </div>
+                                                    <script>
+                                                        var total_potential_2_cols = {
+                                                            columnDefs: [{
+                                                                targets: 4,
+                                                                orderable: false
+                                                            }],
+                                                            aaSorting: [[0, 'asc']]
+                                                        }
+                                                        var dt_total_potential_2 = [
+
+                                                            {
+                                                                data: 'part_no',
+                                                                render: function (data, type, row) {
+                                                                    var html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                                                    return html
+                                                                }
+                                                            },
+                                                            {
+                                                                data: 'part_desc',
+                                                                render: function (data, type, row) {
+                                                                    var html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                                                    return html
+                                                                }
+                                                            },
+                                                            {
+                                                                data: 'group_no',
+                                                                render: function (data, type, row) {
+                                                                    var html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                                                    return html
+                                                                }
+                                                            },
+                                                            {
+                                                                data: 'group_desc',
+                                                                render: function (data, type, row) {
+                                                                    var html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                                                    return html
+                                                                }
+                                                            },
+                                                            {
+                                                                data: 'prod_prob_desc',
+                                                                render: function (data, type, row) {
+                                                                    var html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                                                    return html
+                                                                }
+                                                            },
+                                                            {
+                                                                data: 'count_of_repair',
+                                                                render: function (data, type, row) {
+                                                                    var html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                                                    return html
+                                                                }
+                                                            },
+
+                                                        ]
+                                                    </script>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card bg-white shadow-sm border-0 mb-3">
+                                            <nav class="card-navbar navbar navbar-dark bg-warning text-white">
+                                                <div class="left d-flex align-items-center">
+                                                    <div class="h4 font-secondary mb-0">Related TR</div>
+                                                    <div class="small ml-3"><span>Total Data: @ViewBag.TicketDataCountOverview</span></div>
+                                                </div>
+                                                <div class="right">
+                                                    <button data-toggle="collapse" data-target="#collapse-target-RelatedTR" type="button" class="btn btn-sm bg-transparent rounded-pill text-white btn-toggle-arrow"><i class="fa fa-chevron-right"></i></button>
+                                                </div>
+                                            </nav>
+                                            <fieldset id="collapse-target-RelatedTR" class="collapse auto-close">
+                                                <div id="two-rel-tr-append" class="card-body"></div>
+                                                @if (ViewBag.TicketDataOverview.Count > 0)
+                                                {
+                                                    foreach (var Ticket in ViewBag.TicketDataOverview)
+                                                    {
+                                                        <div class="card bg-white mb-3 mx-3">
+                                                            <nav class="navbar d-flex justify-content-between small">
+                                                                <div style="" class="d-flex align-items-center">
+                                                                    <a href="@Url.Action("Details", "TechnicalRequest")/@Ticket.TicketId" target="_blank" data-reinit="{'related_tr': '@Ticket.TicketId'}" data-exclude='twoRelatedTr' class="d-flex justify-content-between">
+                                                                        <span class="mr-1">@Ticket.TicketNo</span>
+                                                                    </a>
+                                                                    <span class="ml-3">@Ticket.Title</span>
+                                                                </div>
+                                                                <div class="d-flex align-items-center">
+                                                                    @if (Ticket.Status == 2)
+                                                                    {
+                                                                        if (Ticket.NextCommenter == Ticket.Responder)
+                                                                        {
+                                                                            <div class="mr-5">Status : <strong>PRA</strong></div>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <div class="mr-5">Status :<strong>PSA</strong></div>
+                                                                        }
+                                                                    }
+                                                                    else if (Ticket.Status == 3)
+                                                                    {
+                                                                        <div class="mr-5">Status : <strong class="text-danger">CLOSED</strong></div>
+                                                                    }
+                                                                    else if (Ticket.Status == 6)
+                                                                    {
+                                                                        <div class="mr-5">Status : <strong class="text-danger">SOLVED</strong></div>
+                                                                    }
+                                                                    else if (Ticket.Status == 4)
+                                                                    {
+                                                                        <div class="mr-5">Status : <strong>RE-OPEN</strong></div>
+                                                                    }
+                                                                    else if (Ticket.Status == 1)
+                                                                    {
+                                                                        <div class="mr-5">Status : <strong>DRAFT</strong></div>
+                                                                    }
+                                                                    <div class="mr-2">Age :@(DateTime.Today.Subtract(Ticket.CreatedAt).Days.ToString()) Days</div>
+                                                                    <button data-toggle="collapse" data-target="#collapse-@Ticket.TicketId" type="button" class="btn btn-sm bg-transparent rounded-pill btn-toggle-arrow">
+                                                                        <i class="fa fa-chevron-right small"></i>
+                                                                    </button>
+                                                                </div>
+                                                            </nav>
+                                                            <fieldset id="collapse-@Ticket.TicketId" class="collapse auto-close" style="">
+                                                                <div class="card-body small border-top">
+
+                                                                    <div class="row mb-3">
+                                                                        <div class="col-md-8">
+                                                                            <div class="text-dark">
+                                                                                <div class="text-primary" style="font-size:17px;">
+                                                                                    <strong>Problem Description</strong>
+                                                                                </div>
+                                                                                @(!String.IsNullOrWhiteSpace(Ticket.Description) ?  Html.Raw(Ticket.Description) : "N/A")
+                                                                            </div>
+                                                                            <div class="text-dark mt-4">
+                                                                                <div class="text-primary" style="font-size:17px;">
+                                                                                    <strong>Resolution</strong>
+                                                                                </div>
+                                                                                @(!String.IsNullOrWhiteSpace(Ticket.Resolution) ? Html.Raw(Ticket.Resolution) : "N/A")
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-4">
+                                                                            <div class="text-primary" style="font-size:17px;"><Strong>Submiter</Strong></div>
+                                                                            <div class="text-dark">@Html.Action("getNameUserinTicket", "TechnicalRequest", new { id = Ticket.Responder })</div>
+                                                                            <div class="text-primary mt-4" style="font-size:17px;"><Strong>Responder</Strong></div>
+                                                                            <div class="text-dark">@Html.Action("getNameUserinTicket", "TechnicalRequest", new { id = Ticket.Submiter })</div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </fieldset>
+                                                        </div>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <div class="text-center mb-5">No Data Related TR Available</div>
+                                                }
+                                            </fieldset>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</main>
+ 
+@section ScriptBottom {
+    <script type="text/javascript">
+        function hide(id) {
+            if (id == 1)
+            {
+                $("#valueArea").fadeOut(200);
+            }
+            if (id == 2)
+            {
+                $("#valueSalesOffice").fadeOut(200);
+            }
+            if (id == 3)
+            {
+                $("#valueCustomerMEP").fadeOut(200);
+            }
+            if (id == 4)
+            {
+                $("#valueIndustry").fadeOut(200);
+            }
+            if (id == 5)
+            {
+                $("#valueFamily").fadeOut(200);
+            }
+            if (id == 6)
+            {
+                $("#valueModelMEP").fadeOut(200);
+            }
+            if (id == 7)
+            {
+                $("#valueSerialNumberMEP").fadeOut(200);
+            }
+            if (id == 8)
+            {
+                $("#valueSMURange").fadeOut(200);
+            }
+            if (id == 9)
+            {
+                $("#valuePurchaseDate").fadeOut(200);
+            }
+            if (id == 10)
+            {
+                $("#valueDeliveryDate").fadeOut(200);
+            }
+            if (id == 11)
+            {
+                $("#valueLastRepairDate").fadeOut(200);
+            }
+            if (id == 12)
+            {
+                $("#valueCustomer").fadeOut(200);
+            }
+            if (id == 13)
+            {
+                $("#valueModel").fadeOut(200);
+            }
+            if (id == 14)
+            {
+                $("#valueSerialNumber").fadeOut(200);
+            }
+            if (id == 15)
+            {
+                $("#valueProduct").fadeOut(200);
+            }
+            if (id == 16)
+            {
+                $("#valuePlant").fadeOut(200);
+            }
+        }
+
+        function filter(id) {
+            //$("#dropdown-filter-2").show();
+            console.log($('#cb-inventory').prop('checked'));
+            if ($('#cb-inventory').prop('checked') != true)
+            {
+                $('#cb-mep-value').show();
+                $('#cb-inventory-value').hide();
+                if (id == 1) {
+                    $("#valueArea").fadeIn(200);
+                }
+                if (id == 2) {
+
+                    $("#valueSalesOffice").fadeIn(200);
+                }
+                if (id == 3) {
+
+                    $("#valueCustomerMEP").fadeIn(200);
+                }
+                if (id == 4) {
+
+                    $("#valueIndustry").fadeIn(200);
+                }
+                if (id == 5) {
+
+                    $("#valueFamily").fadeIn(200);
+                }
+                if (id == 6) {
+
+                    $("#valueModelMEP").fadeIn(200);
+                }
+                if (id == 7) {
+
+                    $("#valueSerialNumberMEP").fadeIn(200);
+                }
+                if (id == 8) {
+
+                    $("#valueSMURange").fadeIn(200);
+                }
+                if (id == 9) {
+
+                    $("#valuePurchaseDate").fadeIn(200);
+                }
+                if (id == 10) {
+
+                    $("#valueDeliveryDate").fadeIn(200);
+                }
+                if (id == 11) {
+
+                    $("#valueLastRepairDate").fadeIn(200);
+                }
+            }
+            else
+            {
+                $('#cb-inventory-value').show();
+                $('#cb-mep-value').hide();
+                if (id == 12) {
+                    $("#valueCustomer").fadeIn(200);
+                }
+                if (id == 13) {
+
+                    $("#valueModel").fadeIn(200);
+                }
+                if (id == 14) {
+
+                    $("#valueSerialNumber").fadeIn(200);
+                }
+                if (id == 15) {
+
+                    $("#valueProduct").fadeIn(200);
+                }
+                if (id == 16) {
+
+                    $("#valuePlant").fadeIn(200);
+                }
+            }
+       }
+
+        function filter_checkbox(id) {
+            var checkbox_filter = [];
+            $("input.checkbox-filter-1:checked").each(function () {
+                checkbox_filter.push($(this).val());
+            });
+            if (checkbox_filter.includes("1") && checkbox_filter.length == 1)
+            {
+                $("#filter-1 > option").hide();
+                $("#filter-1 > option[value='12']").show();
+                $("#filter-1 > option[value='13']").show();
+                $("#filter-1 > option[value='14']").show();
+                $("#filter-1 > option[value='15']").show();
+                $("#filter-1 > option[value='16']").show();
+                $("#filter-1").val("");
+                $("#filter-1").selectpicker('refresh');
+                $("#cb-mep-value").hide();
+                $("#cb-inventory-value").show();
+                $("#submit-filter").val("1");
+                $("#Message").html("Inventory cant be selected simultaneously with Rental and HID");
+                $("#Message").fadeIn(200);
+                $("label#checkbox-inventory").fadeIn(200);
+                $("label#checkbox-rental").fadeOut(200);
+                $("label#checkbox-hid").fadeOut(200);
+                $("label#checkbox-other").fadeOut(200);
+                $(".separatorVertical").fadeOut(200);
+            }
+            else
+            {
+                if (checkbox_filter.length === 0)
+                {
+                    $("#Message").fadeOut(200);
+                    $("#submit-filter").val("0");
+                    $("label#checkbox-inventory").fadeIn(200);
+                    $("label#checkbox-rental").fadeIn(200);
+                    $("label#checkbox-hid").fadeIn(200);
+                    $(".separatorVertical").fadeIn(200);
+                }
+                else
+                {
+                    $("#Message").html("Rental and HID cant be selected simultaneously with Inventory");
+                    $("#Message").fadeIn(200);
+                    $("label#checkbox-inventory").fadeOut(200);
+                    $("label#checkbox-rental").show();
+                    $("label#checkbox-hid").show();
+                    $(".separatorVertical").fadeOut(200);
+                    $("#submit-filter").val("2");
+                }
+                $("#filter-1 > option").hide();
+                $("#filter-1 > option[value='1']").show();
+                $("#filter-1 > option[value='2']").show();
+                $("#filter-1 > option[value='3']").show();
+                $("#filter-1 > option[value='4']").show();
+                $("#filter-1 > option[value='5']").show();
+                $("#filter-1 > option[value='6']").show();
+                $("#filter-1 > option[value='7']").show();
+                $("#filter-1 > option[value='8']").show();
+                $("#filter-1 > option[value='9']").show();
+                $("#filter-1 > option[value='10']").show();
+                $("#filter-1 > option[value='11']").show();
+                $("#filter-1").val("");
+                $("#filter-1").selectpicker('refresh');
+                $("#cb-inventory-value").hide();
+                $("#cb-mep-value").show();
+            }
+            if (checkbox_filter.length === 0) {
+                $("#Message").fadeOut(200);
+                $("label#checkbox-inventory").show()
+                $("label#checkbox-rental").show();
+                $("label#checkbox-hid").show();
+                 $("label#checkbox-other").show();
+            }
+        };
+        $(document).ready(function () {
+            var hidValue = "";
+            var rentalValue = "";
+            var otherValue = "";
+                $("#select-filter-1").selectpicker();
+                $("#cb1").on('click', function () {
+                    $("#select-filter-1").removeAttr("disabled");
+                    var that = $(this);
+                    if ($("input#cb-hid").prop("checked")) {
+                        hidValue = "3";
+                    }
+                    else {
+                        hidValue = "";
+                    }
+                    if ($("input#cb-rental").prop("checked")) {
+                        rentalValue = "2";
+                    }
+                    else {
+                        rentalValue = "";
+                    }
+                    if ($("input#cb-other").prop("checked")) {
+                        otherValue = "4";
+                    }
+                    else {
+                        otherValue = "";
+                    }
+                    if (that.prop("checked") == true) {
+                        if ($("#select-filter-1").val() != null || $("#select-filter-2").val() != null || $("#select-filter-3").val() != null || $("#select-filter-5").val() != null || $("#select-filter-6").val() != null || $("#select-filter-7").val() != null || $("#select-filter-8").val() != null ) {
+                            $("#select-filter-1").empty();
+                             $.ajax({
+                                type: 'POST',
+                                url: '@Url.Action("GetAreaOverview")',
+                                data: { area: $("#select-filter-1").val(), salesoffice: $("#select-filter-2").val(), customer: $("#select-filter-3").val(), family: $("#select-filter-5").val(), model: $("#select-filter-6").val(), serialnumber: $("#select-filter-7").val(), smurange: $("#select-filter-8").val(), rental: rentalValue, hid: hidValue, other :otherValue },
+                                success: function (mems) {
+                                $.each(mems, function (i, member) {
+                                    $("#select-filter-1").append('<option value="' + member.Value + '">' + member.Text + '</option>');
+                                    });
+                                $("#select-filter-1").selectpicker('refresh');
+                                },
+                                error: function (ex) {
+
+                                }
+                            })
+                        } else {
+                            $("#select-filter-1").empty();
+                             $.ajax({
+                                type: 'POST',
+                                url: '@Url.Action("GetAreaOverview")',
+                                data: { area: $("#select-filter-1").val(), salesoffice: $("#select-filter-2").val(), customer: $("#select-filter-3").val(), family: $("#select-filter-5").val(), model: $("#select-filter-6").val(), serialnumber: $("#select-filter-7").val(), smurange: $("#select-filter-8").val(), rental: rentalValue, hid: hidValue, other :otherValue },
+                            success: function (mems) {
+                                $.each(mems, function (i, member) {
+                                    $("#select-filter-1").append('<option value="' + member.Value + '">' + member.Text + '</option>');
+                                });
+
+                            },
+                            error: function (ex) {
+
+                            }
+                            })
+                        }
+                    }
+
+                    $("#select-filter-1").selectpicker('refresh');
+                })
+              $("#select-filter-2").selectpicker();
+                $("#cb2").on('click', function () {
+                    var that = $(this);
+                                       if ($("input#cb-hid").prop("checked")) {
+                        hidValue = "3";
+                    }
+                    else {
+                        hidValue = "";
+                    }
+                    if ($("input#cb-rental").prop("checked")) {
+                        rentalValue = "2";
+                    }
+                    else {
+                        rentalValue = "";
+                    }
+                    if ($("input#cb-other").prop("checked")) {
+                        otherValue = "4";
+                    }
+                    else {
+                        otherValue = "";
+                    }
+                    if (that.prop("checked") == true) {
+                        if ($("#select-filter-1").val() != null || $("#select-filter-2").val() != null || $("#select-filter-3").val() != null || $("#select-filter-5").val() != null || $("#select-filter-6").val() != null || $("#select-filter-7").val() != null || $("#select-filter-8").val() != null ) {
+                            $("#select-filter-2").empty();
+                             $.ajax({
+                                type: 'POST',
+                                url: '@Url.Action("GetSalesOfficeOverview")',
+                                data: { area: $("#select-filter-1").val(), salesoffice: $("#select-filter-2").val(), customer: $("#select-filter-3").val(), family: $("#select-filter-5").val(), model: $("#select-filter-6").val(), serialnumber: $("#select-filter-7").val(), smurange: $("#select-filter-8").val(), rental: rentalValue, hid: hidValue, other :otherValue },
+                                success: function (mems) {
+                                $.each(mems, function (i, member) {
+                                    $("#select-filter-2").append('<option value="' + member.Value + '">' + member.Text + '</option>');
+                                });
+
+                                $("#select-filter-2").selectpicker('refresh');
+                                },
+                                error: function (ex) {
+
+                                }
+                            })
+                        } else {
+                            $("#select-filter-2").empty();
+                             $.ajax({
+                                type: 'POST',
+                                url: '@Url.Action("GetSalesOfficeOverview")',
+                                data: { area: $("#select-filter-1").val(), salesoffice: $("#select-filter-2").val(), customer: $("#select-filter-3").val(), family: $("#select-filter-5").val(), model: $("#select-filter-6").val(), serialnumber: $("#select-filter-7").val(), smurange: $("#select-filter-8").val(), rental: rentalValue, hid: hidValue, other :otherValue },
+                            success: function (mems) {
+                                $.each(mems, function (i, member) {
+                                    $("#select-filter-2").append('<option value="' + member.Value + '">' + member.Text + '</option>');
+                                });
+
+                                $("#select-filter-2").selectpicker('refresh');
+                            },
+                            error: function (ex) {
+
+                            }
+                            })
+                        }
+                    }
+
+                    $("#select-filter-2").selectpicker('refresh');
+                })
+                $("#select-filter-3").selectpicker();
+                $("#cb3").on('click', function () {
+                    var that = $(this);
+                    if ($("input#cb-hid").prop("checked")) {
+                        hidValue = "3";
+                    }
+                    else {
+                        hidValue = "";
+                    }
+                    if ($("input#cb-rental").prop("checked")) {
+                        rentalValue = "2";
+                    }
+                    else {
+                        rentalValue = "";
+                    }
+                    if ($("input#cb-other").prop("checked")) {
+                        otherValue = "4";
+                    }
+                    else {
+                        otherValue = "";
+                    }
+                    if (that.prop("checked") == true) {
+                        if ($("#select-filter-1").val() != null || $("#select-filter-2").val() != null || $("#select-filter-3").val() != null || $("#select-filter-5").val() != null || $("#select-filter-6").val() != null || $("#select-filter-7").val() != null || $("#select-filter-8").val() != null ) {
+                            $("#select-filter-3").empty();
+                             $.ajax({
+                                type: 'POST',
+                                url: '@Url.Action("GetCustomerMEPOverview")',
+                                data: { area: $("#select-filter-1").val(), salesoffice: $("#select-filter-2").val(), customer: $("#select-filter-3").val(), family: $("#select-filter-5").val(), model: $("#select-filter-6").val(), serialnumber: $("#select-filter-7").val(), smurange: $("#select-filter-8").val(), rental: rentalValue, hid: hidValue, other :otherValue },
+                                success: function (mems) {
+                                $.each(mems, function (i, member) {
+                                    $("#select-filter-3").append('<option value="' + member.Value + '">' + member.Text + '</option>');
+                                });
+
+                                $("#select-filter-3").selectpicker('refresh');
+                                },
+                                error: function (ex) {
+
+                                }
+                            })
+                        } else {
+                            $("#select-filter-3").empty();
+                             $.ajax({
+                                type: 'POST',
+                                url: '@Url.Action("GetCustomerMEPOverview")',
+                                data: { area: $("#select-filter-1").val(), salesoffice: $("#select-filter-2").val(), customer: $("#select-filter-3").val(), family: $("#select-filter-5").val(), model: $("#select-filter-6").val(), serialnumber: $("#select-filter-7").val(), smurange: $("#select-filter-8").val(), rental: $("input#cb-rental").val(), hid: $("input#cb-hid").val() },
+                                success: function (mems) {
+                                $.each(mems, function (i, member) {
+                                    $("#select-filter-3").append('<option value="' + member.Value + '">' + member.Text + '</option>');
+                                });
+
+                                $("#select-filter-3").selectpicker('refresh');
+                            },
+                            error: function (ex) {
+
+                            }
+                            })
+                        }
+                    }
+                    $("#select-filter-3").selectpicker('refresh');
+                })
+                $("#select-filter-4").selectpicker();
+                $("#cb4").on('click', function () {
+                    var that = $(this);
+                    if ($("input#cb-hid").prop("checked")) {
+                        hidValue = "3";
+                    }
+                    else {
+                        hidValue = "";
+                    }
+                    if ($("input#cb-rental").prop("checked")) {
+                        rentalValue = "2";
+                    }
+                    else {
+                        rentalValue = "";
+                    }
+                    if ($("input#cb-other").prop("checked")) {
+                        otherValue = "4";
+                    }
+                    else {
+                        otherValue = "";
+                    }
+                    if (that.prop("checked") == true) {
+                        if ($("#select-filter-1").val() != null || $("#select-filter-2").val() != null || $("#select-filter-3").val() != null || $("#select-filter-5").val() != null || $("#select-filter-6").val() != null || $("#select-filter-7").val() != null || $("#select-filter-8").val() != null ) {
+                            $("#select-filter-1").empty();
+                             $.ajax({
+                                type: 'POST',
+                                url: '@Url.Action("GetIndustryOverview")',
+                                data: { area: $("#select-filter-1").val(), salesoffice: $("#select-filter-2").val(), customer: $("#select-filter-3").val(), family: $("#select-filter-5").val(), model: $("#select-filter-6").val(), serialnumber: $("#select-filter-7").val(), smurange: $("#select-filter-8").val(), rental: $("input#cb-rental").val(), hid: $("input#cb-hid").val() },
+                                success: function (mems) {
+                                $.each(mems, function (i, member) {
+                                    $("#select-filter-4").append('<option value="' + member.Value + '">' + member.Text + '</option>');
+                                });
+
+                                $("#select-filter-4").selectpicker('refresh');
+                                },
+                                error: function (ex) {
+
+                                }
+                            })
+                        } else {
+                            $("#select-filter-4").empty();
+                             $.ajax({
+                                type: 'POST',
+                                url: '@Url.Action("GetIndustryOverview")',
+                                data: { area: $("#select-filter-1").val(), salesoffice: $("#select-filter-2").val(), customer: $("#select-filter-3").val(), family: $("#select-filter-5").val(), model: $("#select-filter-6").val(), serialnumber: $("#select-filter-7").val(), smurange: $("#select-filter-8").val(), rental: $("input#cb-rental").val(), hid: $("input#cb-hid").val() },
+                                success: function (mems) {
+                                $.each(mems, function (i, member) {
+                                    $("#select-filter-4").append('<option value="' + member.Value + '">' + member.Text + '</option>');
+                                });
+
+                                $("#select-filter-4").selectpicker('refresh');
+                            },
+                            error: function (ex) {
+
+                            }
+                            })
+                        }
+                    }
+                    $("#select-filter-4").selectpicker('refresh');
+                })
+                $("#select-filter-5").selectpicker();
+                $("#cb5").on('click', function () {
+                    var that = $(this);
+                    if ($("input#cb-hid").prop("checked")) {
+                        hidValue = "3";
+                    }
+                    else {
+                        hidValue = "";
+                    }
+                    if ($("input#cb-rental").prop("checked")) {
+                        rentalValue = "2";
+                    }
+                    else {
+                        rentalValue = "";
+                    }
+                    if ($("input#cb-other").prop("checked")) {
+                        otherValue = "4";
+                    }
+                    else {
+                        otherValue = "";
+                    }
+                    if (that.prop("checked") == true) {
+                        if ($("#select-filter-1").val() != null || $("#select-filter-2").val() != null || $("#select-filter-3").val() != null || $("#select-filter-5").val() != null || $("#select-filter-6").val() != null || $("#select-filter-7").val() != null || $("#select-filter-8").val() != null ) {
+                            $("#select-filter-5").empty();
+                             $.ajax({
+                                type: 'POST',
+                                url: '@Url.Action("GetFamilyOverview")',
+                                data: { area: $("#select-filter-1").val(), salesoffice: $("#select-filter-2").val(), customer: $("#select-filter-3").val(), family: $("#select-filter-5").val(), model: $("#select-filter-6").val(), serialnumber: $("#select-filter-7").val(), smurange: $("#select-filter-8").val(), rental: $("input#cb-rental").val(), hid: $("input#cb-hid").val() },
+                                success: function (mems) {
+                                $.each(mems, function (i, member) {
+                                    $("#select-filter-5").append('<option value="' + member.Value + '">' + member.Text + '</option>');
+                                });
+
+                                $("#select-filter-5").selectpicker('refresh');
+                                },
+                                error: function (ex) {
+
+                                }
+                            })
+                        } else {
+                            $("#select-filter-5").empty();
+                             $.ajax({
+                                type: 'POST',
+                                url: '@Url.Action("GetFamilyOverview")',
+                                data: { area: $("#select-filter-1").val(), salesoffice: $("#select-filter-2").val(), customer: $("#select-filter-3").val(), family: $("#select-filter-5").val(), model: $("#select-filter-6").val(), serialnumber: $("#select-filter-7").val(), smurange: $("#select-filter-8").val(), rental: rentalValue, hid: hidValue, other :otherValue },
+                                success: function (mems) {
+                                $.each(mems, function (i, member) {
+                                    $("#select-filter-5").append('<option value="' + member.Value + '">' + member.Text + '</option>');
+                                });
+
+                                $("#select-filter-5").selectpicker('refresh');
+                            },
+                            error: function (ex) {
+
+                            }
+                            })
+                        }
+                    }
+                    $("#select-filter-5").selectpicker('refresh');
+                })
+                $("#select-filter-6").selectpicker();
+                $("#cb6").on('click', function () {
+                    var that = $(this);
+                     if ($("input#cb-hid").prop("checked")) {
+                        hidValue = "3";
+                    }
+                    else {
+                        hidValue = "";
+                    }
+                    if ($("input#cb-rental").prop("checked")) {
+                        rentalValue = "2";
+                    }
+                    else {
+                        rentalValue = "";
+                    }
+                    if ($("input#cb-other").prop("checked")) {
+                        otherValue = "4";
+                    }
+                    else {
+                        otherValue = "";
+                    }
+                    if (that.prop("checked") == true) {
+                        if ($("#select-filter-1").val() != null || $("#select-filter-2").val() != null || $("#select-filter-3").val() != null || $("#select-filter-5").val() != null || $("#select-filter-6").val() != null || $("#select-filter-7").val() != null || $("#select-filter-8").val() != null ) {
+                            $("#select-filter-6").empty();
+                             $.ajax({
+                                type: 'POST',
+                                url: '@Url.Action("GetModelMEPOverview")',
+                                data: { area: $("#select-filter-1").val(), salesoffice: $("#select-filter-2").val(), customer: $("#select-filter-3").val(), family: $("#select-filter-5").val(), model: $("#select-filter-6").val(), serialnumber: $("#select-filter-7").val(), smurange: $("#select-filter-8").val(), rental: $("input#cb-rental").val(), hid: $("input#cb-hid").val() },
+                                success: function (mems) {
+                                $.each(mems, function (i, member) {
+                                    $("#select-filter-6").append('<option value="' + member.Value + '">' + member.Text + '</option>');
+                                });
+
+                                $("#select-filter-6").selectpicker('refresh');
+                                },
+                                error: function (ex) {
+
+                                }
+                            })
+                        } else {
+                            $("#select-filter-6").empty();
+                             $.ajax({
+                                type: 'POST',
+                                url: '@Url.Action("GetModelMEPOverview")',
+                                data: { area: $("#select-filter-1").val(), salesoffice: $("#select-filter-2").val(), customer: $("#select-filter-3").val(), family: $("#select-filter-5").val(), model: $("#select-filter-6").val(), serialnumber: $("#select-filter-7").val(), smurange: $("#select-filter-8").val(), rental: rentalValue, hid: hidValue, other :otherValue },
+                                  success: function (mems) {
+                                $.each(mems, function (i, member) {
+                                    $("#select-filter-6").append('<option value="' + member.Value + '">' + member.Text + '</option>');
+                                });
+
+                                $("#select-filter-6").selectpicker('refresh');
+                            },
+                            error: function (ex) {
+
+                            }
+                            })
+                        }
+                    }
+                    $("#select-filter-6").selectpicker('refresh');
+                })
+                $("#select-filter-7").selectpicker();
+                $("#cb7").on('click', function () {
+                    var that = $(this);
+                   if ($("input#cb-hid").prop("checked")) {
+                        hidValue = "3";
+                    }
+                    else {
+                        hidValue = "";
+                    }
+                    if ($("input#cb-rental").prop("checked")) {
+                        rentalValue = "2";
+                    }
+                    else {
+                        rentalValue = "";
+                    }
+                    if ($("input#cb-other").prop("checked")) {
+                        otherValue = "4";
+                    }
+                    else {
+                        otherValue = "";
+                    }
+                    if (that.prop("checked") == true) {
+                        if ($("#select-filter-1").val() != null || $("#select-filter-2").val() != null || $("#select-filter-3").val() != null || $("#select-filter-5").val() != null || $("#select-filter-6").val() != null || $("#select-filter-7").val() != null || $("#select-filter-8").val() != null ) {
+                            $("#select-filter-7").empty();
+                             $.ajax({
+                                type: 'POST',
+                                url: '@Url.Action("GetSNMEPOverview")',
+                                data: { area: $("#select-filter-1").val(), salesoffice: $("#select-filter-2").val(), customer: $("#select-filter-3").val(), family: $("#select-filter-5").val(), model: $("#select-filter-6").val(), serialnumber: $("#select-filter-7").val(), smurange: $("#select-filter-8").val(), rental: $("input#cb-rental").val(), hid: $("input#cb-hid").val() },
+                                success: function (mems) {
+                                $.each(mems, function (i, member) {
+                                    $("#select-filter-7").append('<option value="' + member.Value + '">' + member.Text + '</option>');
+                                });
+
+                                $("#select-filter-7").selectpicker('refresh');
+                                },
+                                error: function (ex) {
+
+                                }
+                            })
+                        } else {
+                            $("#select-filter-7").empty();
+                             $.ajax({
+                                type: 'POST',
+                                url: '@Url.Action("GetSNMEPOverview")',
+                                data: { area: $("#select-filter-1").val(), salesoffice: $("#select-filter-2").val(), customer: $("#select-filter-3").val(), family: $("#select-filter-5").val(), model: $("#select-filter-6").val(), serialnumber: $("#select-filter-7").val(), smurange: $("#select-filter-8").val(), rental: $("input#cb-rental").val(), hid: $("input#cb-hid").val() },
+                                 success: function (mems) {
+                                $.each(mems, function (i, member) {
+                                    $("#select-filter-7").append('<option value="' + member.Value + '">' + member.Text + '</option>');
+                                });
+
+                                $("#select-filter-7").selectpicker('refresh');
+                            },
+                            error: function (ex) {
+
+                            }
+                            })
+                        }
+                    }
+                    $("#select-filter-7").selectpicker('refresh');
+                })
+                $("#select-filter-12").selectpicker();
+                $("#cb12").on('click', function () {
+                    var that = $(this);
+                    if ($("input#cb-hid").prop("checked")) {
+                        hidValue = "3";
+                    }
+                    else {
+                        hidValue = "";
+                    }
+                    if ($("input#cb-rental").prop("checked")) {
+                        rentalValue = "2";
+                    }
+                    else {
+                        rentalValue = "";
+                    }
+                    if ($("input#cb-other").prop("checked")) {
+                        otherValue = "4";
+                    }
+                    else {
+                        otherValue = "";
+                    }
+                    if (that.prop("checked") == true) {
+                        if ($("#select-filter-12").val() != null || $("#select-filter-13").val() != null || $("#select-filter-14").val() != null || $("#select-filter-15").val() != null) {
+                            $("#select-filter-12").empty();
+                             $.ajax({
+                                type: 'POST',
+                                url: '@Url.Action("GetCustomerOverview")',
+                                data: { customer: $("#select-filter-12").val(), model: $("#select-filter-13").val(), serialnumber: $("#select-filter-14").val(), product: $("#select-filter-15").val(), plant: $("#select-filter-16").val()},
+                                success: function (mems) {
+                                $.each(mems, function (i, member) {
+                                    $("#select-filter-12").append('<option value="' + member.Value + '">' + member.Text + '</option>');
+                                });
+
+                                $("#select-filter-12").selectpicker('refresh');
+                                },
+                                error: function (ex) {
+
+                                }
+                            })
+                        } else {
+                            $("#select-filter-12").empty();
+                             $.ajax({
+                                type: 'POST',
+                                url: '@Url.Action("GetCustomerOverview")',
+                                data: { customer: $("#select-filter-12").val(), model: $("#select-filter-13").val(), serialnumber: $("#select-filter-14").val(), product: $("#select-filter-15").val(), plant: $("#select-filter-16").val() },
+                                 success: function (mems) {
+                                $.each(mems, function (i, member) {
+                                    $("#select-filter-12").append('<option value="' + member.Value + '">' + member.Text + '</option>');
+                                });
+
+                                $("#select-filter-12").selectpicker('refresh');
+                            },
+                            error: function (ex) {
+
+                            }
+                            })
+                        }
+                    }
+                    $("#select-filter-12").selectpicker('refresh');
+                })
+               $("#select-filter-13").selectpicker();
+                $("#cb13").on('click', function () {
+                    var that = $(this);
+                     if ($("input#cb-hid").prop("checked")) {
+                        hidValue = "3";
+                    }
+                    else {
+                        hidValue = "";
+                    }
+                    if ($("input#cb-rental").prop("checked")) {
+                        rentalValue = "2";
+                    }
+                    else {
+                        rentalValue = "";
+                    }
+                    if ($("input#cb-other").prop("checked")) {
+                        otherValue = "4";
+                    }
+                    else {
+                        otherValue = "";
+                    }
+                    if (that.prop("checked") == true) {
+                        if ($("#select-filter-12").val() != null || $("#select-filter-13").val() != null || $("#select-filter-14").val() != null || $("#select-filter-15").val() != null) {
+                            $("#select-filter-13").empty();
+                             $.ajax({
+                                type: 'POST',
+                                url: '@Url.Action("GetModelOverview")',
+                                data: { customer: $("#select-filter-12").val(), model: $("#select-filter-13").val(), serialnumber: $("#select-filter-14").val(), product: $("#select-filter-15").val(), plant: $("#select-filter-16").val()},
+                                success: function (mems) {
+                                $.each(mems, function (i, member) {
+                                    $("#select-filter-13").append('<option value="' + member.Value + '">' + member.Text + '</option>');
+                                });
+
+                                $("#select-filter-13").selectpicker('refresh');
+                                },
+                                error: function (ex) {
+
+                                }
+                            })
+                        } else {
+                            $("#select-filter-13").empty();
+                             $.ajax({
+                                type: 'POST',
+                                url: '@Url.Action("GetModelOverview")',
+                                data: { customer: $("#select-filter-13").val(), model: $("#select-filter-13").val(), serialnumber: $("#select-filter-14").val(), product: $("#select-filter-15").val(), plant: $("#select-filter-16").val() },
+                                 success: function (mems) {
+                                $.each(mems, function (i, member) {
+                                    $("#select-filter-13").append('<option value="' + member.Value + '">' + member.Text + '</option>');
+                                });
+
+                                $("#select-filter-13").selectpicker('refresh');
+                            },
+                            error: function (ex) {
+
+                            }
+                            })
+                        }
+                    }
+                    $("#select-filter-13").selectpicker('refresh');
+               })
+               $("#select-filter-14").selectpicker();
+                $("#cb14").on('click', function () {
+                    var that = $(this);
+                     if ($("input#cb-hid").prop("checked")) {
+                        hidValue = "3";
+                    }
+                    else {
+                        hidValue = "";
+                    }
+                    if ($("input#cb-rental").prop("checked")) {
+                        rentalValue = "2";
+                    }
+                    else {
+                        rentalValue = "";
+                    }
+                    if ($("input#cb-other").prop("checked")) {
+                        otherValue = "4";
+                    }
+                    else {
+                        otherValue = "";
+                    }
+                    if (that.prop("checked") == true) {
+                        if ($("#select-filter-12").val() != null || $("#select-filter-13").val() != null || $("#select-filter-14").val() != null || $("#select-filter-15").val() != null) {
+                            $("#select-filter-14").empty();
+                             $.ajax({
+                                type: 'POST',
+                                url: '@Url.Action("GetSNOverview")',
+                                data: { customer: $("#select-filter-12").val(), model: $("#select-filter-13").val(), serialnumber: $("#select-filter-14").val(), product: $("#select-filter-15").val(), plant: $("#select-filter-16").val()},
+                                success: function (mems) {
+                                $.each(mems, function (i, member) {
+                                    $("#select-filter-14").append('<option value="' + member.Value + '">' + member.Text + '</option>');
+                                });
+
+                                $("#select-filter-14").selectpicker('refresh');
+                                },
+                                error: function (ex) {
+
+                                }
+                            })
+                        } else {
+                            $("#select-filter-14").empty();
+                             $.ajax({
+                                type: 'POST',
+                                url: '@Url.Action("GetSNOverview")',
+                                data: { customer: $("#select-filter-12").val(), model: $("#select-filter-13").val(), serialnumber: $("#select-filter-14").val(), product: $("#select-filter-15").val(), plant: $("#select-filter-16").val() },
+                                 success: function (mems) {
+                                $.each(mems, function (i, member) {
+                                    $("#select-filter-14").append('<option value="' + member.Value + '">' + member.Text + '</option>');
+                                });
+
+                                $("#select-filter-14").selectpicker('refresh');
+                            },
+                            error: function (ex) {
+
+                            }
+                            })
+                        }
+                    }
+                    $("#select-filter-14").selectpicker('refresh');
+               })
+               $("#select-filter-15").selectpicker();
+                $("#cb15").on('click', function () {
+                    var that = $(this);
+                     if ($("input#cb-hid").prop("checked")) {
+                        hidValue = "3";
+                    }
+                    else {
+                        hidValue = "";
+                    }
+                    if ($("input#cb-rental").prop("checked")) {
+                        rentalValue = "2";
+                    }
+                    else {
+                        rentalValue = "";
+                    }
+                    if ($("input#cb-other").prop("checked")) {
+                        otherValue = "4";
+                    }
+                    else {
+                        otherValue = "";
+                    }
+                    if (that.prop("checked") == true) {
+                        if ($("#select-filter-12").val() != null || $("#select-filter-13").val() != null || $("#select-filter-14").val() != null || $("#select-filter-15").val() != null) {
+                            $("#select-filter-15").empty();
+                             $.ajax({
+                                type: 'POST',
+                                url: '@Url.Action("GetProductOverview")',
+                                data: { customer: $("#select-filter-12").val(), model: $("#select-filter-13").val(), serialnumber: $("#select-filter-14").val(), product: $("#select-filter-15").val(), plant: $("#select-filter-16").val()},
+                                success: function (mems) {
+                                $.each(mems, function (i, member) {
+                                    $("#select-filter-15").append('<option value="' + member.Value + '">' + member.Text + '</option>');
+                                });
+
+                                $("#select-filter-15").selectpicker('refresh');
+                                },
+                                error: function (ex) {
+
+                                }
+                            })
+                        } else {
+                            $("#select-filter-15").empty();
+                             $.ajax({
+                                type: 'POST',
+                                url: '@Url.Action("GetProductOverview")',
+                                data: { customer: $("#select-filter-12").val(), model: $("#select-filter-13").val(), serialnumber: $("#select-filter-14").val(), product: $("#select-filter-15").val(), plant: $("#select-filter-16").val() },
+                                 success: function (mems) {
+                                $.each(mems, function (i, member) {
+                                    $("#select-filter-15").append('<option value="' + member.Value + '">' + member.Text + '</option>');
+                                });
+
+                                $("#select-filter-15").selectpicker('refresh');
+                            },
+                            error: function (ex) {
+
+                            }
+                            })
+                        }
+                    }
+                    $("#select-filter-15").selectpicker('refresh');
+               })
+               $("#select-filter-16").selectpicker();
+                $("#cb16").on('click', function () {
+                    var that = $(this);
+                     if ($("input#cb-hid").prop("checked")) {
+                        hidValue = "3";
+                    }
+                    else {
+                        hidValue = "";
+                    }
+                    if ($("input#cb-rental").prop("checked")) {
+                        rentalValue = "2";
+                    }
+                    else {
+                        rentalValue = "";
+                    }
+                    if ($("input#cb-other").prop("checked")) {
+                        otherValue = "4";
+                    }
+                    else {
+                        otherValue = "";
+                    }
+                    if (that.prop("checked") == true) {
+                        if ($("#select-filter-12").val() != null || $("#select-filter-13").val() != null || $("#select-filter-14").val() != null || $("#select-filter-15").val() != null) {
+                            $("#select-filter-16").empty();
+                             $.ajax({
+                                type: 'POST',
+                                url: '@Url.Action("GetPlantOverview")',
+                                data: { customer: $("#select-filter-12").val(), model: $("#select-filter-13").val(), serialnumber: $("#select-filter-14").val(), product: $("#select-filter-15").val(), plant: $("#select-filter-16").val()},
+                                success: function (mems) {
+                                $.each(mems, function (i, member) {
+                                    $("#select-filter-16").append('<option value="' + member.Value + '">' + member.Text + '</option>');
+                                });
+
+                                $("#select-filter-16").selectpicker('refresh');
+                                },
+                                error: function (ex) {
+
+                                }
+                            })
+                        } else {
+                            $("#select-filter-16").empty();
+                             $.ajax({
+                                type: 'POST',
+                                url: '@Url.Action("GetPlantOverview")',
+                                data: { customer: $("#select-filter-12").val(), model: $("#select-filter-13").val(), serialnumber: $("#select-filter-14").val(), product: $("#select-filter-15").val(), plant: $("#select-filter-16").val() },
+                                 success: function (mems) {
+                                $.each(mems, function (i, member) {
+                                    $("#select-filter-16").append('<option value="' + member.Value + '">' + member.Text + '</option>');
+                                });
+
+                                $("#select-filter-16").selectpicker('refresh');
+                            },
+                            error: function (ex) {
+
+                            }
+                            })
+                        }
+                    }
+                    $("#select-filter-16").selectpicker('refresh');
+                })
+        });
+
+    </script>
+}

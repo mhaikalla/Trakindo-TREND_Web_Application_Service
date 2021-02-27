@@ -1,0 +1,448 @@
+﻿@*@model IEnumerable<Com.Trakindo.TSICS.Data.Model.Article>*@
+@model PagedList.IPagedList<Com.Trakindo.TSICS.Data.Model.Ticket>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+    String priority = "", colorAlert = "";
+}
+ 
+
+<main class="body position-relative d-flex flex-column">
+    <div data-active_page="admin--help-desk" class="content-wrap flex-fill">
+        <section class="position-relative mt-5">
+            <div class="container-fluid">
+                <div class="row no-gutters mb-5">
+                    <div class="col-lg-12 position-relative">
+
+                        <section class="card bg-white shadow-sm border-0 rounded-0">
+
+                            <div class="card-header bg-transparent border-0">
+                                <div class="row">
+                                    <div class="col-lg-6 d-flex align-items-center">
+                                        <h3 class="font-secondary"> <span class="text-dark">ALL</span> <span class="text-secondary">HELP DESK</span></h3>
+                                    </div>
+                                </div>
+                            </div>
+                            <fieldset class="card-body mb-5">
+                                <legend></legend>
+                                @if (Model.Count > 0)
+                                {
+                                    <div id="table-basic-dt" data-table_target="#table-basic-init" data-api_dt_init="assets/data/summary.php" data-dt_option="{&quot;freeze_column&quot;: 1, &quot;sortable&quot;: false, &quot;paging&quot;: true}" class="hide-src">
+                                        <input type="hidden" name="batch-action" id="form--all-article-batch">
+                                        <div id="table-all-article" data-table_target="#table-all-article-init" data-api_dt_init="assets/data/admin--user-manage.php" data-dt_option="{&quot;freeze_column&quot;: 0, &quot;sortable&quot;: false, &quot;paging&quot;: true}" data-modal_target="#modal--all-article" class="hide-src">
+                                            <table id="table-all-article-init" class="table table-striped table-bordered" style="width:100%">
+                                                <thead>
+
+                                                    <tr><th rowspan="2">Priority Level</th><th rowspan="2">Ticket No</th><th rowspan="2">TR Type</th><th rowspan="2">Title</th><th rowspan="2">Status</th><th rowspan="2">Submited Date</th><th rowspan="2">Last Update</th><th rowspan="2">Solved Date</th><th rowspan="2">Close Date</th><th colspan="6" class="text-center">Submiter</th><th colspan="3" class="text-center">Responder</th><th rowspan="2">Turn Around Time (Minute)</th></tr>
+                                               
+                                                    <tr>
+                                                        <th>Name</th>
+                                                        <th>Role</th>
+                                                        <th>Sales Office</th>
+                                                        <th>Area/Region</th>
+                                                        <th>Respond Time</th>
+                                                        <th>Rating</th>
+                                                        <th>Name</th>
+                                                        <th>Respond Time</th>
+                                                        <th>Rating</th>
+                                                    </tr>
+                                                    @*<tr id="row-search">
+                                                        <th>Priority</th>
+                                                        <th>Ticket No</th>
+                                                        <th>TR Type</th>
+                                                        <th>Title</th>
+                                                        <th>Status</th>
+                                                        <th>Submited Date</th>
+                                                        <th>Last Update</th>
+                                                        <th>Solved Date</th>
+                                                        <th>Close Date</th>
+                                                        <th>Name</th>
+                                                        <th>Role</th>
+                                                        <th>Sales Office</th>
+                                                        <th>Area/Region</th>
+                                                        <th>Respond Time</th>
+                                                        <th>Rating</th>
+                                                        <th>Name</th>
+                                                        <th>Respond Time</th>
+                                                        <th>Rating</th>
+                                                        <th>Turn Around Time (Minute)</th>
+                                                    </tr>*@
+                                                </thead>
+                                                <tbody>
+                                                    @foreach (var item in Model)
+                                                    {
+                                                        if ((item.Submiter == item.NextCommenter))
+                                                        {
+                                                            if (item.Status == 3 || item.Status == 6)
+                                                            {
+                                                                priority = "Finished";
+                                                                colorAlert = "secondary";
+                                                            }
+                                                            else
+                                                            {
+                                                                priority = "Level 1";
+                                                                colorAlert = "success";
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            if (item.DueDateAnswer.Value.Date < DateTime.Today)
+                                                            {
+                                                                priority = "Level 4";
+                                                                colorAlert = "danger";
+                                                            }
+                                                            else if (item.DueDateAnswer.Value.Date == DateTime.Today)
+                                                            {
+                                                                priority = "Level 3";
+                                                                colorAlert = "danger";
+                                                            }
+                                                            else if (item.DueDateAnswer.Value.Date > DateTime.Today)
+                                                            {
+                                                                if (DateTime.Today.Subtract(item.DueDateAnswer.Value).Days == -1)
+                                                                {
+                                                                    priority = "Level 2";
+                                                                    colorAlert = "warning";
+                                                                }
+                                                                else if (DateTime.Today.Subtract(item.DueDateAnswer.Value).Days < -1)
+
+                                                                {
+                                                                    priority = "Level 1";
+                                                                    colorAlert = "success";
+                                                                }
+                                                            }
+                                                            if (item.Status == 3 || item.Status == 6)
+                                                            {
+                                                                priority = "Finished";
+                                                                colorAlert = "secondary";
+                                                            }
+                                                        }
+                                                        <tr>
+                                                            @if (priority.ToLower().Contains("4"))
+                                                            {
+                                                                <td><div class="hidden-date">4</div><strong class="text-@colorAlert">@priority</strong></td>
+                                                            }
+                                                            else if (priority.ToLower().Contains("3"))
+                                                            {
+                                                                <td><div class="hidden-date">3</div><strong class="text-@colorAlert">@priority</strong></td>
+                                                            }
+                                                            else if (priority.ToLower().Contains("2"))
+                                                            {
+                                                                <td><div class="hidden-date">2</div><strong class="text-@colorAlert">@priority</strong></td>
+                                                            }
+                                                            else if (priority.ToLower().Contains("1"))
+                                                            {
+                                                                <td><div class="hidden-date">1</div><strong class="text-@colorAlert">@priority</strong></td>
+                                                            }
+                                                            else if (priority.ToLower().Contains("finished"))
+                                                            {
+                                                                <td><div class="hidden-date">0</div><strong class="text-@colorAlert">@priority</strong></td>
+                                                            }
+
+                                                            <td><a href="@Url.Action("Detail", "HelpDesk", new { id = item.TicketId })" class="">@Html.DisplayFor(modelItem => item.TicketNo)</a></td>
+                                                            <td>@Html.Action("GetCategoryName", new { id = item.TicketCategoryId })</td>
+                                                            <td>@Html.DisplayFor(modelItem => item.Title)</td>
+                                                            <td>
+                                                                @if (item.Status == 1)
+                                                                {
+                                                                    <div class="text-dark"><em>DRAFT</em></div>
+                                                                }
+                                                                else if (item.Status == 2)
+                                                                {
+                                                                    if (item.NextCommenter.Equals(0))
+                                                                    {
+                                                                        <div class="text-danger"><em>waiting your feedback</em></div>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        if (Convert.ToInt32(Session["useridbackend"]) == item.NextCommenter)
+                                                                        {
+                                                                            <div class="text-danger"><em>waiting your feedback</em></div>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            if (item.Submiter == item.NextCommenter)
+                                                                            {
+                                                                             <div class="text-secondary"><em>PSA</em></div>
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <div class="text-danger"><em>Waiting Your FeedBack</em></div>
+                                                                            }
+
+                                                                        }
+                                                                    }
+                                                                }
+                                                                else if (item.Status == 3)
+                                                                {
+                                                                    <div class="text-danger"><em>CLOSED</em></div>
+                                                                }
+                                                                else if (item.Status == 6)
+                                                                {
+                                                                    <div class="text-danger"><em>SOLVED</em></div>
+                                                                }
+                                                            </td>
+                                                            <td>@item.CreatedAt</td>
+                                                            @if (item.LastReply != null)
+                                                            {
+                                                                <td>@item.LastReply</td>
+                                                            }
+                                                            else
+                                                            {
+                                                                <td>-</td>
+                                                            }
+                                                             @foreach (var resolution in ViewBag.Resolution)
+                                                             {
+                                                                 if (resolution.TicketId.Equals(item.TicketId))
+                                                                 {
+                                                                     if (resolution.CreatedAt != null)
+                                                                     {
+                                                                        <td>@resolution.CreatedAt</td>
+                                                                     }
+                                                                     else
+                                                                     {
+                                                                        <td>-</td>
+                                                                     }
+                                                                 }
+                                                             }
+                                                            @foreach (var rating in ViewBag.Rating)
+                                                            {
+                                                                if (rating.TicketId.Equals(item.TicketId))
+                                                                {
+                                                                    if (rating.ClosedDate != null)
+                                                                    {
+                                                                        <td>@*<span class="hidden-date">@rating.ClosedDate.Value.ToString("yyyyMMdd")</span>*@@rating.ClosedDate</td>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <td>-</td>
+                                                                    }
+                                                                }
+                                                            }
+                                                            @foreach (var submiter in ViewBag.Submiters)
+                                                            {
+                                                                if (submiter.TicketNo.Equals(item.TicketNo))
+                                                                {
+                                                                    <td>@submiter.EmployeName</td>
+                                                                }
+                                                            }
+                                                            @foreach (var user in ViewBag.User)
+                                                            {
+                                                                if (user.TicketNo.Equals(item.TicketNo))
+                                                                {
+                                                                    if (user.RoleName != null)
+                                                                    {
+                                                                        <td>@user.RoleName</td>
+                                                                    }
+                                                                }
+                                                            }
+                                                            @foreach (var user in ViewBag.UserData)
+                                                            {
+                                                                if (user.Username.Equals(item.TicketNo))
+                                                                {
+                                                                    if (user.POH_Name != null)
+                                                                    {
+                                                                        <td>@user.POH_Name</td>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <td>-</td>
+                                                                    }
+                                                                }
+                                                            }
+                                                            @foreach (var user in ViewBag.UserData)
+                                                            {
+                                                                if (user.Username.Equals(item.TicketNo))
+                                                                {
+                                                                    if (String.IsNullOrWhiteSpace(user.BranchName) && String.IsNullOrWhiteSpace(user.AreaName)) {
+                                                                        <td>HEAD OFFICE</td>
+                                                                    }
+                                                                    else {
+                                                                    <td>@(String.IsNullOrWhiteSpace(user.BranchName) ? null : user.BranchName + " in ")@(String.IsNullOrWhiteSpace(user.AreaName) ? null : user.AreaName)</td>
+                                                                    }
+                                                                }
+                                                            }
+                                                            @foreach (var note in ViewBag.NoteSubmiter)
+                                                            {
+                                                                if (note.TicketNoteId == item.TicketId)
+                                                                {
+                                                                    if (!String.IsNullOrWhiteSpace(note.RespondTime) )
+                                                                    {
+                                                                        @*TimeSpan diff = TimeSpan.FromSeconds(note.RespondTime);
+                                                                        <td><span class="hidden-date">@string.Format("{0:dd\\.hh\\:mm\\:ss}", diff)</span></td>*@
+                                                                        <td>@note.RespondTime</td>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <td>N/A</td>
+                                                                    }
+                                                                }
+                                                            }
+                                                            @if (ViewBag.RatingResponders.Count > 0)
+                                                            {
+                                                                foreach (var rate in ViewBag.RatingResponders)
+                                                                {
+                                                                    if (rate.TicketId == item.TicketId)
+                                                                    {
+                                                                        if (rate.Rate > 1)
+                                                                        {
+                                                                            <td>@rate.Rate</td>
+                                                                        }
+                                                                        else if (rate.Rate == 1)
+                                                                        {
+                                                                            <td>@rate.Rate</td>
+                                                                        }
+                                                                        else if (rate.Rate == 0)
+                                                                        {
+                                                                            <td>N/A</td>
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                            else
+                                                            {
+                                                                <td>Responder hasn't given rate yet</td>
+                                                            }
+                                                            @foreach (var user in ViewBag.Responders)
+                                                            {
+                                                                if (user.Username.Equals(item.TicketNo))
+                                                                {
+                                                                    if (user.Name != null)
+                                                                    {
+                                                                        <td>@user.Name</td>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <td>TREND Admin</td>
+                                                                    }
+                                                                }
+                                                            }
+                                                            @foreach (var note in ViewBag.NoteResponder)
+                                                            {
+                                                                if (note.TicketNoteId == item.TicketId)
+                                                                {
+                                                                    if (!String.IsNullOrWhiteSpace(note.RespondTime))
+                                                                    {
+                                                                        @*TimeSpan diff = TimeSpan.FromSeconds(note.RespondTime);
+                                                                        <td><span class="hidden-date">@string.Format("{0:dd\\.hh\\:mm\\:ss}", diff)</span></td>*@
+                                                                        <td>@note.RespondTime</td>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <td>N/A</td>
+                                                                    }
+                                                                }
+                                                            }
+                                                            @if (ViewBag.Rating.Count > 0)
+                                                            {
+                                                                foreach (var rate in ViewBag.Rating)
+                                                                {
+                                                                    if (rate.TicketId == item.TicketId)
+                                                                    {
+                                                                        if (rate.Rate > 1)
+                                                                        {
+                                                                            <td>@rate.Rate</td>
+                                                                        }
+                                                                        else if (rate.Rate == 1)
+                                                                        {
+                                                                            <td>@rate.Rate</td>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <td>N/A</td>
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                            else
+                                                            {
+                                                                <td>Submiter hasn't given rate yet</td>
+                                                            }
+                                                            @foreach (var resolution in ViewBag.Resolution)
+                                                            {
+                                                                if (resolution.TicketId.Equals(item.TicketId))
+                                                                {
+                                                                    if (resolution.CreatedAt != null)
+                                                                    {
+                                                                        TimeSpan DayDiff = resolution.CreatedAt.Subtract(Convert.ToDateTime(item.CreatedAt.Value));
+                                                                        <span class="hidden-date">@DayDiff.TotalSeconds</span>
+                                                                        <td>@(DayDiff.Hours + ":" + DayDiff.Minutes + ":" + DayDiff.Seconds)</td>
+                                                                       
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <td>N/A</td>
+                                                                    }
+                                                                }
+                                                            }
+                                                        </tr>
+                                                    }
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        </div>
+                                }
+                                else
+                                {
+                                    <div class="alert alert-danger text-center" role="alert">
+                                    No More Help Desk Data
+                                    </div>
+                                }
+
+                                </fieldset>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</main>
+<script type="text/javascript" src="~/Scripts/DataTables/datatables.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        //$('tr#row-search > th').each(function (i) {
+        //    var title = $(this).text();
+        //    $(this).html('<input type="text" placeholder="Search ' + title + '" style="max-width : 100px" />');
+
+        //    $('input', this).on('keyup change', function () {
+        //        if (table.column(i).search() !== this.value) {
+        //            table
+        //                .column(i)
+        //                .search(this.value)
+        //                .draw();
+        //        }
+        //    });
+        //});
+        $('#table-all-article-init').DataTable({
+            "order": [[0, "desc"]],
+            "paging": true,
+            "info": true,
+            "scrollX": true,
+            "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+            "ordering": true,
+            dom: '<"row"<"col mb-1"l>><"row"<"col"B><"col"fr>><"row"<"col"t>><"row"<"col"i><"col"p>>',
+            buttons: [
+                {
+                    extend: 'excelHtml5',
+                    autoFilter: true,
+                    messageTop: 'PT. Trakindo Utama',
+                    Title: 'All Help Desk Data',
+                    text: '<i class="fa fa-file-excel icon-left mr-3"></i>Export To Excel',
+                    className: 'btn btn-primary glyphicon glyphicon-list-alt',
+                    exportOptions: {
+                        columns: ':visible',
+                        stripHtml: true,
+                        format: {
+                            body: function (data, row, column, node) {
+                                data = data.replace(/<\s*span[^>]*>(.*?)<\s*\/\s*span>|(<([^>]+)>)/g, '')
+                                return data
+                            }
+                        }
+                    }
+                },
+                'colvis',]
+              });
+    });
+</script>

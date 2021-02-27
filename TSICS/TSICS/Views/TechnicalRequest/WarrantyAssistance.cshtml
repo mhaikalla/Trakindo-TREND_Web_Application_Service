@@ -1,0 +1,482 @@
+﻿@model Com.Trakindo.TSICS.Data.Model.Ticket
+
+@{
+    ViewBag.Title = "Warranty Assitance";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string role = "";
+    string location = "";
+
+}
+
+<main class="body position-relative d-flex flex-column">
+    <div data-active_page="warranty-assistance" class="content-wrap flex-fill">
+        @using (Html.BeginForm("WarrantyAssistance", "TechnicalRequest", FormMethod.Post, new { enctype = "multipart/form-data", id = "product-health-form", novalidate = "", Class = "needs-validation", data_save_to_draft = "{'target': 'assets/data/product-health.php', 'interval': 5}" }))
+        {
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            if (ViewBag.ReopenFrom != null)
+            {
+                <input type="hidden" required name="ReferenceTicket" value="@ViewBag.ReopenFrom.TicketId">
+            }
+
+            <section class="position-relative mt-5">
+                <div class="container">
+                    <div class="row">
+                        <aside id="sidebar" style="top: 7rem;" class="sidebar col-lg-3 d-none d-lg-flex flex-column align-self-start position-sticky">
+                            <div class="sidebar-wrap flex-fill">
+                                @Html.Partial("_PartTRCategory")
+                            </div>
+                        </aside>
+                        <div class="col-lg-9 position-relative">
+                            <div style="top: 7rem; height: 0;" class="position-sticky z-index-10">
+                                <a style="right: -4rem;" href="@Url.Action("HelpDesk", "TechnicalRequest")" class="btn btn-warning border-0 btn-customer-service position-absolute" target="_blank"><img src="@Url.Content("~/assets/images/repository/customer-service-icon.png")" alt=""></a>
+                            </div>
+                            <div id="tr-form-fields">
+                                <input type="hidden" name="type" value="new" id="form-input-type">
+                                <section class="card bg-white shadow-sm border-0 mb-5">
+                                    <div class="card-header bg-transparent border-0">
+                                        <div class="row">
+                                            <div class="col-lg-6 d-flex align-items-center">
+                                                <div class="h3 font-secondary card-title mb-0"> <span>TECHNICAL REQUEST /  </span><span class="text-muted">WARRANTY ASSISTANCE</span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <fieldset class="card-body mb-5">
+                                        <legend></legend>
+                                        @if (ViewBag.ReopenFrom != null)
+                                        {
+                                            <div class="form-group text-muted mb-4"><span>Reopen From: <strong>@ViewBag.ReopenFrom.TicketNo</strong></span></div>
+                                        }
+                                        <div class="form-group text-muted mb-4"><span>TR Type: <strong>Warranty Assistance</strong></span></div>
+                                        <div class="form-group text-muted mb-4"><span>TR No: <strong class='text-muted'>@ViewBag.newTRNo</strong></span></div>
+                                        <div class="form-group text-muted mb-4">
+                                            <label>Title <span class="text-danger">*</span></label>
+                                            <input name="@Html.NameFor(model => model.Title)" type="text" id="tr-title" data-clone-target="#tr-title-preview" required class="form-control bg-light clone-input-val"><em class="small form-text text-danger invalid-feedback">Field cannot be empty</em>
+                                        </div>
+                                        <div class="form-group text-muted mb-4">
+                                            <label><strong>Warranty Type</strong></label>
+                                            <select data-style="border bg-white" data-width="100%" data-title="" class="selectpicker clone-input-val" id="_warrantyType" name="WarrantyTypeId" data-clone-target="#tr-warranty-type-preview">
+                                                @foreach (var warranty in ViewBag.warrantyType)
+                                                {
+                                                    <option value="@warranty.WarrantyTypeId">@warranty.WarrantyTypeName</option>
+                                                }
+                                            </select>
+                                        </div>
+                                        <div class="form-group text-muted mb-4">
+                                            <label>Unit Serial Number <span class="text-danger">*</span></label>
+                                            <input name="@Html.NameFor(model => model.SerialNumber)" data-clone-target="#tr-unit-serial-number-preview" data-ajax-autosuggest="@Url.Action("FindSuggestion", "api/MEP")" data-ajax-usndetail="@Url.Action("GetBySN", "api/MEP")" id="tr-sn-autosuggest" data-list="#unit-sn" type="text" required class="form-control bg-light clone-input-val" data-add_value_input="{'target': '#tr-smu', 'input_from_obj': 'SMU'}">
+                                            <datalist id="unit-sn"></datalist><em class="small form-text text-danger invalid-feedback">Field cannot be empty</em>
+                                        </div>
+                                        <div class="form-group text-muted mb-4">
+                                            <div id="sn-detail"></div>
+                                            <script id="tpl-sn-detail" type="text/x-handlebars-template">
+                                                <div class="row no-gutters">
+                                                    <div class="col-xl-4 mb-0 mb-xl-2 d-flex justify-content-between">Customer<span class="d-none d-xl-inline mx-1">:</span></div>
+                                                    <div class="col-xl-8 mb-3 mb-xl-2 text-dark">
+                                                        {{#check CustomerName ""}}
+                                                        {{CustomerName}}
+                                                        {{/check}}
+                                                    </div>
+                                                    <div class="col-xl-4 mb-0 mb-xl-2 d-flex justify-content-between">Location<span class="d-none d-xl-inline mx-1">:</span></div>
+                                                    <div class="col-xl-8 mb-3 mb-xl-2 text-dark">
+                                                        {{#check ShipToAddress ""}}
+                                                        {{ShipToAddress}}
+                                                        {{/check}}
+                                                    </div>
+                                                    <div class="col-xl-4 mb-0 mb-xl-2 d-flex justify-content-between">Branch<span class="d-none d-xl-inline mx-1">:</span></div>
+                                                    <div class="col-xl-8 mb-3 mb-xl-2 text-dark">
+                                                        {{#check SalesOffice ""}}
+                                                        {{SalesOffice}}
+                                                        {{/check}}
+                                                        ,
+                                                        {{#check SalesOfficeDescription ""}}
+                                                        {{SalesOfficeDescription}}
+                                                        {{/check}}
+                                                    </div>
+                                                    <div class="col-xl-4 mb-0 mb-xl-2 d-flex justify-content-between">Make<span class="d-none d-xl-inline mx-1">:</span></div>
+                                                    <div class="col-xl-8 mb-3 mb-xl-2 text-dark">
+                                                        {{#check Make ""}}
+                                                        {{Make}}
+                                                        {{/check}}
+                                                    </div>
+                                                    <div class="col-xl-4 mb-0 mb-xl-2 d-flex justify-content-between">Delivery Date<span class="d-none d-xl-inline mx-1">:</span></div>
+                                                    <div class="col-xl-8 mb-3 mb-xl-2 text-dark">{{ DeliveryDate }}</div>
+                                                    <div class="col-xl-4 mb-0 mb-xl-2 d-flex justify-content-between">Arrangement No.<span class="d-none d-xl-inline mx-1">:</span></div>
+                                                    <div class="col-xl-8 mb-3 mb-xl-2 text-dark">{{ ArrNumber }}</div>
+                                                    <div class="col-xl-4 mb-0 mb-xl-2 d-flex justify-content-between">Family<span class="d-none d-xl-inline mx-1">:</span></div>
+                                                    <div class="col-xl-8 mb-3 mb-xl-2 text-dark">
+                                                        {{#check PT ""}}
+                                                        {{PT}}
+                                                        {{/check}}
+                                                        ,
+                                                        {{#check PTDescription ""}}
+                                                        {{PTDescription}}
+                                                        {{/check}}
+                                                    </div>
+                                                    <div class="col-xl-4 mb-0 mb-xl-2 d-flex justify-content-between">Model<span class="d-none d-xl-inline mx-1">:</span></div>
+                                                    <div class="col-xl-8 mb-3 mb-xl-2 text-dark">
+                                                        {{#check Model ""}}
+                                                        {{Model}}
+                                                        {{/check}}
+                                                    </div>
+                                                    <div class="col-xl-4 mb-0 mb-xl-2 d-flex justify-content-between">SMU Date<span class="d-none d-xl-inline mx-1">:</span></div>
+                                                    <div class="col-xl-8 mb-3 mb-xl-2 text-dark">{{ SMUUpDate }}</div>
+                                                </div>
+                                            </script>
+                                        </div>
+                                        <div class="form-group text-muted mb-4">
+                                            <label>SMU</label>
+                                            <input name="@Html.NameFor(model => model.SMU)" type="text" id="tr-smu" data-clone-target="#tr-smu-preview" class="form-control bg-light clone-input-val">
+                                        </div>
+                                        <div class="form-group text-muted mb-4">
+                                            <label>Service Order Number</label>
+                                            <input name="@Html.NameFor(model => model.ServiceOrderNumber)" type="text" id="tr-son" data-clone-target="#tr-service-order-number-preview" class="form-control bg-light clone-input-val"><em class="small form-text text-danger invalid-feedback">Field cannot be empty</em>
+                                        </div>
+                                        <div class="form-group text-muted mb-4">
+                                            <label>Claim Number</label>
+                                            <input name="@Html.NameFor(model => model.ClaimNumber)" type="text" id="tr-cn" data-clone-target="#tr-claim-number-preview" class="form-control bg-light clone-input-val"><em class="small form-text text-danger invalid-feedback">Field cannot be empty</em>
+                                        </div>
+                                        <div class="form-group text-muted mb-4">
+                                            <label>Part Causing Failure <span class="text-danger">*</span></label>
+                                            <input name="@Html.NameFor(model => model.PartCausingFailure)" type="text" id="tr-part-causing-failure" data-clone-target="#tr-part-failure-preview" required class="form-control bg-light clone-input-val">
+                                        </div>
+                                        <div class="form-group text-muted mb-4">
+                                            <label>Parts Description <span class="text-danger">*</span></label>
+                                            <input name="@Html.NameFor(model => model.PartsDescription)" id="tr-parts-desc" data-clone-target="#tr-parts-desc-preview" required class="form-control bg-light clone-input-val"><em class="small form-text text-danger invalid-feedback">Field cannot be empty</em>
+                                        </div>
+                                        <div class="form-group text-muted mb-4">
+                                            <label>Problem Description <span class="text-danger">*</span></label>
+                                            <textarea name="@Html.NameFor(model => model.Description)" id="tr-problem-desc" data-clone-target="#tr-problem-desc-preview" required class="form-control bg-light clone-wysiwig"></textarea><em class="small form-text text-danger invalid-feedback">Field cannot be empty</em>
+                                        </div>
+                                    </fieldset>
+                                    <fieldset class="card-body mb-5">
+                                        <legend></legend>
+                                        <div class="text-muted">ATTACHMENT</div>
+                                        <div class="border p-4">
+                                            <div class="form-group">
+                                                <button data-attachment_add_item="#attachment-item-output" data-use_options="{'name':'file_level[]','options':{'Guest':'guest','Green':'green','Yellow':'yellow'}}" data-accept=".jpg, .png, .jpeg, .gif, .bmp, .tif, .tiff|image/*, .doc, .xls, .docx, .xlsx, .ppt, .pptx, .pdf, .csv" type="button" class="btn bg-light border rounded-pill d-flex align-items-center px-3"><span>Add New</span><i style="font-size: 1.5rem" class="fa fa-plus-circle ml-3"></i></button>
+                                            </div>
+                                            <div class="form-group mb-0">
+                                                <div id="attachment-item-output" class="row"></div>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                    <fieldset class="card-body">
+                                        <legend></legend>
+                                        <div class="text-muted">TAG</div>
+                                        <div class="rounded-lg border bg-light">
+                                            <div class="p-1 p-md-4">
+                                                <div class="input-group flex-nowrap border">
+                                                    <input data-add_tag_input="#add-tag-list" data-add_tag_options="{'input_name': 'input-tag[]','class_name': 'input-tag'}" id="add-tag" type="text" class="bg-white flex-fill rounded-0 border-0 px-md-3">
+                                                    <label for="add-tag" class="input-group-append mb-0">
+                                                        <button type="button" class="btn border-0 input-group-text rounded-0 text-wrap btn-add_tag_input p-2 px-md-4 py-md-2"><span>Add TAG</span></button>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div id="add-tag-list" class="row no-gutters"></div>
+                                        </div>
+                                    </fieldset>
+                                </section>
+                                <section class="card bg-white shadow-sm border-0 mb-5">
+                                    <nav class="card-navbar navbar navbar-dark bg-secondary text-white">
+                                        <div class="left d-flex align-items-center">
+                                            <div class="h4 font-secondary mb-0">CONTRIBUTOR</div>
+                                        </div>
+                                        <div class="right">
+                                            <button data-toggle="collapse" data-target="#collapse-target-1" type="button" class="btn btn-sm bg-transparent rounded-pill text-white btn-remove"><i class="fa fa-chevron-right"></i></button>
+                                        </div>
+                                    </nav>
+                                    <div id="collapse-target-1" class="card-body collapse show">
+                                        <div class="row">
+                                            <div class="col-12 col-lg-6">
+                                                <fieldset>
+                                                    <legend></legend>
+                                                    <div class="form-group text-muted mb-4">
+                                                        <label><strong>Add Responder <span class="text-danger">*</span></strong></label>
+                                                        <select name="@Html.NameFor(model => model.Responder)" required id="tr-responder" data-clone-target="#tr-responder-preview" data-style="border bg-white" data-width="100%" data-title="Select Responder" class="selectpicker clone-input-val" data-live-search="true">
+                                                            @foreach (var user in ViewBag.ListUser)
+                                                            {
+                                                                if (user.RoleId == 1)
+                                                                {
+                                                                    role = "Level 1";
+                                                                }
+                                                                else if (user.RoleId == 2)
+                                                                {
+                                                                    role = "Level 2";
+                                                                }
+                                                                else if (user.RoleId >= 3)
+                                                                {
+                                                                    role = "TC";
+                                                                }
+                                                                if (user.BranchName != null)
+                                                                {
+                                                                    location = "Branch (" + user.BranchName + " by " + user.AreaName + ")";
+                                                                }
+                                                                else if (user.AreaName != null)
+                                                                {
+                                                                    location = "Area (" + user.AreaName + ")";
+                                                                }
+                                                                else if (user.AreaName == null && user.BranchName == null)
+                                                                {
+                                                                    location = "HEAD OFFICE";
+                                                                }
+                                                                <optgroup label="@role - @location">
+                                                                    <option value="@user.UserId">@user.Name - @user.RoleDescription</option>
+                                                                </optgroup>
+                                                            }
+                                                        </select>
+                                                        <datalist id="responder-list"></datalist>
+                                                        <em class="small form-text text-danger invalid-feedback">Field cannot be empty</em>
+                                                    </div>
+                                                    <div class="form-group text-muted mb-4">
+                                                        <label><strong>Add Participant</strong></label>
+                                                        <select name="ParticipantList" id="tr-list-participant" data-clone-target="#tr-list-participant-preview" data-style="border bg-white" data-width="100%" data-title="Select Participants" class="selectpicker clone-input-val" data-live-search="true" multiple>
+                                                            @foreach (var user in ViewBag.AllUserActive)
+                                                            {
+                                                                <option value="@user.UserId">@user.Name - @user.RoleDescription</option>
+                                                            }
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group text-muted mb-4">
+                                                        <label><strong>Participants:</strong></label>
+                                                        <div id="add-tag-participant" class="row no-gutters"></div>
+                                                    </div>
+                                                    <div class="form-group text-muted mb-4">
+                                                        <label><strong>Email CC:</strong></label>
+                                                        <textarea name="@Html.NameFor(model => model.EmailCC)" id="tr-email-cc" data-clone-target="#tr-email-cc-preview" class="form-control bg-light clone-input-val"></textarea>
+                                                    </div>
+                                                </fieldset>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </section>
+                            </div>
+                            <div id="tr-form-preview" style="display: none;">
+                                <section class="card bg-white shadow-sm border-0 mb-5">
+                                    <div id="tr-form-preview-to-pdf">
+                                        <div class="card-header bg-transparent border-0">
+                                            <div class="row">
+                                                <div class="col-lg-6 d-flex align-items-center">
+                                                    <div class="h3 font-secondary card-title mb-0"> <span>TECHNICAL REQUEST </span><span class="text-muted">PREVIEW</span></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <fieldset class="card-body">
+                                            <small class="card-subtitle text-uppercase">Technical Information</small>
+                                            <div class="row mt-4">
+                                                <div class="col-lg-6">
+                                                    <div class="row no-gutters text-muted mb-5 mb-xl-0">
+                                                        @if (ViewBag.ReopenFrom != null)
+                                                        {
+                                                            <div class="col-xl-4 mb-0 mb-lg-2 d-flex justify-content-between">Reopen From<span class="d-none d-xl-inline mx-1">:</span></div>
+                                                            <div class="col-xl-8 mb-3 mb-lg-2">
+                                                                <strong>@ViewBag.ReopenFrom.TicketNo</strong>
+                                                            </div>
+                                                            <br />
+                                                        }
+                                                        <div class="col-xl-4 mb-0 mb-lg-2 d-flex justify-content-between">TR Type<span class="d-none d-xl-inline mx-1">:</span></div>
+                                                        <div class="col-xl-8 mb-3 mb-lg-2">
+                                                            <strong>Warranty Assistance</strong>
+                                                        </div>
+                                                        <div class="col-xl-4 mb-0 mb-lg-2 d-flex justify-content-between">TR Number<span class="d-none d-xl-inline mx-1">:</span></div>
+                                                        <div class="col-xl-8 mb-3 mb-lg-2">
+                                                            <strong>@ViewBag.newTRNo</strong>
+                                                        </div>
+                                                        <div class="col-xl-4 mb-0 mb-lg-5 d-flex justify-content-between">Date Created<span class="d-none d-xl-inline mx-1">:</span></div>
+                                                        <div class="col-xl-8 mb-3 mb-lg-5">
+                                                            <div id="tr-date-create-preview"></div>
+                                                        </div>
+                                                        <div class="col-xl-4 mb-0 mb-lg-2 d-flex justify-content-between">Warranty Type<span class="d-none d-xl-inline mx-1">:</span></div>
+                                                        <div class="col-xl-8 mb-3 mb-lg-2">
+                                                            <div id="tr-warranty-type-preview"></div>
+                                                        </div>
+                                                        <div class="col-xl-4 mb-0 mb-lg-2 d-flex justify-content-between">Service Order Number<span class="d-none d-xl-inline mx-1">:</span></div>
+                                                        <div class="col-xl-8 mb-3 mb-lg-2">
+                                                            <div id="tr-service-order-number-preview"></div>
+                                                        </div>
+                                                        <div class="col-xl-4 mb-0 mb-lg-2 d-flex justify-content-between">Claim Number<span class="d-none d-xl-inline mx-1">:</span></div>
+                                                        <div class="col-xl-8 mb-3 mb-lg-2">
+                                                            <div id="tr-claim-number-preview"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <div class="row no-gutters text-muted mb-xl-0">
+                                                        <div class="col-xl-4 mb-0 mb-lg-2 d-flex justify-content-between">Unit Serial Number<span class="d-none d-xl-inline mx-1">:</span></div>
+                                                        <div class="col-xl-8 mb-3 mb-lg-2">
+                                                            <div id="tr-unit-serial-number-preview"></div>
+                                                        </div>
+                                                        <div id="sn-detail-preview"></div>
+                                                        <div class="col-xl-4 mb-0 mb-lg-2 d-flex justify-content-between">SMU<span class="d-none d-xl-inline mx-1">:</span></div>
+                                                        <div class="col-xl-8 mb-3 mb-lg-2">
+                                                            <div id="tr-smu-preview"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </fieldset>
+                                        <hr class="my-0">
+                                        <fieldset class="card-body">
+                                            <small class="card-subtitle text-uppercase">Recipient will involve</small>
+                                            <div class="row mt-4">
+                                                <div class="col-xl-3 mb-0 mb-lg-2 d-flex justify-content-between">Responder<span class="d-none d-xl-inline mx-1">:</span></div>
+                                                <div class="col-xl-9 mb-3 mb-lg-2">
+                                                    <div id="tr-responder-preview"></div>
+                                                </div>
+                                                <div class="col-xl-3 mb-0 mb-lg-2 d-flex justify-content-between">Participant<span class="d-none d-xl-inline mx-1">:</span></div>
+                                                <div class="col-xl-9 mb-3 mb-lg-2">
+                                                    <div id="tr-list-participant-preview"></div>
+                                                </div>
+                                                <div class="col-xl-3 mb-0 mb-lg-2 d-flex justify-content-between">CC<span class="d-none d-xl-inline mx-1">:</span></div>
+                                                <div class="col-xl-9 mb-3 mb-lg-2">
+                                                    <div id="tr-email-cc-preview"></div>
+                                                </div>
+                                            </div>
+                                        </fieldset>
+                                        <hr class="my-0">
+                                        <fieldset class="card-body">
+                                            <div class="row ml-0 mb-4">
+                                                <small class="card-subtitle text-uppercase">Detail Information</small>
+                                            </div>
+                                                <div class="text-muted mb-3">
+                                                    <div>TITLE</div>
+                                                    <div id="tr-title-preview"></div>
+                                                </div>
+                                                <div class="text-muted mb-3">
+                                                    <div>PART CAUSING FAILURE</div>
+                                                    <div id="tr-part-failure-preview"></div>
+                                                </div>
+                                            <div class="text-muted mb-3">
+                                                <div>PARTS DESCRIPTION</div>
+                                                <div id="tr-parts-desc-preview"></div>
+                                            </div>
+                                                <div class="text-muted mb-3">
+                                                    <div>PROBLEM DESCRIPTION</div>
+                                                    <div id="tr-problem-desc-preview"></div>
+                                                </div>
+                                                <div class="text-muted mb-3">
+                                                    <div>ATTACHMENT</div>
+                                                    <div class="form-group attachment-hide-select mb-0">
+                                                        <div id="tr-list-attachment-preview" class="row"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="text-muted">
+                                                    <div>TAG</div>
+                                                    <div id="tr-list-tag-preview" class="row no-gutters"></div>
+                                                </div>
+</fieldset>
+                                    </div>
+                                </section>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section style="bottom: 0;" class="position-sticky bg-light py-4 sticky-submit-form z-index-10">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12 col-lg-9 offset-lg-3">
+                            <div id="tr-form-fields-buttons">
+                                <div class="cust-fab d-inline-block d-md-none left">
+                                    <input id="fab-check" type="checkbox" name="" class="fab-check">
+                                    <label for="fab-check" class="btn btn-warning text-white rounded-circle btn-fab-trigger"><i class="fa fa-plus"></i></label>
+                                    <div class="fab-group">
+                                        <button type="submit" class="tr-form-btn-save_as_draft fab-item btn rounded-pill btn-light border-warning shadow-sm">Save as Draft</button>
+                                        <button type="submit" class="tr-form-btn-next fab-item btn rounded-pill btn-light border-warning shadow-sm">Next</button>
+                                        <button type="reset" class="fab-item btn rounded-pill btn-light border-warning shadow-sm">Cancel</button>
+                                    </div>
+                                </div>
+                                <div class="row d-none d-md-flex justify-content-between">
+                                    <div class="col-4">
+                                        <a class="btn rounded-0 border-warning bg-light my-1" href="@Url.Action("index", "MyTechnicalRequest")" role="button">Cancel</a>
+                                    </div>
+                                    <div class="col-8 text-right">
+                                        <button type="submit" class="tr-form-btn-save_as_draft btn rounded-0 btn-secondary ml-2">Save as Draft</button>
+                                        <button type="submit" class="tr-form-btn-next btn rounded-0 btn-warning ml-2">Next</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="tr-form-preview-buttons" style="display: none;">
+                                <div class="cust-fab d-inline-block d-md-none left">
+                                    <input id="fab-check" type="checkbox" name="" class="fab-check">
+                                    <label for="fab-check" class="btn btn-warning text-white rounded-circle btn-fab-trigger"><i class="fa fa-plus"></i></label>
+                                    <div class="fab-group">
+                                        <button type="submit" onclick="DisabledSubmit()" class="fab-item btn rounded-pill btn-light border-warning shadow-sm btn-disabledClicked">Submit</button>
+                                        <button type="button" class="fab-item btn rounded-pill btn-light border-warning shadow-sm tr-form-btn-export-pdf">Export to PDF</button>
+                                        <button type="button" class="fab-item btn rounded-pill btn-light border-warning shadow-sm tr-form-btn-cancel">Cancel</button>
+                                    </div>
+                                </div>
+                                <div class="row d-none d-md-flex justify-content-between">
+                                    <div class="col-4">
+                                        <button type="button" class="btn rounded-0 border-warning bg-light tr-form-btn-cancel">Cancel</button>
+                                    </div>
+                                    <div class="col-8 col-lg-6 text-right">
+                                        <button type="button" class="btn rounded-0 border-warning bg-light tr-form-btn-export-pdf">Export to PDF</button>
+                                    </div>
+                                    <div class="col-lg-2 mt-3 mt-lg-0">
+                                        <button type="submit" onclick="DisabledSubmit()" class="tr-form-btn-submit btn rounded-0 btn-warning w-100 btn-disabledClicked">Submit</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <div class="sticky-submit-form-observer"></div>
+        }
+    </div>
+</main>
+@Scripts.Render("~/assets/js/jquery-3.4.1.min.js")
+<script>
+    $(document).on("keydown", "form", function (event) {
+        return event.key != "Enter";
+    });
+    let date = new Date();
+
+    let month = date.getMonth() + 1;
+    let day = date.getDate();
+
+    let dateCreaate = date.getFullYear() + '/' +
+        (('' + month).length < 2 ? '0' : '') + month + '/' +
+        (('' + day).length < 2 ? '0' : '') + day;
+
+    $('#tr-date-create-preview').html(dateCreaate);
+    function DisabledSubmit()
+    {
+        console.log('')
+        $('.btn-disabledClicked').attr('disabled', true);
+    }
+</script>
+@section ScriptBottom {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            CKEDITOR.replace('tr-problem-desc', {
+                height: 150,
+                toolbar:
+                [
+                    { name: 'basicstyles', items: ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat'] },
+                    {
+                        name: 'paragraph', items: ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', 'CreateDiv',
+                            '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'BidiLtr', 'BidiRtl']
+                    },
+                    { name: 'tools', items: ['Maximize', 'ShowBlocks', '-'] }
+                ]
+            });
+            //CKEDITOR.replace('tr-parts-desc', {
+            //  height: 150,
+            //    toolbar:
+            //    [
+            //        { name: 'basicstyles', items: ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat'] },
+            //        {
+            //            name: 'paragraph', items: ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', 'CreateDiv',
+            //                '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'BidiLtr', 'BidiRtl']
+            //        },
+            //        { name: 'tools', items: ['Maximize', 'ShowBlocks', '-'] }
+            //    ]
+            //});
+        });
+
+    </script>
+
+
+}
+

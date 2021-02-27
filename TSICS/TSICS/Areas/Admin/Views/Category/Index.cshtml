@@ -1,0 +1,160 @@
+﻿@model PagedList.IPagedList<Com.Trakindo.TSICS.Data.Model.ArticleCategory>
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+<link href="~/Scripts/DataTables/datatables.min.css" rel="stylesheet" />
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+@Styles.Render("~/Asset/css")
+
+<main class="body position-relative d-flex flex-column">
+    <div data-active_page="masterCategory--all-category" class="content-wrap flex-fill">
+
+        <div class="modal fade" id="Details" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalCenterTitle">Category Detail</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <label class="text-dark">Category Name<span class="d-none d-xl-inline mx-1">:</span><span class="d-none d-xl-inline mx-1 btn" id="Name-data"></span></label><br />
+                        <label class="text-dark">Created Date<span class="d-none d-xl-inline mx-1">:</span><span class="d-none d-xl-inline mx-1 btn" id="CreatedAt-data"></span></label><br />
+                        <label class="text-dark">From Category<span class="d-none d-xl-inline mx-1">:</span><span class="d-none d-xl-inline mx-1 btn" id="Parent-data"></span></label><br />
+                       
+                        </div>
+                    <div class="modal-footer">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="DeleteConfig" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalCenterTitle">Category Detail</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <label class="text-dark">Category Name<span class="d-none d-xl-inline mx-1">:</span><span class="d-none d-xl-inline mx-1 btn" id="Name-data"></span></label><br />
+                        <label class="text-dark">Created Date<span class="d-none d-xl-inline mx-1">:</span><span class="d-none d-xl-inline mx-1 btn" id="CreatedAt-data"></span></label><br />
+                        <label class="text-dark">Parent Category<span class="d-none d-xl-inline mx-1">:</span><span class="d-none d-xl-inline mx-1 btn" id="Parent-data"></span></label><br />
+
+                    </div>
+                    <div class="modal-footer">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <section class="position-relative mt-5">
+            <div class="container-fluid">
+                <div class="row no-gutters mb-5">
+                    <div class="col-lg-12 position-relative">
+                        <section class="card bg-white shadow-sm border-0 rounded-0 p-1 pb-5">
+                            <div class="card-body">
+                                <header>
+                                    <h3 class="font-secondary"> <span class="text-dark">ALL </span><span class="text-secondary">ARTICLE CATEGORIES</span></h3>
+                                    <div class="row">
+                                    <div class="col-lg-6 mt-3 mt-lg-0">
+                                        <a class="btn btn-rounded-0 btn-warning my-1 ml-0 text-white" href="@Url.Action("Create","Category")"><i class="fa fa-plus mr-3 icon-left"></i>Create New</a>
+                                       </div>
+                                        <div class="col-lg-6 mt-3 mt-lg-0">
+                                            <div class="status text-lg-right">
+                                                <div class="form-row justify-content-lg-end">
+                                                    <div class="form-group mb-lg-0">
+                                                        <div class="input-group border">
+                                                            @using (Html.BeginForm(null, null, FormMethod.Get))
+                                                            {
+                                                                @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { Class = "bg-white flex-fill rounded-0 border-0 px-3", placeholder = "Find Category" })
+                                                                <button type="submit" class="btn border-0 bg-transparent rounded-0"><i class="fa fa-search"></i></button>
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                   
+                                                </div>
+                                            </div>
+                                        </div>
+                                        </div>
+</header>
+                            </div>
+                            
+                               
+                                    @foreach (var item in ViewBag.ListCategoryChild)
+                                    {
+                                        <div class="card mx-3 my-2">
+                                            <div class="card-body items">
+                                                <div class="row">
+                                                    <div class="col-10">
+                                                        <a href="#child-@item.ArticleCategoryId" data-toggle="collapse" class="collapsed" data-api-nav_child="{'api': '@ViewBag.Domain/Admin/Category/SubCategory?parent=@item.ArticleCategoryId', 'target': '#child-@item.ArticleCategoryId'}">@item.Name <small class="ml-1">@(item.Subcategory != 0 ? "(" + item.Subcategory + " Sub category)" : "")</small></a>
+                                                    </div>
+                                                    <div class="col-2 float-right Action">
+                                                        <a href="@Url.Action("Create", "Category", new { parent = item.ArticleCategoryId})" class="mx-1"><i class="fa fa-plus"></i></a>
+                                                        <a href="@Url.Action("Edit", "Category", new { id = item.ArticleCategoryId})" class="mx-1"><i class="fa fa-pencil-alt"></i></a>
+                                                        <a href="@Url.Action("Details", "Category", new { id = item.ArticleCategoryId})" class="mx-1"><i class="fa fa-info-circle"></i></a>
+                                                        @*<a class="mx-1 getData" data-toggle="modal" data-target="#Details" data-category='{"CategoryId":"@item.ArticleCategoryId","Parent":"@item.Parent", "Name":"@item.Name", "Status":"@item.Status", "CreatedAt":"@item.CreatedAt","Icon":"@(item.Icon == null ? "-" : item.Icon)"}'><i class="fa fa-info"></i></a>*@
+                                                        <a href="@Url.Action("Delete", "Category", new { id = item.ArticleCategoryId})" data-category='{"CategoryId":"@item.ArticleCategoryId","Parent":"@item.Parent", "Name":"@item.Name", "Status":"@item.Status", "CreatedAt":"@item.CreatedAt","Icon":"@(item.Icon == null ? "-" : item.Icon)"}' class="mx-1 Delete"><i class="fa fa-trash"></i></a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div id="child-@item.ArticleCategoryId" class="is-child collapse"></div>
+                                        </div>
+                                    }
+
+                                        
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</main>
+
+
+<script type="text/javascript" src="~/Scripts/DataTables/datatables.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#table-all-article-init').DataTable({
+            "paging": true,
+            "info": true,
+            "ordering": true,
+            "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+            dom: '<"row"<"col mb-1"l>><"row"<"col"B><"col"fr>><"row"<"col"t>><"row"<"col"i><"col"p>>',
+            buttons: [
+                {
+                    extend: 'excel',
+                    text: '<i class="fa fa-file-excel icon-left mr-3"></i>Export To Excel',
+                    className: 'btn btn-primary glyphicon glyphicon-list-alt',
+                    exportOptions: {
+                        columns: 'th:not(:last-child)',
+                        modifier: {
+                            page: 'all',
+                            search: 'none'
+                        }
+                    }
+                }
+            ]
+        });
+        $(".getData").on('click', function () {
+            $('#CategoryId-data').val($(this).data('category').CategoryId);
+            $('#Parent-data').html($(this).data('category').Parent);
+            $('#Name-data').html($(this).data('category').Name);
+            $('#Icon-data').val($(this).data('category').Icon);
+            $('#CreatedAt-data').val($(this).data('category').CreatedAt);
+            $('#Status-data').val($(this).data('category').Status);
+        });
+        $(".Delete").on('click', function () {
+            $('#CategoryId-data').val($(this).data('category').CategoryId);
+            $('#Parent-data').html($(this).data('category').Parent);
+            $('#Name-data').html($(this).data('category').Name);
+            $('#Icon-data').val($(this).data('category').Icon);
+            $('#CreatedAt-data').val($(this).data('category').CreatedAt);
+            $('#Status-data').val($(this).data('category').Status);
+        });
+    });
+</script>

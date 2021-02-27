@@ -1,0 +1,159 @@
+﻿@model IEnumerable<Com.Trakindo.TSICS.Data.Model.User>
+
+@{
+    ViewBag.Title = "ApproveList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<main class="body position-relative d-flex flex-column">
+    <div data-active_page="all-technical-request" class="content-wrap flex-fill">        
+        <section class="position-relative mt-5">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-9 position-relative">
+                        <div style="top: 7rem; height: 0;" class="position-sticky z-index-10"><a style="right: -4rem;" href="#" class="btn btn-warning border-0 btn-customer-service position-absolute"><img src="~/assets/images/repository/customer-service-icon.png" alt=""></a></div>
+                        <section class="card bg-white shadow-sm border-0 mb-5">
+                            <div class="card-header bg-transparent border-0">
+                                <div class="row">
+                                    <div class="col-lg-6 d-flex align-items-center">
+                                        <div class="h3 font-secondary card-title mb-0"> <span>ALL USER NEED APPROVE</span></div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div id="table-tech" data-table_target="#table-tech-init"  data-dt_option="{&quot;freeze_column&quot;: 1, &quot;sortable&quot;: false, &quot;paging&quot;: true}" data-modal_target="#modal--help-desk"  data-swal-title="{&quot;end_help_desk&quot;:&quot;Anda Yakin ingin Berhenti &quot;}" class="hide-src">
+                                            <table  id="table-tech-init" class="table table-striped text-center text-secondary table-sm ">
+                                                <tr>
+                                                    <th>
+                                                        @Html.DisplayNameFor(model => model.Name)
+                                                    </th>
+                                                    <th>
+                                                        @Html.DisplayNameFor(model => model.Username)
+                                                    </th>
+                                                    <th>
+                                                        @Html.DisplayNameFor(model => model.EmployeeId)
+                                                    </th>
+                                                    <th>
+                                                        @Html.DisplayNameFor(model => model.Position)
+                                                    </th>
+                                                    <th>
+                                                        @Html.DisplayNameFor(model => model.Email)
+                                                    </th>
+                                                    <th>
+                                                        @Html.DisplayNameFor(model => model.RoleId)
+                                                    </th>
+                                                    <th></th>
+                                                </tr>
+
+                                                @foreach (var item in Model)
+                                                {
+                                                    <tr>
+                                                        <td>
+                                                            @Html.DisplayFor(modelItem => item.Name)
+                                                        </td>
+                                                        <td>
+                                                            @Html.DisplayFor(modelItem => item.Username)
+                                                        </td>
+                                                        <td>
+                                                            @Html.DisplayFor(modelItem => item.EmployeeId)
+                                                        </td>
+                                                        <td>
+                                                            @Html.DisplayFor(modelItem => item.Position)
+                                                        </td>
+                                                        <td>
+                                                            @Html.DisplayFor(modelItem => item.Email)
+                                                        </td>
+                                                        <td>
+                                                            @Html.DisplayFor(modelItem => item.RoleId)
+                                                        </td>
+                                                        <td>
+                                                            @if (@ViewBag.App.ToString() == "2")
+                                                            {
+                                                                @Html.ActionLink("Approve", "Approve2", new { id = item.UserId })
+                                                            }
+                                                            else if (@ViewBag.App.ToString() == "1")
+                                                            {
+                                                                @Html.ActionLink("Approve", "Approve1", new { id = item.UserId })
+                                                            }
+                                                            else {
+                                                            @Html.ActionLink("Approve", "Approve", new { id = item.UserId })
+                                                            }
+                                                        </td>
+                                                    </tr>
+                                                }
+
+                                            </table>
+                                        </div>    
+                                        </div>
+                                </div>
+                                <div action="all-technical-request-1.html" id="modal--help-desk" class="modal fade">
+                                    <div style="max-width: 35rem" class="modal-dialog modal-dialog-centered">
+                                        <form method="POST" enctype="multipart/form-data" class="modal-content position-relative z-index-5">
+                                            <div class="modal-body">
+                                                <div class="form-group d-flex justify-content-between">
+                                                    <h4 class="font-secondary mb-0">HELP DESK</h4>
+                                                    <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span aria-hidden="true">&times;</span></button>
+                                                    <input id="modal--row-id" name="row-id" type="text" hidden>
+                                                </div>
+                                            </div>
+                                            <div id="form-fields"></div>
+                                            <div class="modal-body pt-0">
+                                                <div class="form-group">
+                                                    <textarea rows="4" name="review" placeholder="Write Message" class="form-control rounded-lg bg-light"></textarea>
+                                                </div>
+                                                <div class="form-group mb-0">
+                                                    <div id="attachment-item-output" class="row"></div>
+                                                </div>
+                                                <div class="form-group d-flex row no-gutters justify-content-between text-right mb-0">
+                                                    <button data-attachment_add_item="#attachment-item-output" type="button" class="btn btn-light border align-items-center align-self-start mb-3 mb-md-0"><i style="font-size: 1.5rem" class="fa fa-paperclip"></i></button>
+                                                    <div class="col-12 d-block d-md-none"></div>
+                                                    <div id="form-fields-buttons" class="col-12 col-md-auto d-flex justify-content-between">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div style="top: 0; display: flex;" class="preload position-absolute justify-content-center align-items-center bg-white-75 z-index-10 w-100 h-100">
+                                                <div style="width: 2rem; height: 2rem;" class="spinner-border text-muted"></div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div action="all-technical-request-1.html" id="modal--rate-admin" class="modal fade">
+                                    <div style="max-width: 35rem" class="modal-dialog modal-dialog-centered">
+                                        <form method="POST" class="modal-content position-relative z-index-5">
+                                            <div class="modal-body">
+                                                <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span aria-hidden="true">&times;</span></button>
+                                                <input id="modal--row-id" name="row-id" type="text" hidden>
+                                            </div>
+                                            <div class="modal-body text-center">
+                                                <div>Please rate Admin service</div>
+                                                <div class="form-group">
+                                                    <img src="~/assets/images/repository/help-desk.png" alt="">
+                                                    <div class="rating-stars">
+                                                        <ul id="stars" class="list-unstyled">
+                                                            <li data-value="1" class="star d-inline-block"><i class="fa fa-star fa-fw"></i></li>
+                                                            <li data-value="2" class="star d-inline-block"><i class="fa fa-star fa-fw"></i></li>
+                                                            <li data-value="3" class="star d-inline-block"><i class="fa fa-star fa-fw"></i></li>
+                                                            <li data-value="4" class="star d-inline-block"><i class="fa fa-star fa-fw"></i></li>
+                                                            <li data-value="5" class="star d-inline-block"><i class="fa fa-star fa-fw"></i></li>
+                                                        </ul>
+                                                        <input id="rate-value" type="text" name="rate" hidden>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <textarea rows="4" name="review" placeholder="Write your review" class="form-control rounded-lg bg-light"></textarea>
+                                                </div>
+                                                <div class="form-group text-center mb-0">
+                                                    <button type="submit" class="btn btn-warning px-4">SUBMIT</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</main>

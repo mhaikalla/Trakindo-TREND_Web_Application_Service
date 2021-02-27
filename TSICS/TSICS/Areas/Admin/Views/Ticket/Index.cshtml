@@ -1,0 +1,834 @@
+﻿@if (ViewBag.DebugMode == false)
+{
+@model List<Com.Trakindo.TSICS.Data.Model.Ticket>
+}
+
+@using System.Text.RegularExpressions;
+<link href="~/Scripts/DataTables/datatables.min.css" rel="stylesheet" />
+<script src="~/Scripts/DataTables/datatables.min.js"></script>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+    int Limit = 50;
+    String step_1 = "";
+}
+
+<main class="body position-relative d-flex flex-column">
+
+    <div data-active_page="all--ticket" class="content-wrap flex-fill">
+
+        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    @using (Html.BeginForm("Delete", "Ticket", FormMethod.Post, new { enctype = "multipart/form-data", novalidate = "", Class = "needs-validation" }))
+                    {
+                        <input name="TicketId" type="text" id="ticket-id" class="form-control bg-light clone-input-val" style="display:none;">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Delete Technical Request</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="my-2">Are You Sure to Delete This Technical Request :</div>
+                            <label class="text-dark">TR Number<span class="d-none d-xl-inline mx-1">:</span><span class="d-none d-xl-inline mx-1" id="ticket-number"></span></label><br />
+                            <label class="text-dark">Title<span class="d-none d-xl-inline mx-1">:</span><span class="d-none d-xl-inline mx-1" id="ticket-title"></span></label><br />
+                        </div>
+                        <div class="modal-footer">
+                            <input type="submit" id="deleteButton" name="submitButton" class="btn rounded-0 btn-danger btn-delete w-100" value="Delete">
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="DeleteSelectedModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                   @using (Html.BeginForm("DeleteSelected", "Ticket", FormMethod.Post, new { enctype = "multipart/form-data", novalidate = "", Class = "needs-validation" }))
+            {
+                        <input name="TicketId" type="text" id="ticket-id" class="form-control bg-light clone-input-val" style="display:none;">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Delete Technical Request</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            This action will be deleted and can't be restored
+                        </div>
+                        <div class="modal-footer">
+                            <button name="ListTicket" class="btn btn-danger" type="submit" id="ticket-id-list" value="">Delete Selected</button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <section class="position-relative mt-5">
+            <div class="container-fluid">
+                <div class="row no-gutters mb-5">
+                    <div class="col-lg-12 position-relative">
+                        <section class="card bg-white shadow-sm border-0 rounded-0">
+                            <div class="card-body">
+                                <header>
+                                    <h3 class="font-secondary"> <span class="text-dark">ALL</span> <span class="text-secondary">TICKET AVAILABLE</span></h3>
+                                </header>
+                                <button type="button" class="btn btn-rounded-0 btn-danger my-1 ml-0 text-white" id="button-delete" data-toggle="modal" data-target="#DeleteSelectedModal" style="display : none">
+                                    <i class="fa fa-trash-alt mr-3 icon-left"></i>Delete Selected
+                                </button>
+                            </div>
+                            <fieldset class="card-body mb-5">
+                                <div id="table-basic-dt" data-table_target="#table-basic-init" data-dt_option="{&quot;freeze_column&quot;: 1, &quot;sortable&quot;: false, &quot;paging&quot;: true}" class="hide-src">
+                                    <table id="table-basic-init" class="table table-striped table-bordered stripe row-border order-column" style="width:100%">
+                                        <thead>
+                                            <tr class="text-center">
+                                                <th rowspan="3">Action</th>
+                                                <th rowspan="2">TR Type</th>
+                                                <th rowspan="2">Ticket No</th>
+                                                <th rowspan="2">DPPM No</th>
+                                                <th rowspan="2">Title</th>
+                                                <th rowspan="2">TR Status</th>
+                                                <th rowspan="2">Created At</th>
+                                                <th rowspan="2">Last Update</th>
+                                                <th colspan="5">Submiter</th>
+                                                <th colspan="5">Responder</th>
+                                                <th colspan="8">MEP Data</th>
+                                                <th colspan="5">Detail Problem</th>
+                                                <th rowspan="2">Last Status Changed Date</th>
+                                                <th rowspan="2">Pending Duration</th>
+                                                <th colspan="4">Escalated From</th>
+                                                <th colspan="4">1st Escalated</th>
+                                                <th colspan="4">2nd Escalated</th>
+                                                <th colspan="4">3rd Escalated</th>
+                                            </tr>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Location</th>
+                                                <th>Sales Office</th>
+                                                <th>Respond Time</th>
+                                                <th>Rating</th>
+                                                <th>Name</th>
+                                                <th>Location</th>
+                                                <th>Sales Office</th>
+                                                <th>Respond Time</th>
+                                                <th>Rating</th>
+                                                <th>Serial Number</th>
+                                                <th>Model</th>
+                                                <th>Family</th>
+                                                <th>SMU</th>
+                                                <th>Make</th>
+                                                <th>Branch</th>
+                                                <th>Customer</th>
+                                                <th>Delivery Date</th>
+                                                <th>Part causing failure</th>
+                                                <th>Part description</th>
+                                                <th>Problem Description</th>
+                                                <th>Resolution</th>
+                                                <th>solve date</th>
+                                                <th>Name</th>
+                                                <th>Area Location</th>
+                                                <th>Sales Office</th>
+                                                <th>Respond Time</th>
+                                                <th>Name</th>
+                                                <th>Area Location</th>
+                                                <th>Sales Office</th>
+                                                <th>Respond Time</th>
+                                                <th>Name</th>
+                                                <th>Area Location</th>
+                                                <th>Sales Office</th>
+                                                <th>Respond Time</th>
+                                                <th>Name</th>
+                                                <th>Area Location</th>
+                                                <th>Sales Office</th>
+                                                <th>Respond Time</th>
+                                            </tr>
+                                            <tr id="row-search">
+                                                
+                                                <th>TR Type</th>
+                                                <th>Ticket No</th>
+                                                <th>DPPM No</th>
+                                                <th>Title</th>
+                                                <th>TR Status</th>
+                                                <th>Created At</th>
+                                                <th>Last Update</th>
+                                                <th>Name</th>
+                                                <th>Location</th>
+                                                <th>Sales Office</th>
+                                                <th>Respond Time</th>
+                                                <th>Rating</th>
+                                                <th>Name</th>
+                                                <th>Location</th>
+                                                <th>Sales Office</th>
+                                                <th>Respond Time</th>
+                                                <th>Rating</th>
+                                                <th>Serial Number</th>
+                                                <th>Model</th>
+                                                <th>Family</th>
+                                                <th>SMU</th>
+                                                <th>Make</th>
+                                                <th>Branch</th>
+                                                <th>Customer</th>
+                                                <th>Delivery Date</th>
+                                                <th>Part causing failure</th>
+                                                <th>Part description</th>
+                                                <th>Problem Description</th>
+                                                <th>Resolution</th>
+                                                <th>solve date</th>
+                                                <th>Last Status Changed Date</th>
+                                                <th>Pending Duration</th>
+                                                <th>Name</th>
+                                                <th>Area Location</th>
+                                                <th>Sales Office</th>
+                                                <th>Respond Time</th>
+                                                <th>Name</th>
+                                                <th>Area Location</th>
+                                                <th>Sales Office</th>
+                                                <th>Respond Time</th>
+                                                <th>Name</th>
+                                                <th>Area Location</th>
+                                                <th>Sales Office</th>
+                                                <th>Respond Time</th>
+                                                <th>Name</th>
+                                                <th>Area Location</th>
+                                                <th>Sales Office</th>
+                                                <th>Respond Time</th>
+                                            </tr>
+                                        </thead>
+                                        @if (ViewBag.DebugMode == false)
+                                        {
+                                            <tbody>
+                                                @foreach (var item in Model)
+                                                {
+                                                    <tr id="item-@item.TicketId" class="text-center">
+                                                        <td>
+                                                            <input type="checkbox" value="@item.TicketId" class="idTicketList" >
+                                                            @*<div class="custom-control custom-checkbox mr-sm-2">
+                                                                <input type="checkbox" value="@item.TicketId" class="custom-control-input idTicketList">
+                                                                <label class="custom-control-label"></label>
+                                                            </div>*@
+                                                        </td>
+                                                        @*<td>
+                                                             <button type="button" class="btn btn-danger btn-sm DeleteTicket" data-toggle="modal" data-target="#exampleModalCenter" data-ticket='{"ticketId":"@item.TicketId","ticketTitle":"@item.Title", "ticketNumber":"@item.TicketNo"}'>
+                                                                 Delete
+                                                             </button>
+                                                            </td>*@
+                                                        <td>@Html.Action("GetCategoryName", new { id = item.TicketCategoryId })</td>
+                                                        <td>@item.TicketNo</td>
+                                                        <td>@(String.IsNullOrWhiteSpace(item.DPPMno) ? "-" : item.DPPMno)</td>
+                                                        <td>@(String.IsNullOrWhiteSpace(item.Title) ? "-" : item.Title)</td>
+                                                        <td>
+                                                            @if (item.Status == 1)
+                                                            {
+                                                                <div class="text-dark"><em> DRAFT </em></div>
+                                                            }
+                                                            else if (item.Status == 2)
+                                                            {
+                                                                if (item.TicketCategoryId != 9)
+                                                                {
+                                                                    if (item.NextCommenter.Equals(0))
+                                                                    {
+                                                                        <div class="text-dark"><em>PRA</em></div>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        if (Convert.ToInt32(Session["userid"]) == item.NextCommenter)
+                                                                        {
+                                                                            <div class="text-danger"><em>Waiting Your Feedback</em></div>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            if (item.NextCommenter == item.Responder)
+                                                                            {
+                                                                                <div class="text-dark"><em>PRA</em></div>
+                                                                            }
+                                                                            else if (item.NextCommenter == item.Submiter)
+                                                                            {
+                                                                                <div class="text-dark"><em>PSA</em></div>
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                                else
+                                                                {
+                                                                    if (item.NextCommenter.Equals(0))
+                                                                    {
+                                                                        <div class="text-danger"><em>Waiting Your Feedback</em></div>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        if (Convert.ToInt32(Session["userid"]) == item.NextCommenter)
+                                                                        {
+                                                                            <div class="text-danger"><em>Waiting Your Feedback</em></div>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            if (item.NextCommenter == item.Responder)
+                                                                            {
+                                                                                <div class="text-danger"><em>Waiting Your Feedback</em></div>
+                                                                            }
+                                                                            else if (item.NextCommenter == item.Submiter)
+                                                                            {
+                                                                                <div class="text-dark"><em>PSA</em></div>
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                            else if (item.Status == 3)
+                                                            {
+                                                                <div class="text-danger"><em>CLOSED</em></div>
+                                                            }
+                                                            else if (item.Status == 6)
+                                                            {
+                                                                <div class="text-danger"><em>SOLVED</em></div>
+                                                            }
+                                                            else
+                                                            {
+                                                                <div>-</div>
+                                                            }
+                                                        </td>
+                                                        <td><span class="hidden-date">@item.CreatedAt.Value.ToString("yyyyMMdd")</span>@item.CreatedAt</td>
+                                                        <td><span class="hidden-date">@(!item.UpdatedAt.HasValue ? "" : item.UpdatedAt.Value.ToString("yyyyMMdd"))</span>@(!item.UpdatedAt.HasValue ? "N/A" : item.UpdatedAt.Value.ToString())</td>
+                                                        @foreach (var submiter in ViewBag.Submiters)
+                                                        {
+                                                            if (submiter.UserId.Equals(item.TicketId))
+                                                            {
+
+                                                                <td>@submiter.Name</td>
+                                                                if (!String.IsNullOrWhiteSpace(submiter.AreaName))
+                                                                {
+                                                                    <td>@submiter.AreaName</td>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <td> HEAD OFFICE </td>
+                                                                }
+                                                                if (!String.IsNullOrWhiteSpace(submiter.POH_Name))
+                                                                {
+                                                                    <td>@submiter.POH_Name</td>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <td>-</td>
+                                                                }
+
+                                                            }
+                                                        }
+                                                        @foreach (var note in ViewBag.NoteSubmiter)
+                                                        {
+                                                            if (note.TicketNoteId == item.TicketId)
+                                                            {
+                                                                <td>@(note.RespondTime == null ? "N/A" : note.RespondTime  )</td>
+                                                            }
+                                                        }
+                                                        @foreach (var rate in ViewBag.RatingSubmiters)
+                                                        {
+                                                            if (item.TicketId.Equals(rate.TicketId))
+                                                            {
+                                                                if (rate.Rate != 0)
+                                                                {
+                                                                    <td>@rate.Rate</td>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <td>N/A</td>
+                                                                }
+                                                            }
+                                                        }
+                                                        @foreach (var responder in ViewBag.Responders)
+                                                        {
+                                                            if (responder.UserId.Equals(item.TicketId))
+                                                            {
+                                                                if (!String.IsNullOrWhiteSpace(responder.Name))
+                                                                {
+                                                                    <td>@responder.Name</td>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <td>Submiter has not chosen yet</td>
+                                                                }
+                                                                if (!String.IsNullOrWhiteSpace(responder.AreaName))
+                                                                {
+                                                                    <td>@responder.AreaName</td>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <td> HEAD OFFICE </td>
+                                                                }
+                                                                if (!String.IsNullOrWhiteSpace(responder.POH_Name))
+                                                                {
+                                                                    <td>@responder.POH_Name</td>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <td>-</td>
+                                                                }
+
+                                                            }
+                                                        }
+                                                        @foreach (var note in ViewBag.NoteResponder)
+                                                        {
+                                                            if (note.TicketNoteId == item.TicketId)
+                                                            {
+                                                                <td>@(note.RespondTime == null ? "N/A" : note.RespondTime  )</td>
+                                                            }
+                                                        }
+                                                        @if (ViewBag.RatingResponders.Count > 0)
+                                                        {
+                                                            foreach (var rate in ViewBag.RatingResponders)
+                                                            {
+                                                                if (rate.TicketId == item.TicketId)
+                                                                {
+                                                                    if (rate.Rate > 0)
+                                                                    {
+                                                                        <td>@rate.Rate</td>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <td>N/A</td>
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            <td>Submiter hasn't given rate yet</td>
+                                                        }
+                                                        @if (item.TicketCategoryId != 9)
+                                                        {
+                                                            <td>@(String.IsNullOrWhiteSpace(item.SerialNumber) ? "-" : item.SerialNumber )</td>
+                                                            <td>@(String.IsNullOrWhiteSpace(item.Model) ? "-" : item.Model )</td>
+                                                            <td>@(String.IsNullOrWhiteSpace(item.Family) ? "-" : item.Family)</td>
+                                                            <td>@(String.IsNullOrWhiteSpace(item.SMU) || item.SMU.Contains("undefined") ? "-" : item.SMU )</td>
+                                                            <td>@(String.IsNullOrWhiteSpace(item.Make) ? "-" : item.Make )</td>
+                                                            <td>@(String.IsNullOrWhiteSpace(item.MepBranch) ? "-" : item.MepBranch )</td>
+                                                            <td>@(String.IsNullOrWhiteSpace(item.Customer) ? "-" : item.Customer )</td>
+                                                            if (item.DeliveryDate.HasValue)
+                                                            {
+                                                                <td><span class="hidden-date">@(item.DeliveryDate.Value.ToString("yyyyMMdd"))</span>@item.DeliveryDate</td>}
+                                                            else
+                                                            {
+                                                                <td>N/A</td>
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            <td>-</td>
+                                                            <td>-</td>
+                                                            <td>-</td>
+                                                            <td>-</td>
+                                                            <td>-</td>
+                                                            <td>-</td>
+                                                            <td>-</td>
+                                                            <td>-</td>
+                                                        }
+
+                                                        <td>@(String.IsNullOrWhiteSpace(item.PartCausingFailure) || item.PartCausingFailure.Contains("null") ? "-" : item.PartCausingFailure.Length < Limit ? item.PartCausingFailure : item.PartCausingFailure.Substring(0, Limit) + "...")</td>
+                                                        @if (!String.IsNullOrWhiteSpace(item.PartsDescription))
+                                                        {
+                                                            step_1 = Regex.Replace(item.PartsDescription, @"<[^>]+>|&nbsp;", "").Trim();
+                                                            item.PartsDescription = Regex.Replace(step_1, @"\s{2,}", " ");
+                                                            if (item.PartsDescription.Length > Limit)
+                                                            {
+                                                                <td>@(item.PartsDescription.Substring(0, Limit) + "...")</td>
+                                                            }
+                                                            else
+                                                            {
+                                                                <td>@item.PartsDescription</td>
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            <td>-</td>
+                                                        }
+                                                        @if (!String.IsNullOrWhiteSpace(item.Description))
+                                                        {
+                                                            step_1 = Regex.Replace(item.Description, @"<[^>]+>|&nbsp;", "").Trim();
+                                                            item.Description = Regex.Replace(step_1, @"\s{2,}", " ");
+                                                            if (item.Description.Length > Limit)
+                                                            {
+                                                                <td>@(item.Description.Substring(0, Limit) + "...")</td>
+                                                            }
+                                                            else
+                                                            {
+                                                                <td>@item.Description</td>
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            <td>-</td>
+                                                        }
+                                                        @foreach (var solveData in ViewBag.SolvedDate)
+                                                        {
+                                                            if (solveData.TicketNo == item.TicketNo)
+                                                            {
+                                                                if (!String.IsNullOrWhiteSpace(solveData.Description))
+                                                                {
+                                                                    step_1 = Regex.Replace(solveData.Description, @"<[^>]+>|&nbsp;", "").Trim();
+                                                                    solveData.Description = Regex.Replace(step_1, @"\s{2,}", " ");
+                                                                    if (solveData.Description.Length > Limit)
+                                                                    {
+                                                                        <td>@(solveData.Description.Substring(0, Limit) + "...")</td>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <td>@solveData.Description</td>
+                                                                    }
+                                                                }
+                                                                else
+                                                                {
+                                                                    <td>-</td>
+                                                                }
+                                                                <td><span class="hidden-date">@(solveData.SolvedDate == null ? "N/A" : solveData.SolvedDate.ToString("yyyyMMdd"))</span>@(solveData.SolvedDate == null ? "N/A" : solveData.SolvedDate)</td>
+                                                            }
+                                                        }
+                                                        @if (item.LastStatusDate.HasValue)
+                                                        {
+                                                            <td><span class="hidden-date">@(item.LastStatusDate.Value.ToString("yyyyMMdd"))</span>@(item.LastStatusDate.Value.ToString())</td>
+                                                        }
+                                                        else
+                                                        {
+                                                            <td>N/A</td>
+                                                        }
+                                                        <td>-</td>
+
+                                                        @foreach (var escalate in ViewBag.EscalatedLog1)
+                                                        {
+                                                            if (escalate.UserId == item.TicketId)
+                                                            {
+                                                                <td>@(String.IsNullOrWhiteSpace(escalate.Username) ? "-" : escalate.Username)</td>
+                                                                <td>@(String.IsNullOrWhiteSpace(escalate.BranchName) ? "-" : escalate.BranchName)</td>
+                                                                <td>@(String.IsNullOrWhiteSpace(escalate.Position) ? "-" : escalate.Position)</td>
+
+                                                            }
+                                                        }
+                                                        @if (ViewBag.RespondEsFrom != null)
+                                                        {
+                                                            foreach (var note in ViewBag.RespondEsFrom)
+                                                            {
+                                                                if (note.TicketNoteId == item.TicketId)
+                                                                {
+                                                                    @*TimeSpan diff = TimeSpan.FromSeconds(note.RespondTime);
+                                                                        <td><span class="hidden-date">@note.RespondTime</span>@string.Format("{0:dd\\.hh\\:mm\\:ss}", diff)</td>*@
+                                                                    <td>@(note.RespondTime == null ? "N/A" : note.RespondTime  )</td>
+                                                                }
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            <td>N/A</td>
+                                                        }
+                                                        @foreach (var escalate in ViewBag.EscalatedLog1)
+                                                        {
+                                                            if (escalate.UserId == item.TicketId)
+                                                            {
+                                                                <td>@(String.IsNullOrWhiteSpace(escalate.Name) ? "-" : escalate.Name)</td>
+                                                                <td>@(String.IsNullOrWhiteSpace(escalate.AreaName) ? "-" : escalate.AreaName)</td>
+                                                                <td>@(String.IsNullOrWhiteSpace(escalate.POH_Name) ? "-" : escalate.POH_Name)</td>
+                                                            }
+                                                        }
+                                                        @if (ViewBag.RespondEs1 != null)
+                                                        {
+                                                            foreach (var note in ViewBag.RespondEs1)
+                                                            {
+                                                                if (note.TicketNoteId == item.TicketId)
+                                                                {
+                                                                    <td>@(note.RespondTime == null ? "N/A" : note.RespondTime  )</td>
+                                                                }
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            <td>N/A</td>
+                                                        }
+                                                        @foreach (var escalate in ViewBag.EscalatedLog2)
+                                                        {
+                                                            if (escalate.UserId == item.TicketId)
+                                                            {
+                                                                <td>@(String.IsNullOrWhiteSpace(escalate.Name) ? "-" : escalate.Name)</td>
+                                                                <td>@(String.IsNullOrWhiteSpace(escalate.AreaName) ? "-" : escalate.AreaName)</td>
+                                                                <td>@(String.IsNullOrWhiteSpace(escalate.POH_Name) ? "-" : escalate.POH_Name)</td>
+                                                            }
+                                                        }
+                                                        @if (ViewBag.RespondEs2 != null)
+                                                        {
+                                                            foreach (var note in ViewBag.RespondEs2)
+                                                            {
+                                                                if (note.TicketNoteId == item.TicketId)
+                                                                {
+                                                                    <td>@(note.RespondTime == null ? "N/A" : note.RespondTime  )</td>
+                                                                }
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            <td>N/A</td>
+                                                        }
+                                                        @foreach (var escalate in ViewBag.EscalatedLog3)
+                                                        {
+                                                            if (escalate.UserId == item.TicketId)
+                                                            {
+                                                                <td>@(String.IsNullOrWhiteSpace(escalate.Name) ? "-" : escalate.Name)</td>
+                                                                <td>@(String.IsNullOrWhiteSpace(escalate.AreaName) ? "-" : escalate.AreaName)</td>
+                                                                <td>@(String.IsNullOrWhiteSpace(escalate.POH_Name) ? "-" : escalate.POH_Name)</td>
+                                                            }
+                                                        }
+                                                        @if (ViewBag.RespondEs3 != null)
+                                                        {
+                                                            foreach (var note in ViewBag.RespondEs3)
+                                                            {
+                                                                if (note.TicketNoteId == item.TicketId)
+                                                                {
+                                                                    <td>@(note.RespondTime == null ? "N/A" : note.RespondTime  )</td>
+                                                                }
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            <td>N/A</td>
+                                                        }
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        }
+                                        else
+                                        {
+                                            <tbody>
+                                                <tr>
+                                                    <td type="hidden">
+                                                        <input type="checkbox" class="idTicketList" value="12">
+                                                    </td>
+
+                                                    <td>TR Type</td>
+                                                    <td>Ticket No</td>
+                                                    <td>DPPM No</td>
+                                                    <td>Title</td>
+                                                    <td>TR Status</td>
+                                                    <td>Created At</td>
+                                                    <td>Last Update</td>
+                                                    <td>Name</td>
+                                                    <td>Location</td>
+                                                    <td>Sales Office</td>
+                                                    <td>Respond Time</td>
+                                                    <td>Rating</td>
+                                                    <td>Name</td>
+                                                    <td>Location</td>
+                                                    <td>Sales Office</td>
+                                                    <td>Respond Time</td>
+                                                    <td>Rating</td>
+                                                    <td>Serial Number</td>
+                                                    <td>Model</td>
+                                                    <td>Family</td>
+                                                    <td>SMU</td>
+                                                    <td>Make</td>
+                                                    <td>Branch</td>
+                                                    <td>Customer</td>
+                                                    <td>Delivery Date</td>
+                                                    <td>Part causing failure</td>
+                                                    <td>Part description</td>
+                                                    <td>Problem Description</td>
+                                                    <td>Resolution</td>
+                                                    <td>solve date</td>
+                                                    <td>Name</td>
+                                                    <td>Area Location</td>
+                                                    <td>Sales Office</td>
+                                                    <td>Respond Time</td>
+                                                    <td>Name</td>
+                                                    <td>Area Location</td>
+                                                    <td>Sales Office</td>
+                                                    <td>Respond Time</td>
+                                                    <td>Name</td>
+                                                    <td>Area Location</td>
+                                                    <td>Sales Office</td>
+                                                    <td>Respond Time</td>
+                                                    <td>Name</td>
+                                                    <td>Area Location</td>
+                                                    <td>Sales Office</td>
+                                                    <td>Respond Time</td>
+                                                    <td>Last Status Changed Date</td>
+                                                    <td>Pending Duration</td>
+                                                </tr>
+                                                <tr>
+                                                    <td type="hidden">
+                                                        <input type="checkbox" class="idTicketList" value="13">
+                                                    </td>
+                                                    <td>TR Type</td>
+                                                    <td>Ticket No</td>
+                                                    <td>DPPM No</td>
+                                                    <td>Title</td>
+                                                    <td>TR Status</td>
+                                                    <td>Created At</td>
+                                                    <td>Last Update</td>
+                                                    <td>Name</td>
+                                                    <td>Location</td>
+                                                    <td>Sales Office</td>
+                                                    <td>Respond Time</td>
+                                                    <td>Rating</td>
+                                                    <td>Name</td>
+                                                    <td>Location</td>
+                                                    <td>Sales Office</td>
+                                                    <td>Respond Time</td>
+                                                    <td>Rating</td>
+                                                    <td>Serial Number</td>
+                                                    <td>Model</td>
+                                                    <td>Family</td>
+                                                    <td>SMU</td>
+                                                    <td>Make</td>
+                                                    <td>Branch</td>
+                                                    <td>Customer</td>
+                                                    <td>Delivery Date</td>
+                                                    <td>Part causing failure</td>
+                                                    <td>Part description</td>
+                                                    <td>Problem Description</td>
+                                                    <td>Resolution</td>
+                                                    <td>solve date</td>
+                                                    <td>Name</td>
+                                                    <td>Area Location</td>
+                                                    <td>Sales Office</td>
+                                                    <td>Respond Time</td>
+                                                    <td>Name</td>
+                                                    <td>Area Location</td>
+                                                    <td>Sales Office</td>
+                                                    <td>Respond Time</td>
+                                                    <td>Name</td>
+                                                    <td>Area Location</td>
+                                                    <td>Sales Office</td>
+                                                    <td>Respond Time</td>
+                                                    <td>Name</td>
+                                                    <td>Area Location</td>
+                                                    <td>Sales Office</td>
+                                                    <td>Respond Time</td>
+                                                    <td>Last Status Changed Date</td>
+                                                    <td>Pending Duration</td>
+                                                </tr>
+                                            </tbody>
+                                        }
+                                    </table>
+                                </div>
+                            </fieldset>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</main>
+<script>
+    $(document).ready(function () {   
+      
+        $('#table-basic-init thead tr#row-search th').each(function (i) {
+            i = i + 1;
+            var title = $(this).text();
+            $(this).html('<input type="text" placeholder="Search ' + title + '"/>');
+
+            $('input', this).on('keyup change', function () {
+                if (table.column(i).search() !== this.value) {
+                    table
+                        .column(i)
+                        .search(this.value)
+                        .draw();
+                }
+            });
+        });
+        var table = $('#table-basic-init').DataTable({
+            "scrollCollapse": true,
+            "fixedColumns": {
+                leftColumns: 1,
+            },
+            "paging": true,
+            "info": true,
+            "orderCellsTop": true,
+            //"fixedHeader": true,
+            "scrollX": true,
+            "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+            dom: '<"row"<"col mb-1"l>><"row"<"col"B><"col"fr>><"row"<"col"t>><"row"<"col"i><"col"p>>',
+          
+            buttons: [
+                {
+                    extend: 'excelHtml5',
+                    autoFilter: true,
+                    messageTop: 'PT. Trakindo Utama',
+                    Title: 'All TR Data',
+                    text: '<i class="fa fa-file-excel icon-left mr-3"></i>Export To Excel',
+                    className: 'btn btn-primary glyphicon glyphicon-list-alt',
+                    exportOptions: {
+                        columns: ':visible',
+                        stripHtml: true,
+                        format: {
+                            body: function (data, row, column, node) {
+                                data = data.replace(/<\s*span[^>]*>(.*?)<\s*\/\s*span>|(<([^>]+)>)/g, '')
+                                return data
+                            }
+                        }
+                    }
+                },
+                'colvis',
+            ],
+        });
+    });
+</script>
+@section ScriptBottom{
+    <script>
+        $("#table-basic-init").on("load", function () {
+            $("input[type='checkbox']").prop('checked', false);
+        });
+
+        let duration = 300;
+        $("input[type='checkbox']").click(function () {
+            var idItem = $(this).val();
+            var itemData = [];
+            $.each($("input.idTicketList:checked"), function () {
+                itemData.push($(this).val());
+            });
+            var PostData = itemData.join(", ");
+            $("#ticket-id-list").val(PostData);
+            if ($(this).prop("checked") == true) {
+                $("tr#item-" + idItem).addClass('bg-secondary text-white', 400);
+            }
+            else {
+                $("tr#item-" + idItem).removeClass('bg-secondary text-white', 400);
+            }
+            if (PostData.length ===0 ) {
+                $("#button-delete").fadeOut(duration);
+            }
+            else {
+                $("#button-delete").fadeIn(duration);
+            }
+            console.log(PostData);
+        });
+
+        $("tbody > tr > td").click(function () {
+            var idItem = $(this).val();
+            var itemData = [];
+            $.each($("input.idTicketList:checked"), function () {
+                itemData.push($(this).val());
+            });
+            var PostData = itemData.join(", ");
+            $("#ticket-id-list").val(PostData);
+            if ($(this).prop("checked") == true) {
+                $("tr#item-" + idItem).addClass("bg-secondary text-white", 400);
+            }
+            else {
+                $("tr#item-" + idItem).removeClass("bg-secondary text-white",400);
+            }
+            if (PostData.length === 0) {
+                $("#button-delete").fadeOut(duration);
+            }
+            else {
+                $("#button-delete").fadeIn(duration);
+            }
+            console.log(PostData);
+        });
+        
+        $('.toast').toast('show');
+        $(".DeleteTicket").on('click', function () {
+            //console.log(ticketId);
+            $('#ticket-id').val($(this).data('ticket').ticketId);
+            $('#ticket-number').html($(this).data('ticket').ticketNumber);
+            $('#ticket-title').html($(this).data('ticket').ticketTitle);
+        });
+
+    </script>
+}

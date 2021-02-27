@@ -1,0 +1,371 @@
+﻿
+@using Com.Trakindo.TSICS.Data.Model
+@{
+    ViewBag.Title = "Product Health";
+    Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
+}
+<main class="body position-relative d-flex flex-column">
+    <div data-active_page="admin--dashboard--ppm-update" class="content-wrap flex-fill">
+        <section class="position-relative mt-5">
+            <div class="container">
+                <form class="bg-white d-flex flex-fill rounded-0 shadow-sm">
+                    <input id="search-anything-input" type="text" placeholder="Search Anything" class="bg-white flex-fill rounded-0 border-0 p-3">
+                    <label for="search-anything-input" class="input-group-append mb-0">
+                        <button class="btn border-0 input-group-text bg-warning rounded-0 text-white px-4 py-3"><span>Search</span></button>
+                    </label>
+                </form>
+            </div>
+        </section>
+
+        <section class="position-relative mt-5">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12 position-relative">
+                        <section class="mb-3">
+                            <div class="d-sm-flex justify-content-between align-items-center mb-3">
+                                <h2 class="h4-size">PPM Dashboard / Product Problem Update</h2>
+                                <div class="small text-muted"><i class="far fa-clock mr-2"></i><span>Edited 1w ago</span></div>
+                            </div>
+                        </section>
+                        <section>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <nav>
+                                        <div class="nav nav-tabs nav-tabs-warning"><a href="admin--dashboard--ppm-update-1.html" class="nav-item nav-link ">Data Detail</a><a href="admin--dashboard--ppm-update-2.html" class="nav-item nav-link active">Raw Data </a></div>
+                                    </nav>
+                                    <div class="card bg-white shadow-sm border-0 mb-3">
+                                        <div class="card-body p-0">
+                                            <form id="form--dashboard--ppm-update-2" method="GET">
+                                                <div class="card bg-white shadow-sm border-0">
+                                                    <nav class="card-navbar navbar navbar-dark border-bottom">
+                                                        <div class="left d-flex align-items-center">
+                                                            <div class="h4 font-secondary mb-0">Choose Filter</div>
+                                                        </div>
+                                                        <div class="right">
+                                                            <button data-toggle="collapse" data-target="#collapse-target-1" type="button" class="btn btn-sm bg-transparent rounded-pill btn-toggle-arrow"><i class="fa fa-chevron-right"></i></button>
+                                                        </div>
+                                                    </nav>
+                                                    <fieldset id="collapse-target-1" class="collapse show">
+                                                        <div class="card-body">
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group row">
+                                                                        <label class="col-md-4">Range Period:</label>
+                                                                        <div class="input-group col-md-8">
+                                                                            <input type="text" name="range_period" readonly="readonly" class="form-control bg-white rounded-0 border-right-0 datepicker-range">
+                                                                            <div class="input-group-append">
+                                                                                <label class="btn border-left-0 input-group-text bg-white rounded-0 d-table"><i class="fa fa-calendar"></i></label>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group row">
+                                                                        <label class="col-md-4">Visualization:</label>
+                                                                        <div class="input-group col-md-8">
+                                                                            <select data-style="border bg-white rounded-0" data-width="100%" data-size="5" name="visualization" class="selectpicker">
+                                                                                <option value="">Choose fields</option>
+                                                                                <option value="1">West Java</option>
+                                                                                <option value="2">East Java</option>
+                                                                                <option value="3" selected>Bante</option>
+                                                                                <option value="4">DIY</option>
+                                                                                <option value="5">Bali</option>
+                                                                                <option value="6">NTT</option>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group row">
+                                                                        <label class="col-md-4">Select Fields:</label>
+                                                                        <div class="input-group col-md-8">
+                                                                            <select data-style="border bg-white rounded-0" data-width="100%" data-size="5" name="fields" class="selectpicker">
+                                                                                <option value="">Choose fields</option>
+                                                                                <option value="1">West Java</option>
+                                                                                <option value="2">East Java</option>
+                                                                                <option value="3">Bante</option>
+                                                                                <option value="4" selected>DIY</option>
+                                                                                <option value="5">Bali</option>
+                                                                                <option value="6">NTT</option>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group row">
+                                                                        <label class="col-md-4">Values:</label>
+                                                                        <div class="input-group col-md-8">
+                                                                            <select data-style="border bg-white rounded-0" data-width="100%" data-size="5" name="values" class="selectpicker">
+                                                                                <option value="">Choose fields</option>
+                                                                                <option value="1">West Java</option>
+                                                                                <option value="2" selected>East Java</option>
+                                                                                <option value="3">Bante</option>
+                                                                                <option value="4">DIY</option>
+                                                                                <option value="5">Bali</option>
+                                                                                <option value="6">NTT</option>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group row">
+                                                                        <label class="col-md-4">Field X:</label>
+                                                                        <div class="input-group col-md-8">
+                                                                            <select data-style="border bg-white rounded-0" data-width="100%" data-size="5" name="filter_x" class="selectpicker">
+                                                                                <option value="">Choose fields</option>
+                                                                                <option value="1">West Java</option>
+                                                                                <option value="2">East Java</option>
+                                                                                <option value="3">Bante</option>
+                                                                                <option value="4">DIY</option>
+                                                                                <option value="5" selected>Bali</option>
+                                                                                <option value="6">NTT</option>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group row">
+                                                                        <label class="col-md-4">Field Y:</label>
+                                                                        <div class="input-group col-md-8">
+                                                                            <select data-style="border bg-white rounded-0" data-width="100%" data-size="5" name="filter_y" class="selectpicker">
+                                                                                <option value="">Choose fields</option>
+                                                                                <option value="1">West Java</option>
+                                                                                <option value="2">East Java</option>
+                                                                                <option value="3" selected>Bante</option>
+                                                                                <option value="4">DIY</option>
+                                                                                <option value="5">Bali</option>
+                                                                                <option value="6">NTT</option>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-md-12">
+                                                                    <div class="text-center">
+                                                                        <button type="submit" class="btn btn-warning btn-show-result px-4 py-2">Show Result</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </fieldset>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <div class="card bg-white shadow-sm border-0 mb-3">
+                                        <div class="card-body">
+                                            <div><span>Computed 2 minutes ago</span><a href="#" class="btn btn-sm btn-outline-primary rounded-0 ml-3"> <small class="fa fa-sync-alt"></small><span class="ml-2">Refresh </span></a></div>
+                                            <div class="data-check mb-3">
+                                                <div class="data-check--false">
+                                                    <div class="title">Create your own graph</div>
+                                                </div>
+                                                <div class="data-check--true">
+                                                    <div class="table-responsive">
+                                                        <div class="chart bar my-0">
+                                                            <div data-chart-params="{'api': 'assets/data/dashboard-psl/chart-completion-doughnut.php', 'form_data_source': '#form--dashboard--ppm-update-2', 'params': []}" class="canvas-wrap">
+                                                                <canvas width="120" height="120"></canvas>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card bg-white shadow-sm border-0 mb-3">
+                                        <div class="card-body">
+                                            <div>Related DPPM</div>
+                                        </div>
+                                        <div class="card-body">
+                                            <form id="form--dashboard--ppm-update-2-table" method="GET">
+                                                <div class="card bg-light rounded-0 mb-3">
+                                                    <nav class="card-navbar navbar">
+                                                        <div class="left d-flex align-items-center">
+                                                            <div class="h4 font-secondary mb-0">Table Column Filter</div>
+                                                        </div>
+                                                        <div class="right">
+                                                            <button data-toggle="collapse" data-target="#collapse-target-2" type="button" class="btn btn-sm bg-transparent rounded-pill btn-toggle-arrow"><i class="fa fa-chevron-right"></i></button>
+                                                        </div>
+                                                    </nav>
+                                                    <fieldset id="collapse-target-2" class="collapse show">
+                                                        <div class="card-body">
+                                                            <div class="row table-column-filter">
+                                                                <div class="col-12 col-sm-6 col-md-4 col-lg">
+                                                                    <label class="custom-checkbox form-check mb-4">
+                                                                        <input type="checkbox" checked value="0" name="column_filter" class="chk-filter form-check-input">
+                                                                        <div class="form-check-label custom-label"><i class="icon fa fa-check"></i><span class="text">Ticket No</span></div>
+                                                                    </label>
+                                                                    <label class="custom-checkbox form-check mb-4">
+                                                                        <input type="checkbox" value="1" name="column_filter" class="chk-filter form-check-input">
+                                                                        <div class="form-check-label custom-label"><i class="icon fa fa-check"></i><span class="text">Category</span></div>
+                                                                    </label>
+                                                                </div>
+                                                                <div class="col-12 col-sm-6 col-md-4 col-lg">
+                                                                    <label class="custom-checkbox form-check mb-4">
+                                                                        <input type="checkbox" checked value="2" name="column_filter" class="chk-filter form-check-input">
+                                                                        <div class="form-check-label custom-label"><i class="icon fa fa-check"></i><span class="text">Title</span></div>
+                                                                    </label>
+                                                                    <label class="custom-checkbox form-check mb-4">
+                                                                        <input type="checkbox" checked value="3" name="column_filter" class="chk-filter form-check-input">
+                                                                        <div class="form-check-label custom-label"><i class="icon fa fa-check"></i><span class="text">Submitter</span></div>
+                                                                    </label>
+                                                                </div>
+                                                                <div class="col-12 col-sm-6 col-md-4 col-lg">
+                                                                    <label class="custom-checkbox form-check mb-4">
+                                                                        <input type="checkbox" checked value="4" name="column_filter" class="chk-filter form-check-input">
+                                                                        <div class="form-check-label custom-label"><i class="icon fa fa-check"></i><span class="text">Responder</span></div>
+                                                                    </label>
+                                                                    <label class="custom-checkbox form-check mb-4">
+                                                                        <input type="checkbox" checked value="5" name="column_filter" class="chk-filter form-check-input">
+                                                                        <div class="form-check-label custom-label"><i class="icon fa fa-check"></i><span class="text">Date Created</span></div>
+                                                                    </label>
+                                                                </div>
+                                                                <div class="col-12 col-sm-6 col-md-4 col-lg">
+                                                                    <label class="custom-checkbox form-check mb-4">
+                                                                        <input type="checkbox" checked value="6" name="column_filter" class="chk-filter form-check-input">
+                                                                        <div class="form-check-label custom-label"><i class="icon fa fa-check"></i><span class="text">Date Closed</span></div>
+                                                                    </label>
+                                                                    <label class="custom-checkbox form-check mb-4">
+                                                                        <input type="checkbox" checked value="7" name="column_filter" class="chk-filter form-check-input">
+                                                                        <div class="form-check-label custom-label"><i class="icon fa fa-check"></i><span class="text">Date Updated</span></div>
+                                                                    </label>
+                                                                </div>
+                                                                <div class="col-12 col-sm-6 col-md-4 col-lg">
+                                                                    <label class="custom-checkbox form-check mb-4">
+                                                                        <input type="checkbox" value="8" name="column_filter" class="chk-filter form-check-input">
+                                                                        <div class="form-check-label custom-label"><i class="icon fa fa-check"></i><span class="text">Status Tr</span></div>
+                                                                    </label>
+                                                                    <label class="custom-checkbox form-check mb-4">
+                                                                        <input type="checkbox" value="9" checked name="column_filter" class="chk-filter form-check-input">
+                                                                        <div class="form-check-label custom-label"><i class="icon fa fa-check"></i><span class="text">Status User</span></div>
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                            <hr>
+                                                            <label class="custom-checkbox form-check mb-4">
+                                                                <input data-checkall_target=".chk-filter" type="checkbox" class="checkbox-all form-check-input">
+                                                                <div class="form-check-label custom-label"><i class="icon fa fa-check"></i><span class="text">Check All</span></div>
+                                                            </label>
+                                                            <div class="row">
+                                                                <div class="col-md-12">
+                                                                    <div>
+                                                                        <button type="submit" class="btn btn-warning btn-show-result">Submit Filter</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </fieldset>
+                                                </div>
+                                            </form>
+                                            <div class="card rounded-0 mb-3">
+                                                <div class="card-body">
+                                                    <div id="table--ppm-update" data-dt-params="{'fixedHeader': true, 'fixedColumns': { 'leftColumns': 0 }}" data-dt-api="assets/data/dashboard/table-all-tickets.php" class="table-responsive">
+                                                        <table class="table table-dt">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th><small>TICKET NO</small></th>
+                                                                    <th><small>CATEGORY</small></th>
+                                                                    <th><small>TITLE</small></th>
+                                                                    <th><small>SUBMITTER</small></th>
+                                                                    <th><small>RESPONDER</small></th>
+                                                                    <th><small>DATE CREATED</small></th>
+                                                                    <th><small>DATE CLOSED</small></th>
+                                                                    <th><small>DATE UPDATED</small></th>
+                                                                    <th><small>STATUS TR</small></th>
+                                                                    <th><small>STATUS USER</small></th>
+                                                                </tr>
+                                                            </thead>
+                                                        </table>
+                                                        <script>
+                                    var column_dt_table = [
+                                    	{
+                                    		data    : 'ticket_no',
+                                    		render  : function (data,type,row) {
+                                    			var html = ''
+                                    			html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                    			return html
+                                    		}
+                                    	},
+                                    	{
+                                    		data    : 'category',
+                                    		render  : function (data,type,row) {
+                                    			var html = ''
+                                    			html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                    			return html
+                                    		}
+                                    	},
+                                    	{
+                                    		data    : 'title',
+                                    		render  : function (data,type,row) {
+                                    			var html = ''
+                                    			html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                    			return html
+                                    		}
+                                    	},
+                                    	{
+                                    		data    : 'submitter',
+                                    		render  : function (data,type,row) {
+                                    			var html = ''
+                                    			html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                    			return html
+                                    		}
+                                    	},
+                                    	{
+                                    		data    : 'responder',
+                                    		render  : function (data,type,row) {
+                                    			var html = ''
+                                    			html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                    			return html
+                                    		}
+                                    	},
+                                    	{
+                                    		data    : 'date_created',
+                                    		render  : function (data,type,row) {
+                                    			var html = ''
+                                    			html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                    			return html
+                                    		}
+                                    	},
+                                    	{
+                                    		data    : 'date_closed',
+                                    		render  : function (data,type,row) {
+                                    			var html = ''
+                                    			html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                    			return html
+                                    		}
+                                    	},
+                                    	{
+                                    		data    : 'date_updated',
+                                    		render  : function (data,type,row) {
+                                    			var html = ''
+                                    			html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                    			return html
+                                    		}
+                                    	},
+                                    	{
+                                    		data    : 'status_tr',
+                                    		render  : function (data,type,row) {
+                                    			var html = ''
+                                    			html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                    			return html
+                                    		}
+                                    	},
+                                    	{
+                                    		data    : 'status_user',
+                                    		render  : function (data,type,row) {
+                                    			var html = ''
+                                    			html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                    			return html
+                                    		}
+                                    	}
+
+                                    ]
+
+
+                                                        </script>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</main>

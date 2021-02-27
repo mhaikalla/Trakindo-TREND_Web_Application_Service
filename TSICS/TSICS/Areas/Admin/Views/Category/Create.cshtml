@@ -1,0 +1,74 @@
+﻿@model Com.Trakindo.TSICS.Data.Model.ArticleCategory
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+
+    List<SelectListItem> listStatus = new List<SelectListItem>();
+    listStatus.Add(new SelectListItem { Text = "Active", Value = "1" });
+    listStatus.Add(new SelectListItem { Text = "Inactive", Value = "0" });
+}
+
+<main class="body position-relative d-flex flex-column">
+    <div data-active_page="masterCategory--all-category" class="content-wrap flex-fill">
+        @using (Html.BeginForm("Create", "Category", FormMethod.Post, new { enctype = "multipart/form-data", novalidate = "", Class = "needs-validation" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.ArticleCategoryId)
+
+            <div class="card col-12 col-lg-11 bg-white-75 mx-auto my-5">
+                <div class="card-header bg-transparent border-0">
+                    <div class="row">
+                        <div class="col-lg-6 d-flex align-items-center">
+                            <div class="h3 font-secondary card-title mb-0"> <span class="text-muted">ADD NEW</span> <span>CATEGORY</span></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="form-group row no-gutters">
+                        <div class="col-md-3 d-flex justify-content-between align-items-center">Category Icon</div>
+                        <div class="col-md-9">
+                            <input type="file" name="Icon" accept=".ico,.png,.jpg,.jpeg">
+                        </div>
+                    </div>
+                    <div class="form-group row no-gutters" style="display:none;">
+                        <div class="col-md-3 d-flex justify-content-between align-items-center">Parent Category Id</div>
+                        <div class="col-md-9">
+                            <input class="form-control border text-box single-line" id="Parent" name="Parent" type="text" value="@ViewBag.ParentId">
+                        </div>
+                    </div>
+                    <div class="form-group row no-gutters">
+                        <div class="col-md-3 d-flex justify-content-between align-items-center">Parent Category</div>
+                        <div class="col-md-9">
+                            @ViewBag.Parent
+                        </div>
+                    </div>
+                    <div class="form-group row no-gutters">
+                        <div class="col-md-3 d-flex justify-content-between align-items-center">Name</div>
+                        <div class="col-md-9">
+                            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control border" } })
+                        </div>
+                    </div>
+                    <div class="form-group row no-gutters">
+                        <div class="col-md-3 d-flex justify-content-between align-items-center">Status</div>
+                        <div class="col-md-9">
+                            @Html.DropDownListFor(model => model.Status, listStatus, null, new { @class = "form-control", placeholder = "Select Category", data_style = "border bg-white", data_width = "100%", data_container = "body" })
+                        </div>
+                    </div>
+                    <div class="form-group my-5">
+                        <div class="col-md-offset-2 float-left">
+                            <a href="javascript:history.go(-1);" class="fab-item btn btn-light border-warning shadow-sm">Cancel</a>
+                        </div>
+                        <div class="col-md-offset-2 float-right">
+                            <input type="submit" value="Save Changes" class="btn btn-warning" />
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        }
+    </div>
+</main>
+

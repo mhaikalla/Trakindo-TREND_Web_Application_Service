@@ -1,0 +1,555 @@
+﻿    @model PagedList.IPagedList<Com.Trakindo.TSICS.Data.Model.TicketPreview>
+    @using PagedList.Mvc;
+    @using TSICS.Helper;
+
+    <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+    @{
+        ViewBag.Title = "Index";
+        Layout = "~/Views/Shared/_Layout.cshtml";
+        var involvlist = (List<Com.Trakindo.TSICS.Data.Model.InvolvedUser>)ViewBag.InvolvedUsers;
+    }
+
+    <main class="body position-relative d-flex flex-column">
+        <div data-active_page="all-technical-request" class="content-wrap flex-fill">
+            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        @using (Html.BeginForm("AddDppmNumber", "TechnicalRequest", FormMethod.Post, new { enctype = "multipart/form-data", novalidate = "", Class = "needs-validation" }))
+                        {
+                            <input name="TicketId" type="text" id="ticket-id" class="form-control bg-light clone-input-val" style="display:none;">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Add To DPPM</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <label class="text-dark">TR Number<span class="d-none d-xl-inline mx-1">:</span><span class="d-none d-xl-inline mx-1" id="ticket-number"></span></label><br />
+                                <label class="text-dark">Title<span class="d-none d-xl-inline mx-1">:</span><span class="d-none d-xl-inline mx-1" id="ticket-title"></span></label><br />
+
+                                <div class="form-group text-muted my-1">
+                                    <label>DPPM Number</label>
+                                    <input name="DPPMno" type="text" id="ticket-dppm-number" class="form-control bg-light clone-input-val">
+                                </div>
+
+                            </div>
+                            <div class="modal-footer">
+                                <input type="submit" id="deleteButton" name="submitButton" class="btn rounded-0 btn-danger btn-delete w-100" value="Delete">
+                                <input type="submit" id="submitButton" name="submitButton" class="btn rounded-0 btn-warning w-100" value="Save Changes">
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <section class="position-relative mt-5">
+                <div class="container">
+                    <div class="row">
+                        <aside id="sidebar" style="top: 7rem;" class="sidebar col-lg-3 d-none d-lg-flex flex-column align-self-start position-sticky">
+                            <div class="sidebar-wrap flex-fill">
+                                @Html.Partial("_PartTRCategory")
+                            </div>
+                        </aside>
+                        <div class="col-lg-9 position-relative">
+                            <div style="top: 7rem; height: 0;" class="position-sticky z-index-10">
+                                <a style="right: -4rem;" href="@Url.Action("HelpDesk", "TechnicalRequest")" class="btn btn-warning border-0 btn-customer-service position-absolute" target="_blank"><img src="@Url.Content("~/assets/images/repository/customer-service-icon.png")" alt=""></a>
+                            </div>
+
+                            <section class="card bg-white shadow-sm border-0 mb-5">
+                                @if (Convert.ToInt32(Session["status"]) == 7)
+                                {
+                                    <div class="card-header bg-transparent border-0">
+                                        <div class="row">
+                                            <div class="col-lg-6 d-flex align-items-center">
+                                                <div class="h3 card-title mb-0"> <span>ALL TECHNICAL REQUEST</span></div>
+                                            </div>
+                                            <div class="col-lg-6 mt-3 mt-lg-0">
+                                                <div class="status text-lg-right">
+                                                    <div class="form-row justify-content-lg-end">
+                                                        <div class="form-group mb-lg-0">
+                                                            <div class="input-group border">
+                                                                @using (Html.BeginForm(null, null, FormMethod.Get))
+                                                                {
+                                                                    @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { Class = "bg-white flex-fill rounded-0 border-0 px-3", placeholder = "Find Technical Request" })
+                                                                    <button type="submit" class="btn border-0 bg-transparent rounded-0"><i class="fa fa-search"></i></button>
+                                                                }
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group mb-lg-0 ml-2">
+                                                            <div class="dropdown">
+                                                                <button type="button" data-toggle="dropdown" class="btn border rounded-0 d-flex align-items-center"><span>Sort by</span><i class="fa fa-caret-down text-muted small ml-2"></i></button>
+                                                                <div class="dropdown-menu dropdown-menu-right text-right">
+                                                                    @Html.ActionLink("Date", "Index", new { sortOrder = ViewBag.DateSortParm, currentFilter = ViewBag.CurrentFilter }, new { Class = "dropdown-item" })
+                                                                    @Html.ActionLink("Title", "Index", new { sortOrder = ViewBag.TitleSortParm, currentFilter = ViewBag.CurrentFilter }, new { Class = "dropdown-item" })
+                                                                    @Html.ActionLink("Status", "Index", new { sortOrder = ViewBag.StatusSortParm, currentFilter = ViewBag.CurrentFilter }, new { Class = "dropdown-item" })
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-body px-0">
+                                        <div class="tech-request-list list-group list-group-flush">
+                                            @foreach (var item in Model)
+                                            {
+                                                <div class="list-group-item px-3 px-lg-5">
+                                                    <div class="row mb-2">
+                                                        @if (ViewBag.RecentDate != null)
+                                                        {
+                                                            <div class="col">
+                                                                @foreach (var recent in ViewBag.RecentDate)
+                                                                {
+                                                                    if (recent.TicketId == item.TicketId)
+                                                                    {
+                                                                        <small class="text-muted"><em>@recent.CreatedAt</em></small>
+                                                                    }
+                                                                }
+                                                            </div>
+                                                        }
+                                                        <div class="col-auto d-flex align-items-start">
+                                                            @{
+                                                                if (Convert.ToInt32(Session["Delegation"]) != 1)
+                                                                {
+                                                                    if (item.Status != 3 && item.Status != 1 && item.Status != 5)
+                                                                    {
+                                                                        if (item.Responder == int.Parse(Session["userid"].ToString()) || item.Submiter == int.Parse(Session["userid"].ToString()) || involvlist.Where(w => w.UserId.ToString() == Session["userid"].ToString() && w.TicketNo == item.TicketNo).FirstOrDefault() != null)
+                                                                        {
+                                                                            <a style="width: 2.5rem;height: 2.5rem;" href="@Url.Action("Details/" + item.TicketId)#comment" class="btn border border-light rounded-circle text-muted"><span class="d-block position-relative"><i class="far fa-comment"></i></span></a>
+                                                                        }
+                                                                    }
+                                                                    <div class="dropleft">
+                                                                        <button type="button" style="width: 2.5rem;height: 2.5rem;" data-toggle="dropdown" class="btn border border-light rounded-circle text-muted ml-2"><i class="fa fa-ellipsis-v"></i></button>
+                                                                        <div class="dropdown-menu dropdown-menu-right text-right">
+                                                                            <div class="list-group list-group-flush">
+                                                                                <a href="@Url.Action("Details/" + item.TicketId)" class="list-group-item list-group-item-action dropdown-item py-2">View</a>
+
+                                                                                @if (Session["userid"] != null)
+                                                                                {
+                                                                                    if ((item.Status.Equals(2) && Convert.ToInt32(Session["userid"]) == item.Responder) || (item.Status.Equals(1) && Convert.ToInt32(Session["userid"]) == item.Submiter))
+                                                                                    {
+                                                                                        <a href="@Url.Action("Update/" + item.TicketNo, "MyTechnicalRequest")" class="list-group-item list-group-item-action dropdown-item py-2">Edit</a>
+                                                                                    }
+                                                                                    if (item.Status.Equals(1) && Convert.ToInt32(Session["userid"]) == item.Submiter)
+                                                                                    {
+                                                                                        <a href="@Url.Action("Delete/" + item.TicketId, "MyTechnicalRequest")" class="list-group-item list-group-item-action dropdown-item py-2">Delete</a>
+                                                                                    }
+                                                                                }
+                                                                                @if (item.Status.Equals(3))
+                                                                                {
+                                                                                    if (item.ticketNoReference == null)
+                                                                                    {
+                                                                                        <a href="@Url.Action("Reopen/" + item.TicketId, "TechnicalRequest")" class="list-group-item list-group-item-action dropdown-item text-muted py-2">Re-Open</a>
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        <span class="d-inline-block" style="background-color :yellow;" tabindex="0" data-placement="bottom" data-toggle="tooltip" data-html="true" title="This TR Has Already Re-opened with TR Number : @item.ticketNoReference">
+                                                                                            <button class="list-group-item list-group-item-action dropdown-item text-muted py-2" style="pointer-events: none;" type="button" disabled>Re-Open</button>
+                                                                                        </span>
+                                                                                    }
+                                                                                }
+                                                                                @if (item.TicketCategoryId != 9)
+                                                                                {
+                                                                                    if (Convert.ToInt32(Session["role"]) > 2)
+                                                                                    {
+                                                                                        <button type="button" class="DPPMData list-group-item list-group-item-action dropdown-item text-muted py-2" data-toggle="modal" data-target="#exampleModal" data-whatever="@item.TicketId" data-dppm='{"ticketId":"@item.TicketId","ticketTitle":"@item.Title", "ticketDppmNo":"@item.DPPMNumber", "ticketNumber":"@item.TicketNo"}'>
+                                                                                            @if (item.DPPMNumber == null)
+                                                                                            {
+                                                                                                <div>Add DPPM Number</div>
+                                                                                            }
+                                                                                            else
+                                                                                            {
+                                                                                                <div>Edit or Delete DPPM</div>
+                                                                                            }
+                                                                                        </button>
+
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        <span class="d-inline-block" style="background-color :yellow;" tabindex="0" data-placement="bottom" data-toggle="tooltip" data-html="true" title="Only Role <b>TC HO</b> or <b>TC Area</b> to Add DPPM Number">
+                                                                                            <button class="list-group-item list-group-item-action dropdown-item text-muted py-2" style="pointer-events: none;" type="button" disabled>Add To DPPM</button>
+                                                                                        </span>
+                                                                                    }
+                                                                                }
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                }
+
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                    <div class="row justify-content-between">
+                                                        <div class="col pb-3">
+                                                            <div class="row no-gutters">
+                                                                <div class="col-xl-2 mb-0 mb-xl-2 d-flex justify-content-between text-muted"><small>Title</small><span class="d-none d-xl-inline mx-2">:</span></div>
+                                                                <div class="col-xl-10 mb-3 mb-xl-2 text-dark"><a href="@Url.Action("Details/" + item.TicketId, "TechnicalRequest")">@Html.DisplayFor(modelItem => item.Title)</a></div>
+                                                                <div class="col-xl-2 mb-0 mb-xl-2 d-flex justify-content-between text-muted"><small>TR No</small><span class="d-none d-xl-inline mx-2">:</span></div>
+                                                                <div class="col-xl-10 mb-3 mb-xl-2 text-dark">@Html.DisplayFor(modelItem => item.TicketNo)</div>
+                                                                <div class="col-xl-2 mb-0 mb-xl-2 d-flex justify-content-between text-muted"><small>Status</small><span class="d-none d-xl-inline mx-2">:</span></div>
+                                                                <div class="col-xl-10 mb-3 mb-xl-2 text-dark">
+                                                                    <div class="d-flex flex-column">
+
+                                                                        @if (item.Status == 1)
+                                                                        {
+                                                                            <div class="text-dark"><em><strong>DRAFT</strong></em></div>
+                                                                        }
+                                                                        else if (item.Status == 2)
+                                                                        {
+                                                                            if (item.IsEscalated)
+                                                                            {
+                                                                                if (item.NextCommenter.Equals(0))
+                                                                                {
+                                                                                    if (item.Responder == Convert.ToInt32(Session["userid"]) && item.Submiter == Convert.ToInt32(Session["userid"]))
+                                                                                    {
+                                                                                        <div class="text-danger"><em>Escalated - Waiting Your Feedback</em></div>
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        <div><em class="text-danger">Escalated</em> - <em class="text-dark">PRA</em></div>
+                                                                                    }
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    if (Convert.ToInt32(Session["userid"]) == item.NextCommenter)
+                                                                                    {
+                                                                                        <div><em class="text-danger">Escalated</em> - <em class="text-dark">Waiting Your FeedBack</em></div>
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        if (item.Responder == item.NextCommenter)
+                                                                                        {
+                                                                                            <div><em class="text-danger">Escalated</em> - <em class="text-dark">PRA</em></div>
+                                                                                        }
+                                                                                        else if (item.Submiter == item.NextCommenter)
+                                                                                        {
+                                                                                            <div><em class="text-danger">Escalated</em> - <em class="text-dark">PSA</em></div>
+                                                                                        }
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                if (item.NextCommenter.Equals(0))
+                                                                                {
+                                                                                    if (item.Responder.Equals(Convert.ToInt32(Session["userid"])) && item.Submiter.Equals(Convert.ToInt32(Session["userid"])))
+                                                                                    {
+                                                                                        <div class="text-danger"><em>waiting your feedback</em></div>
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        <div class="text-dark"><em>PRA</em></div>
+                                                                                    }
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    if (Convert.ToInt32(Session["userid"]) == item.NextCommenter)
+                                                                                    {
+                                                                                        <div class="text-danger"><em>waiting your feedback</em></div>
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        if (item.NextCommenter == item.Responder)
+                                                                                        {
+                                                                                            <div class="text-dark"><em>PRA</em></div>
+                                                                                        }
+                                                                                        else if (item.NextCommenter == item.Submiter)
+                                                                                        {
+                                                                                            <div class="text-dark"><em>PSA</em></div>
+                                                                                        }
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                        else if (item.Status == 3)
+                                                                        {
+                                                                            <div class="text-danger"><em>Closed</em></div>
+                                                                        }
+                                                                        else if (item.Status == 6)
+                                                                        {
+                                                                            <div class="text-danger"><em>Solved</em></div>
+                                                                        }
+                                                                    </div>
+                                                                </div>
+                                                                @if (item.TicketCategoryId != 9)
+                                                                {
+                                                                    <div class="col-xl-2 mb-0 mb-xl-2 d-flex justify-content-between text-muted"><small>DPPM Number</small><span class="d-none d-xl-inline mx-2">:</span></div>
+                                                                    <div class="col-xl-10 mb-3 mb-xl-2 text-dark">@(String.IsNullOrWhiteSpace(item.DPPMNumber) ? "Not Inputed Yet" : item.DPPMNumber)</div>
+                                                                }
+                                                            </div>
+                                                            <div class="d-flex justify-content-end align-items-center position-relative w-100">
+                                                                <hr style="top: 0;" class="position-absolute w-100 z-index-0">
+                                                                <button type="button" data-toggle="collapse" href="#child-@item.TicketNo" class="btn btn-light btn-sm border rounded-pill position-relative z-index-5 ml-auto px-3"><span class="text-muted mr-2">See Detail</span><i class="fa fa-chevron-down"></i></button>
+                                                            </div>
+                                                            <div id="child-@item.TicketNo" class="is-child row collapse">
+                                                                <div class="col-xl-2 mb-0 mb-xl-2 d-flex justify-content-between text-muted"><small>Description</small><span class="d-none d-xl-inline mx-2">:</span></div>
+                                                                <div class="col-xl-10 mb-3 mb-xl-2 text-dark">@Html.Raw(Common.GetShortDescription(item.Description))</div>
+
+                                                                @*<div class="col-xl-2 mb-0 mb-xl-2 d-flex justify-content-between text-muted"><small>Role</small><span class="d-none d-xl-inline mx-2">:</span></div>
+                                                                    <div class="col-xl-10 mb-3 mb-xl-2 text-dark"><strong>@Html.DisplayFor(modelItem => item.RoleName)</strong></div>*@
+                                                                <div class="col-xl-2 mb-0 mb-xl-2 d-flex justify-content-between text-muted"><small>Submiter </small><span class="d-none d-xl-inline mx-2">:</span></div>
+                                                                <div class="col-xl-10 mb-3 mb-xl-2 text-dark">
+                                                                    @{
+                                                                        foreach (var submiter in ViewBag.Submiters)
+                                                                        {
+                                                                            if (submiter.TicketNo.Equals(item.TicketNo))
+                                                                            {
+                                                                                <i class="badge badge-warning badge-pill">@submiter.EmployeName</i>
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                </div>
+                                                                <div class="col-xl-2 mb-0 mb-xl-2 d-flex justify-content-between text-muted"><small>Responder</small><span class="d-none d-xl-inline mx-2">:</span></div>
+                                                                <div class="col-xl-10 mb-3 mb-xl-2 text-dark">
+                                                                    @{
+                                                                        if (item.TicketCategoryId != 9)
+                                                                        {
+                                                                            foreach (var responder in ViewBag.Responders)
+                                                                            {
+                                                                                if (responder.TicketNo == item.TicketNo)
+                                                                                {
+                                                                                    if (item.Responder != 0)
+                                                                                    {
+                                                                                        <i class="badge badge-warning badge-pill">@responder.EmployeName</i>
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        <i> Submiter has not <strong>chosen</strong> yet</i>
+                                                                                    }
+                                                                                }
+                                                                            }
+
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            if (ViewBag.Responders != null)
+                                                                            {
+                                                                                foreach (var responder in ViewBag.Responders)
+                                                                                {
+                                                                                    if (responder.TicketNo == item.TicketNo)
+                                                                                    {
+                                                                                        <i class="badge badge-success badge-pill">@responder.EmployeName</i>
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <i class="badge badge-success badge-pill">TREND Admin</i>
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                </div>
+                                                                @if (item.TicketCategoryId != 9)
+                                                                {
+                                                                    <div class="col-xl-2 mb-0 mb-xl-2 d-flex justify-content-between text-muted"><small>Involved Users</small><span class="d-none d-xl-inline mx-2">:</span></div>
+                                                                    <div class="col-xl-10 mb-3 mb-xl-2 text-dark">
+                                                                        @{
+                                                                            if (involvlist.Count > 0)
+                                                                            {
+                                                                                foreach (var involvedUser in involvlist)
+                                                                                {
+                                                                                    if (involvedUser.TicketNo.Equals(item.TicketNo))
+                                                                                    {
+                                                                                        <i class="badge badge-warning badge-pill">@involvedUser.EmployeName</i>
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <i class="">-</i>
+                                                                            }
+                                                                        }
+                                                                    </div>
+                                                                }
+                                                                @{
+                                                                    int[] stat = new int[] { 6, 3 };
+                                                                    if (stat.Contains(item.Status))
+                                                                    {
+                                                                        <div class="col-xl-2 mb-0 mb-xl-2 d-flex justify-content-between text-muted"><small>Resolution</small><span class="d-none d-xl-inline mx-2">:</span></div>
+                                                                        <div class="col-xl-10 mb-3 mb-xl-2 text-dark">
+
+                                                                            @foreach (var resolution in ViewBag.Resolutions)
+                                                                            {
+                                                                                if (resolution.TicketId.Equals(item.TicketId))
+                                                                                {
+                                                                                    <div>@Html.Raw(resolution.Description)</div>
+                                                                                }
+                                                                            }
+
+                                                                        </div>
+                                                                    }
+                                                                }
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            }
+                                            @*Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+                                                @Html.PagedListPager(Model, page => Url.Action("Index", new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))*@
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <nav aria-label="Page navigation example">
+                                            Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+                                            @Html.PagedListPager(Model, page => Url.Action("Index", new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+                                        </nav>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="card-header bg-transparent border-0">
+                                        <div class="row">
+                                            <div class="col-lg-6 d-flex align-items-center width9_4cols">
+                                                <div class="h3 text-center font-secondary card-title mb-0">
+                                                    <span class="text-muted">YOUR REGISTER PROGRESS</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row justify-content-center">
+                                            <div class="card border-0">
+                                                <div class="row">
+                                                    <div class="col-lg-12 text-center my-3">
+                                                        <div><span class="fa fa-user-check"></span></div>
+                                                        <div class="text-dark">User Status</div>
+                                                        <div>
+                                                            @if (ViewBag.User.Status == 2)
+                                                            {
+                                                                <div class="badge badge-warning rounded-pill p-2 text-capitalize text-lg">Registered</div>
+                                                                <div style="font-size: 12px;">Waiting Approval from 1st Supervisor</div>
+                                                            }
+                                                            else if (ViewBag.User.Status == 3)
+                                                            {
+                                                                <div class="badge badge-warning rounded-pill p-2 text-capitalize text-lg">Approved 1</div>
+                                                                <div style="font-size: 12px;">Waiting Approval from 2nd Supervisor</div>
+                                                            }
+                                                            else if (ViewBag.User.Status == 4)
+                                                            {
+                                                                <div class="badge badge-danger rounded-pill p-2 text-capitalize text-lg">Rejected 1</div>
+                                                            }
+                                                            else if (ViewBag.User.Status == 5)
+                                                            {
+                                                                <div class="badge badge-warning rounded-pill p-2 text-capitalize text-lg">Approved 2</div>
+                                                                <div style="font-size: 12px;">Waiting Approval from TS Manager</div>
+                                                            }
+                                                            else if (ViewBag.User.Status == 6)
+                                                            {
+                                                                <div class="badge badge-danger rounded-pill p-2 text-capitalize text-lg">Rejected 2</div>
+                                                            }
+                                                            else if (ViewBag.User.Status == 7)
+                                                            {
+                                                                <div class="badge badge-success rounded-pill p-2 text-uppercase">You're Activated </div>
+
+                                                            }
+                                                            else if (ViewBag.User.Status == 8)
+                                                            {
+                                                                <div class="badge badge-danger rounded-pill p-2 text-capitalize text-lg">Deleted</div>
+                                                            }
+                                                            else if (ViewBag.User.Status == 9)
+                                                            {
+                                                                <div class="badge badge-warning rounded-pill p-2 text-capitalize text-lg">Approved TS Manager</div>
+                                                                <div style="font-size: 12px;">Waiting Activation From TREND Admin</div>
+                                                            }
+                                                            else if (ViewBag.User.Status == 10)
+                                                            {
+                                                                <div class="badge badge-danger rounded-pill p-2 text-capitalize text-lg">Rejected TS Manager</div>
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6 col-lg-3 text-center my-3">
+
+                                                        @if (ViewBag.App1 != null)
+                                                        {
+                                                            if (ViewBag.App1.PhotoProfile != null)
+                                                            {
+                                                                <img style="width: 50px; height: 50px;" src="@Url.Content("~/Upload/UserProfile/" + ViewBag.App1.PhotoProfile)" onerror="@Url.Content("~/assets/images/repository/avatar-default.jpg")" class="object-fit-cover rounded-circle img-thumbnail">
+                                                            }
+                                                            else
+                                                            { <img style="width: 50px; height: 50px;" src="@Url.Content("~/assets/images/repository/avatar-default.jpg")" alt="" class="object-fit-cover rounded-circle img-thumbnail">}
+                                                        }
+                                                        else
+                                                        {<img style="width: 50px; height: 50px;" src="@Url.Content("~/assets/images/repository/avatar-default.jpg")" alt="" class="object-fit-cover rounded-circle img-thumbnail">}
+                                                        <div class="text-dark">Approval 1st SPV</div>
+                                                        <div><div class="text-muted">@(ViewBag.User.NameApproval1 == null ? "Not Approved Yet" : ViewBag.User.NameApproval1)</div><div class="text-muted" style="font-size : 13px;">@(ViewBag.User.DateApproval1 == null ? "" : ViewBag.User.DateApproval1.ToString("dddd, dd MMMM yyyy - HH:mm"))</div></div>
+                                                    </div>
+                                                    <div class="col-md-6 col-lg-3 text-center my-3">
+                                                        @if (ViewBag.App2 != null)
+                                                        {
+                                                            if (ViewBag.App2.PhotoProfile != null)
+                                                            {
+                                                                <img style="width: 50px; height: 50px;" src="@Url.Content("~/Upload/UserProfile/" + ViewBag.App2.PhotoProfile)" onerror="@Url.Content("~/assets/images/repository/avatar-default.jpg")" class="object-fit-cover rounded-circle img-thumbnail">
+                                                            }
+                                                            else
+                                                            { <img style="width: 50px; height: 50px;" src="@Url.Content("~/assets/images/repository/avatar-default.jpg")" alt="" class="object-fit-cover rounded-circle img-thumbnail">}
+                                                        }
+                                                        else
+                                                        {<img style="width: 50px; height: 50px;" src="@Url.Content("~/assets/images/repository/avatar-default.jpg")" alt="" class="object-fit-cover rounded-circle img-thumbnail">}
+                                                        <div class="text-dark">Approval 2nd SPV</div>
+                                                        <div><div class="text-muted">@(ViewBag.User.NameApproval2 == null ? "Not Approved Yet" : ViewBag.User.NameApproval2)</div><div class="text-muted" style="font-size : 13px ;">@(ViewBag.User.DateApproval2 == null ? "" : ViewBag.User.DateApproval2.ToString("dddd, dd MMMM yyyy - HH:mm"))</div></div>
+                                                    </div>
+                                                    <div class="col-md-6 col-lg-3 text-center my-3">
+                                                        @if (ViewBag.TSManager != null)
+                                                        {
+                                                            if (ViewBag.TSManager.PhotoProfile != null)
+                                                            {
+                                                                <img style="width: 50px; height: 50px;" src="@Url.Content("~/Upload/UserProfile/" + ViewBag.TSManager.PhotoProfile)" onerror="@Url.Content("~/assets/images/repository/avatar-default.jpg")" class="object-fit-cover rounded-circle img-thumbnail">
+                                                            }
+                                                            else
+                                                            { <img style="width: 50px; height: 50px;" src="@Url.Content("~/assets/images/repository/avatar-default.jpg")" alt="" class="object-fit-cover rounded-circle img-thumbnail">}
+                                                        }
+                                                        else
+                                                        {<img style="width: 50px; height: 50px;" src="@Url.Content("~/assets/images/repository/avatar-default.jpg")" alt="" class="object-fit-cover rounded-circle img-thumbnail">}
+
+                                                        <div class="text-dark">Approval TS Manager</div>
+                                                        <div><div class="text-muted">@(ViewBag.User.UserTsManager1Name == null ? "Not Approved Yet" : ViewBag.User.UserTsManager1Name)</div><div class="text-muted" style="font-size : 13px ;">@(ViewBag.User.UserTsManager1DueDate == null ? "" : ViewBag.User.UserTsManager1DueDate.ToString("dddd, dd MMMM yyyy - HH:mm"))</div></div>
+                                                    </div>
+                                                    <div class="col-md-6 col-lg-3 text-center my-3">
+                                                        <div><span class="fa fa-calendar-check my-3"></span></div>
+                                                        <div class="text-dark">Created At</div>
+                                                        <div><div class="text-muted" style="font-size : 13px;">@ViewBag.User.CreatedAt.ToString("dddd, dd MMMM yyyy - HH:mm")</div></div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </section>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    @section ScriptBottom{
+
+
+        <script>
+            $(".DPPMData").on('click', function () {
+
+                //console.log(ticketId);
+                $('#ticket-id').val($(this).data('dppm').ticketId);
+                $('#ticket-number').html($(this).data('dppm').ticketNumber);
+                $('#ticket-title').html($(this).data('dppm').ticketTitle);
+                $('#ticket-dppm-number').val($(this).data('dppm').ticketDppmNo);
+                if ($(this).data('dppm').ticketDppmNo) {
+                    $('#deleteButton').show();
+                    $('#exampleModalLabel').html("Edit or Delete DPPM Number");
+                }
+                else {
+                    $('#deleteButton').hide();
+                    $('#exampleModalLabel').html("Add New DPPM Number");
+                }
+
+            });
+            $(function () {
+                $('[data-toggle="tooltip"]').tooltip()
+            })
+
+        </script>
+    }

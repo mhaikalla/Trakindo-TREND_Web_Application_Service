@@ -1,0 +1,764 @@
+﻿@using TSICS.Helper;
+<!DOCTYPE html>
+@{
+    string title = "Trakindo - TREND";
+    var downloadPIS = WebConfigure.GetDomain() + "/Upload/Document/PIS_File.csv";
+    var downloadJCode = WebConfigure.GetDomain() + "/Upload/Document/Location_File.csv";
+    var downloadComment = WebConfigure.GetDomain() + "/Upload/Document/Comment_File.csv";
+    var downloadWarranty = WebConfigure.GetDomain() + "/Upload/Document/WarrantyList_File.csv";
+    var downloadDPPMSummary = WebConfigure.GetDomain() + "/Upload/Document/DPPMSummary_FIle.csv";
+    var downloadDPPMUnit = WebConfigure.GetDomain() + "/Upload/Document/DPPMAffectedUnit_File.csv";
+    var downloadDPPMPart = WebConfigure.GetDomain() + "/Upload/Document/DPPMAffectedPart_File.csv";
+    var downloadSimsError = WebConfigure.GetDomain() + "/Upload/Document/SIMSErrorSummary_File.csv";
+    var downloadOrganization = WebConfigure.GetDomain() + "/Upload/Document/Organization_File.csv";
+    var downloadPSLPart = WebConfigure.GetDomain() + "/Upload/Document/PSLPart_File.csv";
+    var downloadTelematics = WebConfigure.GetDomain() + "/Upload/telematics.xlsx";
+    var downloadMEP = WebConfigure.GetDomain() + "/Upload/MEP.xlsx";
+    var downloadUserGuide = WebConfigure.GetDomain() + "/Upload/Document/" + WebConfigure.GetUserGuideNameFileWithExtention();
+
+}
+
+<!--[if IE 7 ]> <html class="no-js ie ie7 lte7 lte8 lte9" lang="en-US"> <![endif]-->
+<!--[if IE 8 ]> <html class="no-js ie ie8 lte8 lte9" lang="en-US"> <![endif]-->
+<!--[if IE 9 ]> <html class="no-js ie ie9 lte9>" lang="en-US"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!-->
+<html lang="en-US" class="no-js">
+<!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="">
+    <link type="text/plain" rel="author" href="humans.txt">
+    <link rel="author" href="" title="">
+    <meta name="author" content="babangadi, m haikal anatama">
+    <meta name="publisher" content="">
+    <meta name="robots" content="index, follow">
+    <meta name="revisit-after" content="7 days">
+    <meta name="rating" content="general">
+    <meta name="googlebot" content="index, follow, noodp">
+    <meta name="google-site-verification" content="">
+    <meta name="msvalidate.01" content="">
+    <meta name="alexaVerifyID" content="">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="">
+    <meta property="og:locale" content="id_ID">
+    <meta property="og:locale:alternate" content="en_US">
+    <meta property="fb:admins" content="">
+    <meta property="fb:app_id" content="">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="">
+    <meta name="twitter:creator" content="">
+    <meta name="twitter:domain" content="">
+    <title>@title</title>
+    <meta itemprop="name" content="@title">
+    <meta property="og:title" content="@title">
+    <meta name="twitter:title" content="@title">
+    <meta name="description" content="">
+    <meta itemprop="description" content="">
+    <meta property="og:description" content="">
+    <meta name="twitter:description" content="">
+    <meta itemprop="image" content="">
+    <meta property="og:image" content="">
+    <meta name="twitter:image" content="">
+    <link rel="canonical" href="">
+    <meta property="og:url" content="">
+    <meta name="twitter:url" content=""><!-- <base href="/"> -->
+    <link rel="shortcut icon" href="~/assets/images/favicon/favicon.ico">
+    <link rel="apple-touch-icon" sizes="57x57" href="~/assets/images/favicon/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="~/assets/images/favicon/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="~/assets/images/favicon/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="~/assets/images/favicon/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="~/assets/images/favicon/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="~/assets/images/favicon/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="~/assets/images/favicon/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="~/assets/images/favicon/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="~/assets/images/favicon/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="assets/images/favicon/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="~/assets/images/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="~/assets/images/favicon/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="~/assets/images/favicon/favicon-16x16.png">
+    <link rel="manifest" href="~/assets/images/favicon/manifest.json">
+    <meta name="msapplication-TileColor" content="#DEBE09">
+    <meta name="msapplication-TileImage" content="~/assets/images/favicon/ms-icon-144x144.png">
+    <meta name="theme-color" content="#063692">
+    @*<link href="assets/css/style.css" media="all" rel="stylesheet" type="text/css">*@
+    @Styles.Render("~/Asset/css")
+    <style>
+        .hidden-date{
+            display : none;
+        }
+    </style>
+    <link href="~/Scripts/DataTables/datatables.min.css" rel="stylesheet" />
+    <link href="~/Scripts/DataTables/Select-1.3.1/css/select.dataTables.min.css" rel="stylesheet" />
+    <script src="~/Scripts/DataTables/datatables.min.js"></script>
+    <script src="~/Scripts/DataTables/Select-1.3.1/js/dataTables.select.min.js"></script>
+    <script src="~/assets/js/ckeditor/ckeditor.js" type="text/javascript"></script>
+</head>
+<body class="bg-light admin--page">
+
+    <div id="modal--upload-help" class="modal fade" style="z-index : 9999;">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable " style="z-index : 9999;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Upload User Guide</h5>
+                    <button type="button" data-dismiss="modal" class="close"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body pt-0">
+                    @using (Html.BeginForm("UploadUserGuide", "Default", FormMethod.Post, new { enctype = "multipart/form-data", novalidate = "", Class = "needs-validation" }))
+                    {
+                        <div class="form-group">
+                            <small class="card-subtitle text-uppercase mb-0 mt-2">Read Information</small>
+                            <div class="card mt-3">
+                                <div class="card-body">
+                                    <h5 class="card-title">Please Read For Your Information Before Upload User Guide</h5>
+                                    <p class="card-text">1. Make Sure Format File must .pdf extention</p>
+                                    <p class="card-text">2. Make Sure this file is User Guide and not just any file</p>
+                                    <p class="card-text">3. This file Aims to provide some instructions to User</p>
+                                </div>
+                            </div>
+                        </div>
+                        <small class="card-subtitle text-uppercase">Upload Data</small>
+                        <hr class="mt-0" />
+                            <div class="form-group">
+                                <label>Please select File.pdf</label>
+                                <br />
+                                <input type="file" name="file" required accept=".pdf" />
+                            </div>
+                            <div class="form-group text-center mb-0">
+                                <button type="submit" class="btn btn-warning px-4">Upload</button>
+                            </div>
+                            <br class="mb-3" />
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="allwrap">
+        <header class="header bg-dark position-sticky shadow-sm text-white p-0">
+            <div class="row no-gutters bg-yellow-grad pt-1 pt-sm-2 pt-md-3 pt-lg-4"></div>
+            <div class="container-fluid">
+                <div class="d-flex justify-content-between">
+                    <a href="javascript:window.location.reload(true)" class="logo-main d-flex align-items-center justify-content-center my-2">
+                        <picture class="d-flex"><img src="~/assets/images/repository/tsics-logo.jpg" alt="" style=" height: 43px;"></picture>
+                    </a><a id="toggle-menu" href="#" class="btn rounded-circle btn-toggle-menu d-block d-lg-none h-100 px-3"><span class="box"></span><span class="inner"></span></a>
+                    <div class="profile-pict d-none d-lg-flex align-items-center position-relative">
+                        <div class="media align-items-center h-100">
+                            @Html.Partial("_LoginPartial")
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        @if (Session["namebackend"] != null)
+        {
+            <aside id="sidebar" class="sidebar admin--sidebar-nav bg-secondary position-fixed">
+                <div class="sidebar-wrap overflow-auto">
+
+                    <section id="sidebar-nav--acc" class="accordion">
+                        <div class="card rounded-0 bg-transparent">
+                            <div class="card-header border-0 bg-transparent p-0"><a href="#" data-active_nav="admin--dashboard" class="btn btn-link collapsed btn-nav w-100 text-left rounded-0 border-0 text-white p-3"><i class="fa fa-tachometer-alt icon-left mr-3"></i><span>Dashboard</span><i class="fa fa-chevron-down icon-right"></i></a></div>
+                        </div>
+                        <div class="card rounded-0 bg-transparent">
+                            <div class="card-header border-0 bg-transparent p-0"><a href="@Url.Action("Index", "HelpDesk")" data-active_nav="admin--help-desk" class="btn btn-link collapsed btn-nav w-100 text-left rounded-0 border-0 text-white p-3"><i class="fa fa-headset icon-left mr-3"></i><span>Help Desk</span><i class="fa fa-chevron-down icon-right"></i></a></div>
+                        </div>
+                        <div class="card rounded-0 bg-transparent">
+                            <div class="card-header border-0 bg-transparent p-0"><a href="javascript:void(0);" data-toggle="collapse" data-target="#sidebar-nav--4" class="btn btn-link collapsed btn-nav w-100 text-left rounded-0 border-0 text-white p-3"><i class="fa fa-hdd icon-left mr-3"></i><span>Master data</span><i class="fa fa-chevron-down icon-right"></i></a></div>
+                            <div id="sidebar-nav--4" data-parent="#sidebar-nav--acc" class="collapse">
+                                <div class="card-body p-0">
+                                    <ul class="list-group list-group-flush bg-dark-25">
+                                        <li class="list-group-item list-group-item-action bg-transparent pl-5"><a href="@Url.Action("Index", "MasterArea")" data-active_nav="masterArea--all-post" class="text-white">Master Area<sup class="ml-2"></sup><sup class="ml-2"></sup></a></li>
+                                    </ul>
+                                    <ul class="list-group list-group-flush bg-dark-25">
+                                        <li class="list-group-item list-group-item-action bg-transparent pl-5"><a href="@Url.Action("Index", "MasterBranch")" data-active_nav="masterBranch--all-post" class="text-white">Master Branch<sup class="ml-2"></sup><sup class="ml-2"></sup></a></li>
+                                    </ul>
+                                    <ul class="list-group list-group-flush bg-dark-25">
+                                        <li class="list-group-item list-group-item-action bg-transparent pl-5"><a href="@Url.Action("Index", "Category")" data-active_nav="masterCategory--all-category" class="text-white">Master Article Category<sup class="ml-2"></sup><sup class="ml-2"></sup></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card rounded-0 bg-transparent">
+                            <div class="card-header border-0 bg-transparent p-0"><a href="javascript:void(0);" data-toggle="collapse" data-target="#sidebar-nav--5" class="btn btn-link collapsed btn-nav w-100 text-left rounded-0 border-0 text-white p-3"><i class="fa fa-upload icon-left mr-3"></i><span>Upload Master File</span><i class="fa fa-chevron-down icon-right"></i></a></div>
+                            <div id="sidebar-nav--5" data-parent="#sidebar-nav--acc" class="collapse">
+                                <div class="card-body p-0">
+                                    <ul class="list-group list-group-flush bg-dark-25">
+                                        <li class="list-group-item list-group-item-action bg-transparent pl-5"><a data-target="#modal--upload-telematics" data-toggle="modal" href="javascrip:void(0);" class="text-white">Upload Telematics Excel<sup class="ml-2"></sup><sup class="ml-2"></sup></a></li>
+                                    </ul>
+                                    @*<ul class="list-group list-group-flush bg-dark-25">
+                                        <li class="list-group-item list-group-item-action bg-transparent pl-5"><a data-target="#modal--upload-mep" data-toggle="modal" href="javascrip:void(0);" class="text-white">Upload MEP Excel<sup class="ml-2"></sup><sup class="ml-2"></sup></a></li>
+                                    </ul>*@
+                                    <ul class="list-group list-group-flush bg-dark-25">
+                                        <li class="list-group-item list-group-item-action bg-transparent pl-5"><a data-target="#modal--upload-PIS" data-toggle="modal" href="javascrip:void(0);" class="text-white">Upload PIS Data<sup class="ml-2"></sup><sup class="ml-2"></sup></a></li>
+                                    </ul>
+                                    <ul class="list-group list-group-flush bg-dark-25">
+                                        <li class="list-group-item list-group-item-action bg-transparent pl-5"><a data-target="#modal--upload-Location2" data-toggle="modal" href="javascrip:void(0);" class="text-white">Upload J-Code Data<sup class="ml-2"></sup><sup class="ml-2"></sup></a></li>
+                                    </ul>
+                                    <ul class="list-group list-group-flush bg-dark-25">
+                                        <li class="list-group-item list-group-item-action bg-transparent pl-5"><a data-target="#modal--upload-Comment" data-toggle="modal" href="javascrip:void(0);" class="text-white">Upload Comment Data<sup class="ml-2"></sup><sup class="ml-2"></sup></a></li>
+                                    </ul>
+                                    <ul class="list-group list-group-flush bg-dark-25">
+                                        <li class="list-group-item list-group-item-action bg-transparent pl-5"><a data-target="#modal--upload-Warranty-List" data-toggle="modal" href="javascrip:void(0);" class="text-white">Upload Warranty Excel<sup class="ml-2"></sup><sup class="ml-2"></sup></a></li>
+                                    </ul>
+                                    <ul class="list-group list-group-flush bg-dark-25">
+                                        <li class="list-group-item list-group-item-action bg-transparent pl-5"><a data-target="#modal--upload-DPPM-Summary" data-toggle="modal" href="javascrip:void(0);" class="text-white">Upload DPPM Summary Excel<sup class="ml-2"></sup><sup class="ml-2"></sup></a></li>
+                                    </ul>
+                                    <ul class="list-group list-group-flush bg-dark-25">
+                                        <li class="list-group-item list-group-item-action bg-transparent pl-5"><a data-target="#modal--upload-DPPM-AffectedUnit" data-toggle="modal" href="javascrip:void(0);" class="text-white">Upload DPPM Affected Unit Excel<sup class="ml-2"></sup><sup class="ml-2"></sup></a></li>
+                                    </ul>
+                                    <ul class="list-group list-group-flush bg-dark-25">
+                                        <li class="list-group-item list-group-item-action bg-transparent pl-5"><a data-target="#modal--upload-DPPM-AffectedPart" data-toggle="modal" href="javascrip:void(0);" class="text-white">Upload DPPM Affected Part Excel<sup class="ml-2"></sup><sup class="ml-2"></sup></a></li>
+                                    </ul>
+                                    <ul class="list-group list-group-flush bg-dark-25">
+                                        <li class="list-group-item list-group-item-action bg-transparent pl-5"><a data-target="#modal--upload-SIMS-Error-Summary" data-toggle="modal" href="javascrip:void(0);" class="text-white">Upload SIMS Error Summary Excel<sup class="ml-2"></sup><sup class="ml-2"></sup></a></li>
+                                    </ul>
+                                    <ul class="list-group list-group-flush bg-dark-25">
+                                        <li class="list-group-item list-group-item-action bg-transparent pl-5"><a data-target="#modal--upload-Organization" data-toggle="modal" href="javascrip:void(0);" class="text-white">Upload Organization Excel<sup class="ml-2"></sup><sup class="ml-2"></sup></a></li>
+                                    </ul>
+                                    <ul class="list-group list-group-flush bg-dark-25">
+                                        <li class="list-group-item list-group-item-action bg-transparent pl-5"><a data-target="#modal--upload-PSLPart" data-toggle="modal" href="javascrip:void(0);" class="text-white">Upload PSL Part Excel<sup class="ml-2"></sup><sup class="ml-2"></sup></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card rounded-0 bg-transparent">
+                            <div class="card-header border-0 bg-transparent p-0"><a href="javascript:void(0);" data-toggle="collapse" data-target="#sidebar-nav--6" class="btn btn-link collapsed btn-nav w-100 text-left rounded-0 border-0 text-white p-3"><i class="fa fa-pencil-alt icon-left mr-3"></i><span>Articles Upload</span><i class="fa fa-chevron-down icon-right"></i></a></div>
+                            <div id="sidebar-nav--6" data-parent="#sidebar-nav--acc" class="collapse">
+                                <div class="card-body p-0">
+                                    <ul class="list-group list-group-flush bg-dark-25">
+                                        <li class="list-group-item list-group-item-action bg-transparent pl-5"><a href="@Url.Action("Index", "Articles")" data-active_nav="articles--all-post" class="text-white">All Post</a></li>
+                                        <li class="list-group-item list-group-item-action bg-transparent pl-5"><a href="@Url.Action("Create", "Articles")" data-active_nav="articles--create" class="text-white">Create Post</a></li>
+                                        <li class="list-group-item list-group-item-action bg-transparent pl-5"><a href="@Url.Action("Draft", "Articles")" data-active_nav="articles--draft" class="text-white">Draft</a></li>
+                                        <li class="list-group-item list-group-item-action bg-transparent pl-5"><a href="@Url.Action("Usefull", "Articles")" data-active_nav="articles--usefull-link" class="text-white">Usefull Link</a></li>
+                                       
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card rounded-0 bg-transparent">
+                            <div class="card-header border-0 bg-transparent p-0"><a href="javascript:void(0);" data-toggle="collapse" data-target="#sidebar-nav--7" class="btn btn-link collapsed btn-nav w-100 text-left rounded-0 border-0 text-white p-3"><i class="fa fa-file-archive icon-left mr-3"></i><span>Literature</span><i class="fa fa-chevron-down icon-right"></i></a></div>
+                            <div id="sidebar-nav--7" data-parent="#sidebar-nav--acc" class="collapse">
+                                <div class="card-body p-0">
+                                    <ul class="list-group list-group-flush bg-dark-25">
+
+                                        <li class="list-group-item list-group-item-action bg-transparent pl-5"><a href="@Url.Action("Index", "Literature")" data-active_nav="Literature--all-post" class="text-white">All Literature</a></li>
+                                        <li class="list-group-item list-group-item-action bg-transparent pl-5"><a href="@Url.Action("Create", "Literature")" data-active_nav="Literature--create" class="text-white">Create New</a></li>
+                                        <li class="list-group-item list-group-item-action bg-transparent pl-5"><a href="@Url.Action("Draft", "Literature")" data-active_nav="Literature--draft" class="text-white">Draft</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card rounded-0 bg-transparent">
+                            <div class="card-header border-0 bg-transparent p-0"><a href="javascript:void(0);" data-toggle="collapse" data-target="#sidebar-nav--8" class="btn btn-link collapsed btn-nav w-100 text-left rounded-0 border-0 text-white p-3"><i class="fa fa-hard-hat icon-left mr-3"></i><span>User Management</span><i class="fa fa-chevron-down icon-right"></i></a></div>
+                            <div id="sidebar-nav--8" data-parent="#sidebar-nav--acc" class="collapse">
+                                <div class="card-body p-0">
+                                    <ul class="list-group list-group-flush bg-dark-25">
+                                        <li class="list-group-item list-group-item-action bg-transparent pl-5"><a href="@Url.Action("Index", "User")" data-active_nav="user--manage" class="text-white">Manage User</a></li>
+                                        <li class="list-group-item list-group-item-action bg-transparent pl-5"><a href="@Url.Action("Index", "Delegation")" data-active_nav="delegation--log" class="text-white">Delegation User<sup class="ml-2">@*<small class="fa fa-circle text-danger"></small></sup>*@</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card rounded-0 bg-transparent">
+                            <div class="card-header border-0 bg-transparent p-0"><a href="@Url.Action("Index", "Ticket")" data-active_nav="all--ticket" class="btn btn-link collapsed btn-nav w-100 text-left rounded-0 border-0 text-white p-3"><i class="fa fa-ticket-alt icon-left mr-3"></i><span>All TR Data</span><i class="fa fa-chevron-down icon-right"></i></a></div>
+                        </div>
+                    </section>
+                </div>
+            </aside>
+        }
+        <div id="modal--upload-telematics" class="modal fade">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Upload New Telematics Data</h5>
+                        <button type="button" data-dismiss="modal" class="close"><span aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="modal-body pt-0">
+                        @using (Html.BeginForm("UploadTelematicsExcel", "Default", FormMethod.Post, new { enctype = "multipart/form-data", novalidate = "", Class = "needs-validation" }))
+                        {
+                            <div class="form-group">
+                                <small class="card-subtitle text-uppercase mb-0 mt-2">Read Information</small>
+                                <div class="card mt-3">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Please Read For Your Information Before Upload New File</h5>
+                                        <p class="card-text">1. Make Sure Format File must .xlsx extention</p>
+                                        <p class="card-text">2. Make Sure the file upload it must to same with the example file</p>
+                                        <p class="card-text">3. The file will not be uploaded if this file is not same as the sample file below</p>
+                                        <p class="card-text">Download the sample template excel</p>
+                                        <a href="@downloadTelematics" target="_blank" class="btn btn-outline-warning">Download</a>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <small class="card-subtitle text-uppercase">Upload Data</small>
+                            <hr class="mt-0" />
+                            <div class="form-group">
+                                <label>Please select telematics excel</label>
+                                <br />
+                                <input type="file" name="file" required accept=".xlsx" />
+                            </div>
+                            <div class="form-group text-center mb-0">
+                                <button type="submit" class="btn btn-warning px-4">SUBMIT</button>
+                            </div>
+                            <br class="mb-3"/>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="modal--upload-mep" class="modal fade">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Upload New MEP Data</h5>
+                        <button type="button" data-dismiss="modal" class="close"><span aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="modal-body pt-0">
+                        @using (Html.BeginForm("UploadMepExcel", "Default", FormMethod.Post, new { enctype = "multipart/form-data", novalidate = "", Class = "needs-validation" }))
+                        {
+                            <div class="form-group">
+                                <small class="card-subtitle text-uppercase mb-0 mt-2">Read Information</small>
+                                <div class="card mt-3">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Please Read For Your Information Before Upload New File</h5>
+                                        <p class="card-text">1. Make Sure Format File must .xlsx extention</p>
+                                        <p class="card-text">2. Make Sure the file upload it must to same with the example file</p>
+                                        <p class="card-text">3. The file will not be uploaded if this file is not same as the sample file below</p>
+                                        <p class="card-text">Download the sample template excel</p>
+                                        <a href="@downloadMEP" target="_blank" class="btn btn-outline-warning">Download</a>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <small class="card-subtitle text-uppercase">Upload Data</small>
+                            <hr class="mt-0" />
+                            <div class="form-group">
+                                <label>Please select MEP excel file</label>
+                                <br />
+                                <input type="file" name="file" required accept=".xlsx" />
+                            </div>
+                            <div class="form-group text-center mb-0">
+                                <button type="submit" class="btn btn-warning px-4">SUBMIT</button>
+                            </div>
+                            <br class="mb-3" />
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="modal--upload-PIS" class="modal fade">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Upload New PIS Data</h5>
+                        <button type="button" data-dismiss="modal" class="close"><span aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="modal-body pt-0">
+                        @using (Html.BeginForm("UploadPisData", "Default", FormMethod.Post, new { enctype = "multipart/form-data", novalidate = "", Class = "needs-validation" }))
+                        {
+                            <div class="form-group">
+                                <small class="card-subtitle text-uppercase mb-0 mt-2">Read Information</small>
+                                <div class="card mt-3">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Please Read For Your Information Before Upload New File</h5>
+                                        <p class="card-text">1. Make Sure Format File must .csv extention</p>
+                                        <p class="card-text">2. Make Sure the file upload it must to same with the example file</p>
+                                        <p class="card-text">3. The file will not be uploaded if this file is not same as the sample file below</p>
+                                        <p class="card-text">Download the sample template File.csv</p>
+                                        <a href="@downloadPIS" target="_blank" class="btn btn-outline-warning">Download</a>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <small class="card-subtitle text-uppercase">Upload Data</small>
+                            <hr class="mt-0" />
+                            <div class="form-group">
+                                <label>Please select PIS excel file</label>
+                                <br />
+                                <input type="file" name="file" required accept=".csv" />
+                            </div>
+                            <div class="form-group text-center mb-0">
+                                <button type="submit" class="btn btn-warning px-4">SUBMIT</button>
+                            </div>
+                            <br class="mb-3" />
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="modal--upload-Location2" class="modal fade">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Upload New J-Code Data</h5>
+                        <button type="button" data-dismiss="modal" class="close"><span aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="modal-body pt-0">
+                        @using (Html.BeginForm("UploadLocationExcel", "Default", FormMethod.Post, new { enctype = "multipart/form-data", novalidate = "", Class = "needs-validation" }))
+                        {
+                            <div class="form-group">
+                                <small class="card-subtitle text-uppercase mb-0 mt-2">Read Information</small>
+                                <div class="card mt-3">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Please Read For Your Information Before Upload New File</h5>
+                                        <p class="card-text">1. Make Sure Format File must .csv extention</p>
+                                        <p class="card-text">2. Make Sure the file upload it must to same with the example file</p>
+                                        <p class="card-text">3. The file will not be uploaded if this file is not same as the sample file below</p>
+                                        <p class="card-text">Download the sample template excel</p>
+                                        <a href="@downloadJCode" target="_blank" class="btn btn-outline-warning">Download</a>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <small class="card-subtitle text-uppercase">Upload Data</small>
+                            <hr class="mt-0" />
+                            <div class="form-group">
+                                <label>Please select J-Code excel file</label>
+                                <br />
+                                <input type="file" name="file" required accept=".csv" />
+                            </div>
+                            <div class="form-group text-center mb-0">
+                                <button type="submit" class="btn btn-warning px-4">SUBMIT</button>
+                            </div>
+                            <br class="mb-3" />
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="modal--upload-Comment" class="modal fade">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Upload New Comment Data</h5>
+                        <button type="button" data-dismiss="modal" class="close"><span aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="modal-body pt-0">
+                        @using (Html.BeginForm("UploadCommentExcel", "Default", FormMethod.Post, new { enctype = "multipart/form-data", novalidate = "", Class = "needs-validation" }))
+                        {
+                            <div class="form-group">
+                                <small class="card-subtitle text-uppercase mb-0 mt-2">Read Information</small>
+                                <div class="card mt-3">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Please Read For Your Information Before Upload New File</h5>
+                                        <p class="card-text">1. Make Sure Format File must .csv extention</p>
+                                        <p class="card-text">2. Make Sure the file upload it must to same with the example file</p>
+                                        <p class="card-text">3. The file will not be uploaded if this file is not same as the sample file below</p>
+                                        <p class="card-text">Download the sample template excel</p>
+                                        <a href="@downloadComment" target="_blank" class="btn btn-outline-warning">Download</a>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <small class="card-subtitle text-uppercase">Upload Data</small>
+                            <hr class="mt-0" />
+                            <div class="form-group">
+                                <label>Please select Comment excel file</label>
+                                <br />
+                                <input type="file" name="file" required accept=".csv" />
+                            </div>
+                            <div class="form-group text-center mb-0">
+                                <button type="submit" class="btn btn-warning px-4">SUBMIT</button>
+                            </div>
+                            <br class="mb-3" />
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="modal--upload-Warranty-List" class="modal fade">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Upload New Warranty List Data</h5>
+                        <button type="button" data-dismiss="modal" class="close"><span aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="modal-body pt-0">
+                        @using (Html.BeginForm("UploadWarrantyListExcel", "Default", FormMethod.Post, new { enctype = "multipart/form-data", novalidate = "", Class = "needs-validation" }))
+                        {
+                            <div class="form-group">
+                                <small class="card-subtitle text-uppercase mb-0 mt-2">Read Information</small>
+                                <div class="card mt-3">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Please Read For Your Information Before Upload New File</h5>
+                                        <p class="card-text">1. Make Sure Format File must .csv extention</p>
+                                        <p class="card-text">2. Make Sure the file upload it must to same with the example file</p>
+                                        <p class="card-text">3. The file will not be uploaded if this file is not same as the sample file below</p>
+                                        <p class="card-text">Download the sample template excel</p>
+                                        <a href="@downloadWarranty" target="_blank" class="btn btn-outline-warning">Download</a>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <small class="card-subtitle text-uppercase">Upload Data</small>
+                            <hr class="mt-0" />
+                            <div class="form-group">
+                                <label>Please select Warranty List excel file</label>
+                                <br />
+                                <input type="file" name="file" required accept=".csv" />
+                            </div>
+                            <div class="form-group text-center mb-0">
+                                <button type="submit" class="btn btn-warning px-4">SUBMIT</button>
+                            </div>
+                            <br class="mb-3" />
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="modal--upload-DPPM-Summary" class="modal fade">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Upload New DPPM Summary Data</h5>
+                        <button type="button" data-dismiss="modal" class="close"><span aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="modal-body pt-0">
+                        @using (Html.BeginForm("UploadDPPMSummaryExcel", "Default", FormMethod.Post, new { enctype = "multipart/form-data", novalidate = "", Class = "needs-validation" }))
+                        { <div class="form-group">
+                            <small class="card-subtitle text-uppercase mb-0 mt-2">Read Information</small>
+                            <div class="card mt-3">
+                                <div class="card-body">
+                                    <h5 class="card-title">Please Read For Your Information Before Upload New File</h5>
+                                    <p class="card-text">1. Make Sure Format File must .csv extention</p>
+                                    <p class="card-text">2. Make Sure the file upload it must to same with the example file</p>
+                                    <p class="card-text">3. The file will not be uploaded if this file is not same as the sample file below</p>
+                                    <p class="card-text">Download the sample template excel</p>
+                                    <a href="@downloadDPPMSummary" target="_blank" class="btn btn-outline-warning">Download</a>
+                                </div>
+                            </div>
+
+                        </div>
+                        <small class="card-subtitle text-uppercase">Upload Data</small>
+                            <hr class="mt-0" />
+                            <div class="form-group">
+                                <label>Please Select DPPM Summary Excel</label>
+                                <br />
+                                <input type="file" name="file" required accept=".csv" />
+                            </div>
+                            <div class="form-group text-center mb-0">
+                                <button type="submit" class="btn btn-warning px-4">UPLOAD</button>
+                            </div>
+                            <br class="mb-3" />
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="modal--upload-DPPM-AffectedUnit" class="modal fade">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Upload New DPPM Affected Unit</h5>
+                        <button type="button" data-dismiss="modal" class="close"><span aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="modal-body pt-0">
+                        @using (Html.BeginForm("UploadDPPMAffectedUnit", "Default", FormMethod.Post, new { enctype = "multipart/form-data", novalidate = "", Class = "needs-validation" }))
+                        { <div class="form-group">
+                            <small class="card-subtitle text-uppercase mb-0 mt-2">Read Information</small>
+                            <div class="card mt-3">
+                                <div class="card-body"> 
+                                    <h5 class="card-title">Please Read For Your Information Before Upload New File</h5>
+                                    <p class="card-text">1. Make Sure Format File must .csv extention</p>
+                                    <p class="card-text">2. Make Sure the file upload it must to same with the example file</p>
+                                    <p class="card-text">3. The file will not be uploaded if this file is not same as the sample file below</p>
+                                    <p class="card-text">Download the sample template excel</p>
+                                    <a href="@downloadDPPMUnit" target="_blank" class="btn btn-outline-warning">Download</a>
+                                </div>
+                            </div>
+
+                        </div>
+                        <small class="card-subtitle text-uppercase">Upload Data</small>
+                        <hr class="mt-0" />
+                            <div class="form-group">
+                                <label>Please Select DPPM Affected Unit Excel</label>
+                                <br />
+                                <input type="file" name="file" required accept=".csv" />
+                            </div>
+                            <div class="form-group text-center mb-0">
+                                <button type="submit" class="btn btn-warning px-4">UPLOAD</button>
+                            </div>
+                            <br class="mb-3" />
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="modal--upload-SIMS-Error-Summary" class="modal fade">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Upload New SIMS Error Summary</h5>
+                        <button type="button" data-dismiss="modal" class="close"><span aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="modal-body pt-0">
+                        @using (Html.BeginForm("UploadSIMSErrorSummary", "Default", FormMethod.Post, new { enctype = "multipart/form-data", novalidate = "", Class = "needs-validation" }))
+                        { <div class="form-group">
+                            <small class="card-subtitle text-uppercase mb-0 mt-2">Read Information</small>
+                            <div class="card mt-3">
+                                <div class="card-body">
+                                    <h5 class="card-title">Please Read For Your Information Before Upload New File</h5>
+                                    <p class="card-text">1. Make Sure Format File must .csv extention</p>
+                                    <p class="card-text">2. Make Sure the file upload it must to same with the example file</p>
+                                    <p class="card-text">3. The file will not be uploaded if this file is not same as the sample file below</p>
+                                    <p class="card-text">Download the sample template excel</p>
+                                    <a href="@downloadSimsError" target="_blank" class="btn btn-outline-warning">Download</a>
+                                </div>
+                            </div>
+
+                        </div>
+                        <small class="card-subtitle text-uppercase">Upload Data</small>
+                        <hr class="mt-0" />
+                        <div class="form-group">
+                            <label>Please Select SIMS Error Summary Excel</label>
+                            <br />
+                            <input type="file" name="file" required accept=".csv" />
+                        </div>
+                            <div class="form-group text-center mb-0">
+                                <button type="submit" class="btn btn-warning px-4">UPLOAD</button>
+                            </div>
+                            <br class="mb-3" />
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="modal--upload-DPPM-AffectedPart" class="modal fade">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Upload New DPPM Affected Part</h5>
+                        <button type="button" data-dismiss="modal" class="close"><span aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="modal-body pt-0">
+                        @using (Html.BeginForm("UploadDPPMAffectedPart", "Default", FormMethod.Post, new { enctype = "multipart/form-data", novalidate = "", Class = "needs-validation" }))
+                        { <div class="form-group">
+                            <small class="card-subtitle text-uppercase mb-0 mt-2">Read Information</small>
+                            <div class="card mt-3">
+                                <div class="card-body">
+                                    <h5 class="card-title">Please Read For Your Information Before Upload New File</h5>
+                                    <p class="card-text">1. Make Sure Format File must .csv extention</p>
+                                    <p class="card-text">2. Make Sure the file upload it must to same with the example file</p>
+                                    <p class="card-text">3. The file will not be uploaded if this file is not same as the sample file below</p>
+                                    <p class="card-text">Download the sample template excel</p>
+                                    <a href="@downloadDPPMPart" target="_blank" class="btn btn-outline-warning">Download</a>
+                                </div>
+                            </div>
+
+                        </div>
+                        <small class="card-subtitle text-uppercase">Upload Data</small>
+                        <hr class="mt-0" />
+                        <div class="form-group">
+                            <label>Please Select DPPM Affected Part Excel</label>
+                            <br />
+                            <input type="file" name="file" required accept=".csv" />
+                        </div>
+                        <div class="form-group text-center mb-0">
+                            <button type="submit" class="btn btn-warning px-4">UPLOAD</button>
+                        </div>
+                            <br class="mb-3" />
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="modal--upload-Organization" class="modal fade">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Upload New Organization</h5>
+                        <button type="button" data-dismiss="modal" class="close"><span aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="modal-body pt-0">
+                        @using (Html.BeginForm("UploadOrganization", "Default", FormMethod.Post, new { enctype = "multipart/form-data", novalidate = "", Class = "needs-validation" }))
+                        { <div class="form-group">
+                            <small class="card-subtitle text-uppercase mb-0 mt-2">Read Information</small>
+                            <div class="card mt-3">
+                                <div class="card-body">
+                                    <h5 class="card-title">Please Read For Your Information Before Upload New File</h5>
+                                    <p class="card-text">1. Make Sure Format File must .csv extention</p>
+                                    <p class="card-text">2. Make Sure the file upload it must to same with the example file</p>
+                                    <p class="card-text">3. The file will not be uploaded if this file is not same as the sample file below</p>
+                                    <p class="card-text">Download the sample template excel</p>
+                                    <a href="@downloadOrganization" target="_blank" class="btn btn-outline-warning">Download</a>
+                                </div>
+                            </div>
+
+                        </div>
+                        <small class="card-subtitle text-uppercase">Upload Data</small>
+                        <hr class="mt-0" />
+                        <div class="form-group">
+                            <label>Please Select Organization Excel</label>
+                            <br />
+                            <input type="file" name="file" required accept=".csv" />
+                        </div>
+                        <div class="form-group text-center mb-0">
+                            <button type="submit" class="btn btn-warning px-4">UPLOAD</button>
+                        </div>
+                        <br class="mb-3" />
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="modal--upload-PSLPart" class="modal fade">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Upload New PSL Part Data</h5>
+                        <button type="button" data-dismiss="modal" class="close"><span aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="modal-body pt-0">
+                        @using (Html.BeginForm("UploadPSLPartExcel", "Default", FormMethod.Post, new { enctype = "multipart/form-data", novalidate = "", Class = "needs-validation" }))
+                        {
+                            <div class="form-group">
+                                <small class="card-subtitle text-uppercase mb-0 mt-2">Read Information</small>
+                                <div class="card mt-3">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Please Read For Your Information Before Upload New File</h5>
+                                        <p class="card-text">1. Make Sure Format File must .csv extention</p>
+                                        <p class="card-text">2. Make Sure the file upload it must to same with the example file</p>
+                                        <p class="card-text">3. The file will not be uploaded if this file is not same as the sample file below</p>
+                                        <p class="card-text">Download the sample template excel</p>
+                                        <a href="@downloadPSLPart" target="_blank" class="btn btn-outline-warning">Download</a>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <small class="card-subtitle text-uppercase">Upload Data</small>
+                            <hr class="mt-0" />
+                            <div class="form-group">
+                                <label>Please select PSL Part excel file</label>
+                                <br />
+                                <input type="file" name="file" required accept=".csv" />
+                            </div>
+                            <div class="form-group text-center mb-0">
+                                <button type="submit" class="btn btn-warning px-4">SUBMIT</button>
+                            </div>
+                            <br class="mb-3" />
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @RenderBody()
+
+    </div>
+  
+    <script type="text/javascript" src="~/Scripts/DataTables/datatables.min.js"></script>
+    <script src="~/Scripts/DataTables/Select-1.3.1/js/dataTables.select.min.js"></script>
+
+    @Scripts.Render("~/Asset/js")
+
+    @RenderSection("ScriptBottom", required: false)
+</body>
+</html>

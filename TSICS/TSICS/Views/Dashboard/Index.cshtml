@@ -1,0 +1,200 @@
+﻿@{
+    ViewBag.Title = "Dashboard";
+    Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
+}
+
+<main class="body position-relative d-flex flex-column">
+    <div data-active_page="dashboard-monitoring" class="content-wrap flex-fill">
+        <section id="tr-dashboard" class="position-relative mt-5">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12 position-relative">
+                        <section class="mb-3">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h2 class="h4-size">My TR Dashboard</h2>
+                            </div>
+                            <div class="d-flex">
+                                <nav class="nav nav-pills nav-btn-warning flex-column flex-sm-row"><a href="#" class="flex-fill text-sm-center nav-link active mb-2 mr-2">Monitoring</a></nav>
+                            </div>
+                        </section>
+                        <section>
+                            <div class="card bg-white shadow-sm border-0 mb-5">
+                                <div class="card-body">
+                                    <div id="my-monitoring" class="row mb-5">
+                                        <div class="col-lg-12 mb-3">
+                                            <div class="h4-size">Waiting for your response</div>
+                                            @*<div class="float-right">
+                                                <button data-img-target="#my-monitoring" data-img-filename="my-monitoring" type="button" class="btn-img-download btn btn-outline-secondary btn-sm ml-3"><small>Save as image</small></button>
+                                            </div>*@
+                                        </div>
+                                        <div class="col-lg-6 mb-3 mb-lg-0">
+                                            <div class="header">
+                                                <div class="title"><i class="fa fa-circle text-warning mr-1"> </i><span>as a Submitter</span></div>
+                                            </div>
+                                            <div class="chart pie-half-circle">
+                                                <header> 
+                                                    <div class="prev-total-tr h3-size">-</div>
+                                                </header>
+                                                <div class="canvas-wrap">
+                                                    <canvas id="pie-submitter" data-chart-half-circle="{'api': '@Url.Action("DashboardMonitoringSubmitter","Dashboard")'}"></canvas>
+                                                    <div class="tooltip-wrap">
+                                                        <div class="cust-tooltip"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 mb-3 mb-lg-0">
+                                            <div class="header">
+                                                <div class="title"><i class="fa fa-circle text-warning mr-1"> </i><span>as a Responder</span></div>
+                                            </div>
+                                            <div class="chart pie-half-circle">
+                                                <header>
+                                                    <div class="prev-total-tr h3-size">-</div>
+                                                </header>
+                                                <div class="canvas-wrap">
+                                                    <canvas id="pie-responder" data-chart-half-circle="{'api': '@Url.Action("DashboardMonitoring","Dashboard")'}"></canvas>
+                                                    <div class="tooltip-wrap">
+                                                        <div class="cust-tooltip"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    <div class="d-block d-lg-flex justify-content-between align-items-end mb-4">
+                                                        <header class="mb-3 mb-lg-0">
+                                                            <div class="h4-size">Tickets</div>
+                                                            <div class="h6-size">Total of <span id='total-tickets'></span> tickets needs to be responded</div>
+                                                        </header><a data-dt-refresh="{'target': '#table--all-tickets', 'api_init': '@Url.Action("TableDashboardMonitoring","Dashboard")'}" class="btn btn-warning">Reset Table</a>
+                                                    </div>
+                                                    <div id="table--all-tickets" data-table_target="#table--all-tickets-init" data-api_dt_init="@Url.Action("TableDashboardMonitoring","Dashboard")">
+                                                        <div class="table-responsive">
+                                                            <table id="table--all-tickets-init" class="table table-dt">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th><small>TICKET NO</small></th>
+                                                                        <th><small>CATEGORY</small></th>
+                                                                        <th><small>TITLE</small></th>
+                                                                        <th><small>SUBMITTER</small></th>
+                                                                        <th><small>RESPONDER</small></th>
+                                                                        <th><small>DATE CREATED</small></th>
+                                                                        <th><small>DATE CLOSED</small></th>
+                                                                        <th><small>DATE UPDATED</small></th>
+                                                                        <th><small>STATUS TR</small></th>
+                                                                        <th><small>STATUS USER</small></th>
+                                                                    </tr>
+                                                                </thead>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                    <script>
+                                  var dt_option = {
+                                    fixedColumns  : {
+                                      leftColumns   : 1
+                                    },
+                                    bSort         : true,
+                                    paging        : true,
+                                    order         : [[ 1, 'desc' ]]
+                                  }
+
+                                  var column_dt_table = [
+                                    {
+                                      data    : 'ticket_no',
+                                      render  : function (data,type,row) {
+                                        var html = ''
+                                        html = `<a href="@(Url.Action("Details","TechnicalRequest"))/` + row["ticket_id"].value+`"><span class="` + data.style + `">` + data.value + `</span></a>`
+                                        return html
+                                      }
+                                    },
+                                    {
+                                      data    : 'category',
+                                      render  : function (data,type,row) {
+                                        var html = ''
+                                        html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                        return html
+                                      }
+                                    },
+                                    {
+                                      data    : 'title',
+                                      render  : function (data,type,row) {
+                                        var html = ''
+                                        html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                        return html
+                                      }
+                                    },
+                                    {
+                                      data    : 'submitter',
+                                      render  : function (data,type,row) {
+                                        var html = ''
+                                        html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                        return html
+                                      }
+                                    },
+                                    {
+                                      data    : 'responder',
+                                      render  : function (data,type,row) {
+                                        var html = ''
+                                        html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                        return html
+                                      }
+                                    },
+                                    {
+                                      data    : 'date_created',
+                                      render  : function (data,type,row) {
+                                        var html = ''
+                                        html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                        return html
+                                      }
+                                    },
+                                    {
+                                      data    : 'date_closed',
+                                      render  : function (data,type,row) {
+                                        var html = ''
+                                        html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                        return html
+                                      }
+                                    },
+                                    {
+                                      data    : 'date_updated',
+                                                        render: function (data, type, row) {
+
+                                        var html = ''
+                                        html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                        return html
+                                      }
+                                    },
+                                    {
+                                      data    : 'status_tr',
+                                      render  : function (data,type,row) {
+                                        var html = ''
+                                        html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                        return html
+                                      }
+                                    },
+                                    {
+                                      data    : 'status_user',
+                                      render  : function (data,type,row) {
+                                        var html = ''
+                                        html = '<span class="' + data.style + '">' + data.value + '</span>'
+                                        return html
+                                      }
+                                    }
+
+                                  ]
+                                                    </script>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</main>
